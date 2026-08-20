@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { db, storage } from "../Firebase/firebase";
-
+import { collection, getDocs } from "firebase/firestore";
 import { Nav } from "./Nav/Nav";
 import { Gallery } from "./Gallery/Gallery";
 import { FloatingArrow } from "./FloatingArrow/FloatingArrow";

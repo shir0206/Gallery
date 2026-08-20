@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./gallery.css";
 import { db, storage } from "../../Firebase/firebase";
+import { collection, getDocs } from "firebase/firestore";
 import { CardItem } from "../CardItem/CardItem";
 
 export const Gallery = (props) => {
