@@ -9,3 +9,11 @@ serviceAccountKey.json
 # Dist / build folders
 /dist
 /build
+
+# Ignore Firebase admin private keys
+serviceAccountKey.json
+backend/serviceAccountKey.json
+*.json.key
+
+# Ignore backend node modules
+backend/node_modules/
