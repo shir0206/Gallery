@@ -1,0 +1,58 @@
+{
+  "livingRooms": [
+    {
+      "id": "P1",
+      "name": "Midnight & Gold",
+      "palette": [
+        "deep blue",
+        "charcoal",
+        "black",
+        "muted green",
+        "warm yellow"
+      ],
+      "patterns": "quiet contrast, night landscapes, soft organic marks",
+      "description": "This living room is calm and slightly dramatic, built around deep blue, charcoal, black, muted green, and warm yellow. The walls are warm off-white, with a dark blue sofa, natural wood, soft linen curtains, and a few mustard cushions that bring in the yellow seen across the artworks. The artwork mix feels connected to evening, distance, nature, and quiet movement, so the room should have simple furniture, warm lamps, and enough empty wall space for the darker pieces to breathe. Small organic patterns work well here: branches, birds, soft waves, and irregular brush marks rather than busy geometric prints."
+    },
+    {
+      "id": "P2",
+      "name": "Paper & Blush",
+      "palette": [
+        "warm white",
+        "graphite",
+        "dusty pink",
+        "soft peach",
+        "pale beige"
+      ],
+      "patterns": "soft portrait lines, light washes, delicate botanical details",
+      "description": "This living room is light, warm, and personal, using warm white, graphite, dusty pink, soft peach, and pale beige as its main colors. A cream sofa, pale wood, natural fabric, and simple black or graphite details would make the pencil portraits and delicate drawings feel at home without competing with them. The room should feel like a quiet studio where drawings, memories, faces, and small observations can stay visible and close. Soft lines, faded botanical patterns, linen, paper-like textures, and a few handmade objects would continue the gentle character of the artworks."
+    },
+    {
+      "id": "P3",
+      "name": "Red & Ember",
+      "palette": [
+        "crimson",
+        "rust",
+        "burnt orange",
+        "bronze",
+        "warm brown",
+        "black"
+      ],
+      "patterns": "bold blocks, expressive figures, warm textured accents",
+      "description": "This living room is warm and expressive, centered on crimson, rust, burnt orange, bronze, warm brown, and black. A neutral beige wall can hold the strong red works, while a brown sofa, terracotta textiles, dark wood, and bronze lighting repeat the warmer colors without making the room feel heavy. The artwork in this group has movement, bodies, music, objects, and strong gestures, so the room can be more confident and layered than the quieter palettes. Use broad stripes, woven fabrics, imperfect ceramics, and a few bold cushions rather than many small patterns."
+    },
+    {
+      "id": "P4",
+      "name": "Garden & Sky",
+      "palette": [
+        "sage",
+        "sky blue",
+        "lavender",
+        "soft green",
+        "peach",
+        "muted yellow"
+      ],
+      "patterns": "floral marks, flowing lines, watercolor washes, natural forms",
+      "description": "This living room feels fresh and relaxed, combining sage, sky blue, lavender, soft green, peach, and muted yellow. A light neutral sofa, pale natural wood, soft green textiles, and small blue or lavender accents would echo the watercolor and floral pieces without making the room too colorful. The artworks bring in flowers, trees, young faces, open skies, and gentle movement, so the room should feel close to a bright garden or a sunny studio. Flowing lines, small botanical patterns, washed fabrics, and handmade paper or ceramic details would fit the collection naturally."
+    }
+  ]
+}
