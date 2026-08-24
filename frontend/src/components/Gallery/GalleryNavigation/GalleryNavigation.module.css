@@ -1,0 +1,39 @@
+.navigation {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 16px 24px 24px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+}
+
+.strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 6px 4px 4px;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  cursor: grab;
+  /* Touch panning is native; this just tells the browser the strip
+     itself owns horizontal gestures, so drag-to-scroll doesn't fight
+     the page. */
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.strip.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+}
+
+.strip::-webkit-scrollbar {
+  height: 4px;
+}
+
+.strip::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
