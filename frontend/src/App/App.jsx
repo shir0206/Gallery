@@ -7,7 +7,6 @@ export default function App() {
 
   return (
     <div className="App">
-      HI
       <ArtGallery windowWidth={width} />
     </div>
   );
