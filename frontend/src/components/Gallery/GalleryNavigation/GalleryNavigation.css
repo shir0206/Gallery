@@ -1,0 +1,67 @@
+.gallery-navigation {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 16px 24px 22px;
+  /* A soft warm-brown scrim, like the floor's own shadow deepening
+     toward the viewer — not a flat dark UI bar docked on top of the
+     room. Light enough that the oak floor still reads through it. */
+  background: linear-gradient(to top, rgba(40, 30, 19, 0.4), transparent);
+}
+
+.gallery-navigation-strip {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  /* Extra bottom padding gives the active-thumbnail underline (see
+     ArtworkThumbnail) room to sit below the image without being
+     clipped by the scroll container. */
+  padding: 6px 4px 14px;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  cursor: grab;
+  /* Touch panning is native; this just tells the browser the strip
+     itself owns horizontal gestures, so drag-to-scroll doesn't fight
+     the page. */
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery-navigation-strip.gallery-navigation-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+}
+
+.gallery-navigation-strip::-webkit-scrollbar {
+  height: 3px;
+}
+
+.gallery-navigation-strip::-webkit-scrollbar-thumb {
+  background: var(--gallery-line);
+  border-radius: 0;
+}
+
+@media (max-width: 1023px) {
+  .gallery-navigation {
+    padding: 12px 16px 18px;
+  }
+
+  .gallery-navigation-strip {
+    gap: 12px;
+    padding: 6px 4px 12px;
+  }
+}
+
+@media (max-width: 639px) {
+  .gallery-navigation {
+    padding: 10px 12px 14px;
+  }
+
+  .gallery-navigation-strip {
+    gap: 10px;
+    padding: 4px 4px 12px;
+  }
+}

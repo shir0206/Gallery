@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import type { Artwork } from '@/types/artwork';
-import styles from './ArtworkThumbnail.module.css';
+import './ArtworkThumbnail.css';
 
 interface ArtworkThumbnailProps {
   artwork: Artwork;
@@ -20,12 +20,19 @@ export const ArtworkThumbnail = forwardRef<HTMLButtonElement, ArtworkThumbnailPr
       <button
         ref={ref}
         type="button"
-        className={`${styles.thumbnail} ${isActive ? styles.active : ''}`}
+        className={`artwork-thumbnail ${isActive ? 'artwork-thumbnail-active' : ''}`}
         onClick={() => onSelect(artwork.id)}
-        aria-pressed={isActive}
+        // This is a "which one of the set is currently showing" state,
+        // not a toggle — aria-current models that more accurately than
+        // aria-pressed and is what most screen readers announce as
+        // "current" rather than "pressed".
+        aria-current={isActive ? 'true' : undefined}
         aria-label={`View ${artwork.title} by ${artwork.artist}`}
       >
-        <img src={artwork.imageUrl} alt={artwork.title} className={styles.image} />
+        {/* Decorative: the button's aria-label already gives the
+            accessible name, so the image doesn't need its own alt
+            text (avoids the title being announced twice). */}
+        <img src={artwork.imageUrl} alt="" className="artwork-thumbnail-image" />
       </button>
     );
   },

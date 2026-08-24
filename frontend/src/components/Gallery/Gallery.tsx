@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ArtworkCollectionResponse } from '@/types/artwork';
-import { GalleryBackground } from './GalleryBackground';
+import { GalleryBackground } from './GalleryBackground/GalleryBackground';
 import { GalleryNavigation } from './GalleryNavigation/GalleryNavigation';
 import { ArtworkViewer } from './ArtworkViewer/ArtworkViewer';
-import styles from './Gallery.module.css';
+import './Gallery.css';
 
 interface GalleryProps {
   data: ArtworkCollectionResponse;
@@ -77,7 +77,7 @@ export function Gallery({ data }: GalleryProps) {
   }, [goToPrevious, goToNext]);
 
   return (
-    <div className={styles.gallery}>
+    <div className="gallery">
       <GalleryBackground environment={environment} />
       <ArtworkViewer
         artwork={selectedArtwork}
@@ -90,6 +90,16 @@ export function Gallery({ data }: GalleryProps) {
         selectedArtworkId={selectedArtworkId}
         onSelectArtwork={setSelectedArtworkId}
       />
+      {/* Announces the current artwork on every selection change —
+          click, previous/next controls, or the Left/Right arrow-key
+          shortcuts. Those shortcuts move the *selection* without
+          necessarily moving keyboard focus, so this is the only
+          reliable way a screen reader user hears that the gallery
+          advanced. Kept out of the visible layout entirely. */}
+      <div aria-live="polite" className="visually-hidden">
+        {selectedArtwork &&
+          `Now viewing ${selectedArtwork.title} by ${selectedArtwork.artist}, ${selectedIndex + 1} of ${artworks.length}`}
+      </div>
     </div>
   );
 }

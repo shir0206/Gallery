@@ -1,0 +1,221 @@
+/* Fades in slightly after the image crossfade starts (see the
+   animation-delay below), so the reveal feels staggered rather than
+   the whole viewer blinking to the new artwork at once. Re-keyed by
+   artwork id in ArtworkViewer, so this replays on every switch. */
+.artwork-details {
+  max-width: 480px;
+  color: var(--gallery-paper);
+  text-align: left;
+  animation: artwork-details-reveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) 90ms both;
+}
+
+@keyframes artwork-details-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artwork-details {
+    animation: none;
+  }
+}
+
+/* A small brass rule above the title stands in for a museum wall
+   plaque's frame — a single quiet accent rather than a border around
+   the whole block. */
+.artwork-details-title {
+  position: relative;
+  font-family: var(--gallery-serif);
+  font-size: 30px;
+  font-weight: 400;
+  margin: 0 0 6px;
+  letter-spacing: 0.005em;
+  text-align: center;
+  padding-top: 18px;
+}
+
+.artwork-details-title::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 1px;
+  background: var(--gallery-accent-soft);
+}
+
+.artwork-details-artist {
+  font-family: var(--gallery-sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--gallery-paper-muted);
+  margin: 0 0 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+/* Date / medium / dimensions — quiet factual metadata, set like a
+   catalogue entry: small, evenly tracked, separated from the prose
+   below by a single hairline rather than a boxed panel. */
+.artwork-details-facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px 30px;
+  margin: 0 0 20px;
+  padding: 0 0 20px;
+  border-bottom: 1px solid var(--gallery-line);
+}
+
+.artwork-details-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: center;
+}
+
+.artwork-details-fact dt {
+  font-family: var(--gallery-sans);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gallery-paper-faint);
+}
+
+.artwork-details-fact dd {
+  margin: 0;
+  font-family: var(--gallery-sans);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gallery-paper-soft);
+}
+
+/* Categories read as a single line of plain, evenly tracked wall-label
+   text — "Oil on canvas · Landscape · 19th century" — rather than a
+   row of chip/pill buttons. The middot separators come from CSS, so
+   the component itself only ever renders plain list items. */
+.artwork-details-categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  margin: 0 0 26px;
+  padding: 0;
+  list-style: none;
+  font-family: var(--gallery-sans);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gallery-paper-muted);
+}
+
+.artwork-details-category {
+  padding: 0;
+}
+
+.artwork-details-category:not(:last-child)::after {
+  content: '\00B7';
+  margin: 0 10px;
+  color: var(--gallery-accent-soft);
+}
+
+/* Structured description — materials / visual / inspiration each get
+   their own labeled block instead of collapsing into one paragraph. */
+.artwork-details-description {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.artwork-details-description-section {
+  margin: 0;
+}
+
+.artwork-details-description-label {
+  font-family: var(--gallery-sans);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gallery-paper-faint);
+  margin: 0 0 5px;
+}
+
+.artwork-details-description-value {
+  margin: 0;
+  font-family: var(--gallery-serif);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--gallery-paper-soft);
+}
+
+@media (max-width: 1023px) {
+  .artwork-details {
+    max-width: 440px;
+  }
+
+  .artwork-details-title {
+    font-size: 25px;
+  }
+}
+
+/* Mobile: the metadata reorganizes rather than just shrinking. The
+   `.artwork-details-facts` row of centered, wrapping label/value
+   columns becomes a left-aligned vertical list of label–value rows —
+   easier to scan in one hand-width than three columns squeezed onto a
+   narrow screen. */
+@media (max-width: 639px) {
+  .artwork-details {
+    max-width: 100%;
+  }
+
+  .artwork-details-title {
+    font-size: 22px;
+  }
+
+  .artwork-details-artist {
+    margin-bottom: 18px;
+  }
+
+  .artwork-details-facts {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+
+  .artwork-details-fact {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .artwork-details-fact dd {
+    text-align: right;
+  }
+
+  .artwork-details-categories {
+    justify-content: flex-start;
+  }
+
+  .artwork-details-description {
+    gap: 12px;
+  }
+
+  .artwork-details-description-value {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}

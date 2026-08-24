@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Artwork } from '@/types/artwork';
-import { ArtworkDetails } from './ArtworkDetails';
-import styles from './ArtworkViewer.module.css';
+import { ArtworkDetails } from './ArtworkDetails/ArtworkDetails';
+import './ArtworkViewer.css';
 
 interface ArtworkViewerProps {
   artwork: Artwork | null;
@@ -11,7 +11,7 @@ interface ArtworkViewerProps {
   hasMultiple: boolean;
 }
 
-// Must match the crossfade keyframe duration in ArtworkViewer.module.css —
+// Must match the crossfade keyframe duration in ArtworkViewer.css —
 // it's how long the outgoing image layer stays mounted before we drop it.
 const CROSSFADE_MS = 550;
 
@@ -77,8 +77,8 @@ export function ArtworkViewer({ artwork, onPrevious, onNext, hasMultiple }: Artw
 
   if (!artwork) {
     return (
-      <div className={styles.viewer}>
-        <p className={styles.empty}>No artwork selected.</p>
+      <div className="artwork-viewer">
+        <p className="artwork-viewer-empty">No artwork selected.</p>
       </div>
     );
   }
@@ -86,11 +86,11 @@ export function ArtworkViewer({ artwork, onPrevious, onNext, hasMultiple }: Artw
   const { width, height } = artwork.dimensions;
 
   return (
-    <div className={styles.viewer}>
+    <div className="artwork-viewer" role="region" aria-label="Selected artwork">
       {hasMultiple && (
         <button
           type="button"
-          className={`${styles.navButton} ${styles.navButtonPrev}`}
+          className="artwork-viewer-nav-button artwork-viewer-nav-button-prev"
           onClick={onPrevious}
           aria-label="Previous artwork"
         >
@@ -99,7 +99,7 @@ export function ArtworkViewer({ artwork, onPrevious, onNext, hasMultiple }: Artw
       )}
 
       <div
-        className={styles.frame}
+        className="artwork-viewer-frame"
         data-orientation={artwork.orientation}
         // Real physical proportions, known before the image loads,
         // reserve the right box shape up front so nothing jumps around
@@ -114,14 +114,14 @@ export function ArtworkViewer({ artwork, onPrevious, onNext, hasMultiple }: Artw
             src={outgoing.imageUrl}
             alt=""
             aria-hidden="true"
-            className={`${styles.image} ${styles.imageOutgoing}`}
+            className="artwork-viewer-image artwork-viewer-image-outgoing"
           />
         )}
         <img
           key={artwork.id}
           src={artwork.imageUrl}
-          alt={artwork.title}
-          className={`${styles.image} ${styles.imageIncoming}`}
+          alt={`${artwork.title} by ${artwork.artist}`}
+          className="artwork-viewer-image artwork-viewer-image-incoming"
         />
       </div>
 
@@ -130,7 +130,7 @@ export function ArtworkViewer({ artwork, onPrevious, onNext, hasMultiple }: Artw
       {hasMultiple && (
         <button
           type="button"
-          className={`${styles.navButton} ${styles.navButtonNext}`}
+          className="artwork-viewer-nav-button artwork-viewer-nav-button-next"
           onClick={onNext}
           aria-label="Next artwork"
         >

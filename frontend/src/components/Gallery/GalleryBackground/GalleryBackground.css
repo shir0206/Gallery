@@ -1,0 +1,38 @@
+.gallery-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* Fallback "wall" layer for when no environment photo is supplied
+     (or it fails to load) — a warm plaster-to-oak-floor gradient with
+     a soft glow band standing in for the coved light strip, so the
+     room still reads correctly even without the real photo. Once an
+     opaque `.gallery-background-image` loads on top, none of this is
+     visible. */
+  background-image:
+    radial-gradient(ellipse 60% 36% at 50% 4%, rgba(255, 241, 214, 0.6), rgba(255, 241, 214, 0) 72%),
+    linear-gradient(180deg, #d8cab3 0%, #cebfa7 46%, #b99c74 79%, #a3835d 100%);
+  background-color: #cabca4;
+}
+
+.gallery-background-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* A soft edge vignette only — not a flat scrim. The room is meant to
+   read bright and airy, the way the reference does; this just eases
+   the far corners back a touch so the artwork stays the clear focal
+   point without flattening the room's own lighting. */
+.gallery-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 42%,
+    rgba(20, 14, 8, 0) 55%,
+    rgba(20, 14, 8, 0.16) 100%
+  );
+}

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import type { Artwork } from '@/types/artwork';
-import { ArtworkThumbnail } from './ArtworkThumbnail';
-import { useHorizontalScroll } from './useHorizontalScroll';
-import styles from './GalleryNavigation.module.css';
+import { ArtworkThumbnail } from './ArtworkThumbnail/ArtworkThumbnail';
+import { useHorizontalScroll } from '@/hooks/useHorizontalScroll';
+import './GalleryNavigation.css';
 
 interface GalleryNavigationProps {
   artworks: Artwork[];
@@ -46,10 +46,10 @@ export function GalleryNavigation({
   }, [selectedArtworkId]);
 
   return (
-    <nav className={styles.navigation} aria-label="Artwork collection">
+    <nav className="gallery-navigation" aria-label="Artwork collection">
       <div
         ref={stripRef}
-        className={`${styles.strip} ${isDragging ? styles.dragging : ''}`}
+        className={`gallery-navigation-strip ${isDragging ? 'gallery-navigation-dragging' : ''}`}
       >
         {artworks.map((artwork) => {
           const isActive = artwork.id === selectedArtworkId;

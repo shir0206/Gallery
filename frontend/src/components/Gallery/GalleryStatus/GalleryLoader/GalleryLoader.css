@@ -1,0 +1,71 @@
+.gallery-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  animation: gallery-loader-breathe 2.4s ease-in-out infinite;
+}
+
+.gallery-loader-frame {
+  position: relative;
+  width: 84px;
+  height: 108px;
+  border: 1px solid var(--gallery-line);
+  overflow: hidden;
+}
+
+/* A soft diagonal band of light passing over the empty frame, the
+   way a spotlight might sweep an empty wall waiting for a piece to
+   be hung. */
+.gallery-loader-sweep {
+  position: absolute;
+  inset: -20% -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    var(--gallery-line-soft) 47%,
+    var(--gallery-accent-soft) 50%,
+    var(--gallery-line-soft) 53%,
+    transparent 65%
+  );
+  background-size: 240% 240%;
+  animation: gallery-loader-sweep 2.4s ease-in-out infinite;
+}
+
+/* A thin bar standing in for the not-yet-loaded title/label text
+   beneath the frame. */
+.gallery-loader-label {
+  width: 46px;
+  height: 2px;
+  background: var(--gallery-line);
+}
+
+@keyframes gallery-loader-sweep {
+  0% {
+    background-position: 130% 0%;
+  }
+  100% {
+    background-position: -30% 0%;
+  }
+}
+
+@keyframes gallery-loader-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-loader {
+    animation: none;
+  }
+
+  .gallery-loader-sweep {
+    animation: none;
+    opacity: 0.5;
+  }
+}

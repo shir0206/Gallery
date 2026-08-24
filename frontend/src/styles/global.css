@@ -1,6 +1,26 @@
 :root {
-  color-scheme: dark;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Shared design tokens for the gallery's editorial/museum palette,
+     tuned to the reference room: warm plaster wall, oak floor, a soft
+     linear light coving along the top edge. Dark warm-espresso ink on
+     that light wall (not the other way around) — daylight gallery,
+     not a black-box theatre. `--gallery-paper` is the token name for
+     historical reasons; it now names the *ink* color read against the
+     paper-toned wall, not a light-on-dark text color. One muted bronze
+     accent, used only for focus rings and small active-state marks —
+     never as a fill or a bright UI color. */
+  --gallery-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --gallery-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --gallery-paper: #2b241d;
+  --gallery-paper-soft: rgba(43, 36, 29, 0.82);
+  --gallery-paper-muted: rgba(43, 36, 29, 0.6);
+  --gallery-paper-faint: rgba(43, 36, 29, 0.4);
+  --gallery-line: rgba(43, 36, 29, 0.16);
+  --gallery-line-soft: rgba(43, 36, 29, 0.09);
+  --gallery-accent: #8a6a3c;
+  --gallery-accent-soft: rgba(138, 106, 60, 0.55);
 }
 
 * {
@@ -13,7 +33,12 @@ body,
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #0a0a0a;
+  /* Matches the wall's midtone so there's no dark flash before the
+     background photo paints in. */
+  background: #cabca4;
+  /* Page-level safety net: nothing in the gallery should ever be able
+     to push a horizontal scrollbar onto the page, on any screen size. */
+  overflow-x: hidden;
 }
 
 body {
@@ -23,4 +48,20 @@ body {
 button {
   font: inherit;
   color: inherit;
+}
+
+/* Visually hides content while keeping it in the accessibility tree —
+   used for text that's only meant for screen readers (e.g. live
+   announcements), never for hiding interactive controls sighted
+   keyboard users still need to see. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

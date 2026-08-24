@@ -1,5 +1,5 @@
 import type { GalleryEnvironment } from '@/types/artwork';
-import styles from './GalleryBackground.module.css';
+import './GalleryBackground.css';
 
 interface GalleryBackgroundProps {
   environment: GalleryEnvironment;
@@ -15,10 +15,10 @@ interface GalleryBackgroundProps {
  */
 export function GalleryBackground({ environment }: GalleryBackgroundProps) {
   return (
-    <div className={styles.background} role="presentation" aria-hidden="true">
+    <div className="gallery-background" role="presentation" aria-hidden="true">
       {environment.backgroundImageUrl && (
         <div
-          className={styles.backgroundImage}
+          className="gallery-background-image"
           style={{ backgroundImage: `url(${environment.backgroundImageUrl})` }}
         />
       )}

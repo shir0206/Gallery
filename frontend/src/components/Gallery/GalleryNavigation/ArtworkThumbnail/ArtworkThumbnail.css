@@ -1,0 +1,77 @@
+/* Square corners (no border-radius) so the strip reads like a contact
+   sheet of mounted prints rather than a row of rounded app icons.
+   Selection is shown with a hairline brass underline (see
+   .artwork-thumbnail-active) instead of a thick border + scale pop —
+   quieter, closer to how a museum wall-map highlights the room you're
+   in. */
+.artwork-thumbnail {
+  position: relative;
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: none;
+  overflow: visible;
+  cursor: pointer;
+  background: transparent;
+  scroll-snap-align: center;
+  opacity: 0.5;
+  transition: opacity 0.25s ease;
+}
+
+.artwork-thumbnail::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 1px;
+  background: var(--gallery-accent);
+  opacity: 0;
+  transform: scaleX(0.6);
+  transform-origin: center;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.artwork-thumbnail:hover {
+  opacity: 0.78;
+}
+
+.artwork-thumbnail:focus-visible {
+  outline: 1px solid var(--gallery-accent-soft);
+  outline-offset: 3px;
+}
+
+.artwork-thumbnail.artwork-thumbnail-active {
+  opacity: 1;
+}
+
+.artwork-thumbnail.artwork-thumbnail-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.artwork-thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 1023px) {
+  .artwork-thumbnail {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* Slightly larger than the tablet size (not smaller) — touch targets
+   shouldn't shrink below a comfortable tap size just because the
+   screen did. Fewer thumbnails are visible at once; that's fine,
+   the strip is built to scroll. */
+@media (max-width: 639px) {
+  .artwork-thumbnail {
+    width: 52px;
+    height: 52px;
+  }
+}

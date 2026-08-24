@@ -1,9 +1,20 @@
-import type { Artwork, ArtworkApiResponse, ArtworkCollectionResponse } from '@/types/artwork';
+import type { Artwork, ArtworkApiResponse, ArtworkCollectionResponse, GalleryEnvironment } from '@/types/artwork';
 import { isFirebaseConfigured } from './firebase/firebaseClient';
 import { fetchArtworksFromFirebase } from './firebase/firebaseArtworkApi';
 import { fetchArtworksFromMock } from './mock/mockArtworkApi';
 
 export { ArtworkApiError } from './errors';
+
+/**
+ * The gallery room/environment config. Unlike the artwork collection,
+ * this isn't fetched from anywhere (yet) — it's exposed as a constant
+ * so any screen (loading, error, empty, or the loaded gallery) can
+ * render the same room background, not just the happy path.
+ */
+export const GALLERY_ENVIRONMENT: GalleryEnvironment = {
+  name: 'Main Hall',
+  backgroundImageUrl: '/src/assets/gallery-background-placeholder.jpg',
+};
 
 /**
  * Picks the data source:
@@ -41,10 +52,7 @@ export async function getArtworkCollection(): Promise<ArtworkCollectionResponse>
   const artworks = await getArtworks();
 
   return {
-    environment: {
-      name: 'Main Hall',
-      backgroundImageUrl: '/src/assets/gallery-background-placeholder.jpg',
-    },
+    environment: GALLERY_ENVIRONMENT,
     artworks,
   };
 }

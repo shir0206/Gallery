@@ -1,0 +1,85 @@
+.gallery-status {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.gallery-status-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 100%;
+  padding: 24px;
+  text-align: center;
+  animation: gallery-status-reveal 0.4s ease both;
+}
+
+@keyframes gallery-status-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-status-content {
+    animation: none;
+  }
+}
+
+/* Same treatment as ArtworkViewer's "No artwork selected." empty
+   state — a quiet italic serif line, not a bold system message. */
+.gallery-status-message {
+  margin: 0;
+  max-width: 320px;
+  font-family: var(--gallery-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--gallery-paper-muted);
+}
+
+/* A bare text action, not a filled button — an underline that grows
+   in on hover/focus is the only chrome it gets. */
+.gallery-status-retry {
+  padding: 0 0 4px;
+  border: none;
+  background: transparent;
+  position: relative;
+  font-family: var(--gallery-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gallery-paper);
+  cursor: pointer;
+}
+
+.gallery-status-retry::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--gallery-accent);
+  transform: scaleX(0.4);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.gallery-status-retry:hover::after,
+.gallery-status-retry:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.gallery-status-retry:focus-visible {
+  outline: 1px solid var(--gallery-accent-soft);
+  outline-offset: 4px;
+}

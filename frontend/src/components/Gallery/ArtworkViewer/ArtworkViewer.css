@@ -1,0 +1,270 @@
+.artwork-viewer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  height: 100%;
+  padding: 80px 24px 160px;
+  text-align: center;
+  animation: artwork-viewer-reveal 0.35s ease both;
+  /* The viewer owns its own scroll independently of the fixed
+     background and fixed bottom navigation strip (both siblings, so
+     they're unaffected). This is what keeps things usable on short
+     viewports — tall detail text on a small phone scrolls within the
+     viewer instead of being clipped by `.gallery`'s `overflow: hidden`.
+     overflow-x stays hidden so nothing can ever push the page wider
+     than the viewport. */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* The frame is the box the artwork is allowed to occupy; its bounds
+   differ by orientation so a tall portrait piece gets real height to
+   work with and a wide landscape piece gets real width, rather than
+   both being squeezed into one square-ish box. Sized by its own
+   aspect-ratio (set inline from the artwork's real dimensions) within
+   those bounds — the same shrink-to-fit behavior an <img> gets natively.
+   It's also the crossfade stage: outgoing/incoming images are layered
+   absolutely inside it, so switching artworks never changes its size
+   mid-transition. */
+.artwork-viewer-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 62vh;
+  max-width: 92vw;
+}
+
+.artwork-viewer-frame[data-orientation='portrait'] {
+  max-height: 68vh;
+  max-width: min(58vw, 620px);
+}
+
+.artwork-viewer-frame[data-orientation='landscape'] {
+  max-height: 56vh;
+  max-width: min(92vw, 1000px);
+}
+
+/* Breakpoints, shared informally across the gallery's stylesheets:
+   desktop  ≥1440px — extra headroom for a large, spacious presentation
+   laptop   1024–1439px — the default sizing above
+   tablet   640–1023px — trimmed padding/frame so nav + details still fit
+   mobile   ≤639px — the layout adapts (see below) rather than just
+            shrinking; details reflow vertically and the frame yields
+            height to them and to the thumbnail strip. */
+@media (min-width: 1440px) {
+  .artwork-viewer {
+    gap: 32px;
+    padding: 96px 48px 180px;
+  }
+
+  .artwork-viewer-frame {
+    max-height: 66vh;
+  }
+
+  .artwork-viewer-frame[data-orientation='portrait'] {
+    max-height: 74vh;
+    max-width: min(50vw, 700px);
+  }
+
+  .artwork-viewer-frame[data-orientation='landscape'] {
+    max-height: 62vh;
+    max-width: min(86vw, 1240px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .artwork-viewer {
+    gap: 20px;
+    padding: 56px 20px 140px;
+  }
+
+  .artwork-viewer-frame {
+    max-height: 56vh;
+    max-width: 94vw;
+  }
+
+  .artwork-viewer-frame[data-orientation='portrait'] {
+    max-height: 62vh;
+    max-width: min(72vw, 520px);
+  }
+
+  .artwork-viewer-frame[data-orientation='landscape'] {
+    max-height: 50vh;
+    max-width: min(94vw, 820px);
+  }
+}
+
+@media (max-width: 639px) {
+  .artwork-viewer {
+    gap: 16px;
+    /* Bottom padding clears the shorter mobile thumbnail strip (see
+       GalleryNavigation's mobile rules) while staying tight enough
+       that the artwork keeps priority over the frame. */
+    padding: 28px 16px 128px;
+  }
+
+  .artwork-viewer-frame {
+    max-height: 42vh;
+    max-width: 100%;
+  }
+
+  .artwork-viewer-frame[data-orientation='portrait'] {
+    max-height: 48vh;
+    max-width: min(84vw, 420px);
+  }
+
+  .artwork-viewer-frame[data-orientation='landscape'] {
+    max-height: 36vh;
+    max-width: 100%;
+  }
+}
+
+/* Both the outgoing and incoming image occupy this same box during a
+   transition. object-fit: contain keeps each artwork's own proportions
+   intact — nothing stretches or crops, even if the two pieces differ
+   in aspect ratio while they briefly overlap. */
+.artwork-viewer-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* A soft, directional, warm-toned shadow — cast by the room's own
+     overhead light rather than a flat UI drop-shadow — so the piece
+     reads as if it's actually hung on the plaster wall behind it. No
+     border-radius: real framed artwork has square corners. */
+  box-shadow: 0 26px 60px rgba(35, 26, 16, 0.32);
+}
+
+/* Incoming fades/scales in on top; outgoing fades/scales out beneath
+   it. Running both at once — rather than waiting for one to finish —
+   is what makes it read as a crossfade instead of two separate cuts.
+   The gentle scale (rather than a slide) keeps the motion feeling like
+   a held breath, not a carousel pushing sideways. */
+.artwork-viewer-image-incoming {
+  z-index: 2;
+  animation: artwork-viewer-crossfade-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.artwork-viewer-image-outgoing {
+  z-index: 1;
+  animation: artwork-viewer-crossfade-out 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes artwork-viewer-crossfade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes artwork-viewer-crossfade-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artwork-viewer-image-incoming,
+  .artwork-viewer-image-outgoing {
+    animation: none;
+  }
+}
+
+.artwork-viewer-empty {
+  color: var(--gallery-paper-muted);
+  font-family: var(--gallery-serif);
+  font-style: italic;
+}
+
+/* Previous/next controls: a bare glyph, not a button. No circle, no
+   fill, no border by default — it should read as part of the room,
+   not as UI chrome sitting on top of the art. The full-size invisible
+   hit area keeps it comfortably tappable without needing visible
+   chrome to communicate that. */
+.artwork-viewer-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 52px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--gallery-paper-muted);
+  font-family: var(--gallery-serif);
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.artwork-viewer-nav-button:hover {
+  color: var(--gallery-paper);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.artwork-viewer-nav-button:focus-visible {
+  outline: 1px solid var(--gallery-accent-soft);
+  outline-offset: 4px;
+}
+
+.artwork-viewer-nav-button-prev {
+  left: 8px;
+}
+
+.artwork-viewer-nav-button-next {
+  right: 8px;
+}
+
+@media (max-width: 639px) {
+  .artwork-viewer-nav-button {
+    width: 40px;
+    height: 52px;
+    font-size: 24px;
+  }
+
+  .artwork-viewer-nav-button-prev {
+    left: 0;
+  }
+
+  .artwork-viewer-nav-button-next {
+    right: 0;
+  }
+}
+
+@keyframes artwork-viewer-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artwork-viewer {
+    animation: none;
+  }
+}
