@@ -5,6 +5,12 @@ import './ArtworkThumbnail.css';
 interface ArtworkThumbnailProps {
   artwork: Artwork;
   isActive: boolean;
+  /** Whether this artwork is currently hanging on the wall above (per
+   * ArtworkViewer's own IntersectionObserver) — unrelated to whether
+   * the thumbnail itself happens to be scrolled into view within the
+   * strip. Drives opacity independently of `isActive`: several
+   * thumbnails can be "shown" at once, only one is ever "active". */
+  isVisible: boolean;
   onSelect: (artworkId: string) => void;
 }
 
@@ -12,15 +18,18 @@ interface ArtworkThumbnailProps {
  * A single clickable thumbnail in the bottom navigation strip.
  * Forwards its ref so GalleryNavigation can scroll the active
  * thumbnail into view when selection changes from elsewhere (e.g. the
- * previous/next controls) without the strip itself driving selection.
+ * previous/next controls).
  */
 export const ArtworkThumbnail = forwardRef<HTMLButtonElement, ArtworkThumbnailProps>(
-  function ArtworkThumbnail({ artwork, isActive, onSelect }, ref) {
+  function ArtworkThumbnail({ artwork, isActive, isVisible, onSelect }, ref) {
     return (
       <button
         ref={ref}
         type="button"
-        className={`artwork-thumbnail ${isActive ? 'artwork-thumbnail-active' : ''}`}
+        data-artwork-id={artwork.id}
+        className={`artwork-thumbnail ${isActive ? 'artwork-thumbnail-active' : ''} ${
+          isVisible ? 'artwork-thumbnail-visible' : 'artwork-thumbnail-overflow'
+        }`}
         onClick={() => onSelect(artwork.id)}
         // This is a "which one of the set is currently showing" state,
         // not a toggle — aria-current models that more accurately than

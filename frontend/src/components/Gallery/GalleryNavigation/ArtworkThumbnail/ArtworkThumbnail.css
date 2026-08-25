@@ -1,36 +1,41 @@
 /* Square corners (no border-radius) so the strip reads like a contact
    sheet of mounted prints rather than a row of rounded app icons.
-   Selection is shown with a hairline brass underline (see
-   .artwork-thumbnail-active) instead of a thick border + scale pop —
+   Selection is shown with a small triangle marker above the thumbnail
+   (see .artwork-thumbnail-active) instead of a border + scale pop —
    quieter, closer to how a museum wall-map highlights the room you're
    in. */
 .artwork-thumbnail {
   position: relative;
-  flex: 0 0 auto;
-  width: 64px;
+  /* flex: 1 1 0 divides the strip's fixed 80vw width evenly across
+     however many artworks are in the collection, so the whole set
+     always fits without scrolling. Height stays fixed so thumbnails
+     don't grow/shrink vertically as the collection size changes;
+     object-fit: cover on the image (below) handles the resulting
+     non-square crop. */
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
   height: 64px;
   padding: 0;
   border: none;
   overflow: visible;
   cursor: pointer;
   background: transparent;
-  scroll-snap-align: center;
+  /* Default before ArtworkViewer's IntersectionObserver reports in on
+     mount; immediately superseded by -visible or -overflow below. */
   opacity: 0.5;
   transition: opacity 0.25s ease;
 }
 
-.artwork-thumbnail::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -8px;
-  height: 1px;
-  background: var(--gallery-accent);
-  opacity: 0;
-  transform: scaleX(0.6);
-  transform-origin: center;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+/* This artwork is currently hanging on the wall above right now. */
+.artwork-thumbnail.artwork-thumbnail-visible {
+  opacity: 1;
+}
+
+/* Not currently on the wall — dimmed regardless of whether the
+   thumbnail itself is scrolled into view within the strip. */
+.artwork-thumbnail.artwork-thumbnail-overflow {
+  opacity: 0.3;
 }
 
 .artwork-thumbnail:hover {
@@ -46,32 +51,39 @@
   opacity: 1;
 }
 
-.artwork-thumbnail.artwork-thumbnail-active::after {
+.artwork-thumbnail.artwork-thumbnail-active::before {
   opacity: 1;
-  transform: scaleX(1);
+  transform: translateX(-50%) translateY(0);
 }
 
 .artwork-thumbnail-image {
   width: 100%;
-  height: 100%;
+  height: 110%;
   object-fit: cover;
   display: block;
+  margin-top: -10%;
 }
 
+.artwork-thumbnail:first-child .artwork-thumbnail-image {
+  border-radius: 14px 0 0 14px;
+}
+
+.artwork-thumbnail:last-child .artwork-thumbnail-image {
+  border-radius: 0 14px 14px 0;
+}
+
+/* Width is no longer set here — it's whatever the flex distribution
+   in .gallery-navigation-strip works out to for the current artwork
+   count. Only height (the row's fixed cross-axis size) scales down
+   for smaller screens. */
 @media (max-width: 1023px) {
   .artwork-thumbnail {
-    width: 56px;
     height: 56px;
   }
 }
 
-/* Slightly larger than the tablet size (not smaller) — touch targets
-   shouldn't shrink below a comfortable tap size just because the
-   screen did. Fewer thumbnails are visible at once; that's fine,
-   the strip is built to scroll. */
 @media (max-width: 639px) {
   .artwork-thumbnail {
-    width: 52px;
     height: 52px;
   }
 }

@@ -40,6 +40,13 @@ export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
   // while the selection only updates once scrolling settles on a new
   // artwork; folding both into one state would re-render on every frame.
   const [scrollProgress, setScrollProgress] = useState(0);
+  // Which artworks are currently hanging on the wall (i.e. intersecting
+  // ArtworkViewer's own viewport), as opposed to `selectedArtworkId`
+  // which is just the single centered one. Drives which thumbnails in
+  // GalleryNavigation read as "shown right now" vs dimmed.
+  const [visibleArtworkIds, setVisibleArtworkIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   const selectedIndex = useMemo(
     () => artworks.findIndex((artwork) => artwork.id === selectedArtworkId),
@@ -49,6 +56,10 @@ export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
 
   const handleScrollProgress = useCallback((info: ArtworkScrollProgress) => {
     setScrollProgress(info.progress);
+  }, []);
+
+  const handleVisibleArtworksChange = useCallback((ids: Set<string>) => {
+    setVisibleArtworkIds(ids);
   }, []);
 
   // Wrap around at either end, so "next" from the last piece returns to
@@ -109,11 +120,13 @@ export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
         selectedArtworkId={selectedArtworkId}
         onSelectArtwork={setSelectedArtworkId}
         onScrollProgress={handleScrollProgress}
+        onVisibleArtworksChange={handleVisibleArtworksChange}
         onOpenFeature={onOpenFeature}
       />
       <GalleryNavigation
         artworks={artworks}
         selectedArtworkId={selectedArtworkId}
+        visibleArtworkIds={visibleArtworkIds}
         onSelectArtwork={setSelectedArtworkId}
       />
       {/* Announces the current artwork on every selection change —

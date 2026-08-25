@@ -71,10 +71,17 @@
   gap: 64px;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   padding: 0 max(24px, 20vw) 40px;
   cursor: grab;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+}
+
+.artwork-viewer-track ::-webkit-scrollbar {
+  display: none;
 }
 
 .artwork-viewer-track.artwork-viewer-dragging {
@@ -83,12 +90,13 @@
 }
 
 .artwork-viewer-track::-webkit-scrollbar {
-  height: 6px;
+  height: 0;
 }
 
 .artwork-viewer-track::-webkit-scrollbar-thumb {
   background: var(--gallery-line);
   border-radius: 999px;
+  height: 0;
 }
 
 /* Each frame is the box a single artwork occupies on the wall; sized
@@ -105,8 +113,6 @@
   align-items: center;
   justify-content: center;
   height: 62vh;
-  scroll-snap-align: center;
-  scroll-snap-stop: normal;
   transition: opacity 0.25s ease;
 }
 
@@ -213,7 +219,7 @@
      overhead light rather than a flat UI drop-shadow — so each piece
      reads as if it's actually hung on the plaster wall behind it. No
      border-radius: real framed artwork has square corners. */
-  box-shadow: 0 26px 60px rgba(35, 26, 16, 0.32);
+  box-shadow: 0 8px 16px rgba(35, 26, 16, 0.32);
   -webkit-user-drag: none;
   user-select: none;
 }
@@ -239,10 +245,6 @@
 @media (prefers-reduced-motion: reduce) {
   .artwork-viewer {
     animation: none;
-  }
-
-  .artwork-viewer-frame {
-    scroll-snap-align: none;
   }
 
   .artwork-viewer-progress-fill {

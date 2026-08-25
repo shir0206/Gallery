@@ -30,9 +30,23 @@ interface ArtworkViewerProps {
    * this for a live "XX%" readout; use onSelectArtwork if you only
    * care about discrete "which artwork is showing" changes. */
   onScrollProgress?: (info: ArtworkScrollProgress) => void;
+  /** Fires whenever the *set* of artworks currently hanging in the
+   * wall's own viewport changes — not just the single centered piece
+   * `onSelectArtwork` tracks. This is what lets the nav strip below
+   * light up every thumbnail currently on screen (e.g. 3 on a wide
+   * viewport, 1-2 on a narrow one), not only the active one. */
+  onVisibleArtworksChange?: (artworkIds: Set<string>) => void;
   /** Opens the editorial feature-spread view (ArtworkPage) for the current artwork. Omit to hide the affordance. */
   onOpenFeature?: (artworkId: string) => void;
 }
+
+// An artwork counts as "on the wall" once at least this fraction of it
+// intersects the wall's own viewport. Lower than the nav strip's
+// equivalent threshold (which wants thumbnails *fully* in view)
+// because artwork frames vary far more in size — a large portrait can
+// be wider than the viewport itself, so requiring near-total overlap
+// would mean it never counts as visible at all.
+const WALL_VISIBLE_THRESHOLD = 0.5;
 
 /**
  * Renders the entire collection as one continuous, horizontally
@@ -55,6 +69,7 @@ export function ArtworkViewer({
   selectedArtworkId,
   onSelectArtwork,
   onScrollProgress,
+  onVisibleArtworksChange,
   onOpenFeature,
 }: ArtworkViewerProps) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -63,6 +78,9 @@ export function ArtworkViewer({
 
   const [progress, setProgress] = useState(0);
   const [activeId, setActiveId] = useState<string | null>(selectedArtworkId);
+  // Tracked in a ref alongside the callback so the observer below can
+  // read/update membership without needing to re-subscribe itself.
+  const visibleIdsRef = useRef<Set<string>>(new Set());
 
   // Set while we're driving a scroll ourselves (selection changed
   // elsewhere, e.g. a thumbnail click) so the scroll handler doesn't
@@ -156,6 +174,40 @@ export function ArtworkViewer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [artworks]);
 
+  // Separate from readScrollState above: this tracks the *set* of
+  // every artwork currently intersecting the wall's viewport, rooted
+  // on the track itself (same pattern GalleryNavigation used to run
+  // for its own thumbnails). readScrollState answers "what's most
+  // centered" for selection purposes; this answers "what's showing
+  // right now at all", which is what the nav strip needs to decide
+  // which thumbnails to light up.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const next = new Set(visibleIdsRef.current);
+        entries.forEach((entry) => {
+          const id = entry.target.getAttribute("data-artwork-id");
+          if (!id) return;
+          const isOnWall =
+            entry.isIntersecting &&
+            entry.intersectionRatio >= WALL_VISIBLE_THRESHOLD;
+          if (isOnWall) next.add(id);
+          else next.delete(id);
+        });
+        visibleIdsRef.current = next;
+        onVisibleArtworksChange?.(next);
+      },
+      { root: track, threshold: [0, WALL_VISIBLE_THRESHOLD, 1] }
+    );
+
+    itemRefs.current.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [artworks]);
+
   // When selection changes from elsewhere (a thumbnail click, the
   // previous/next controls, arrow keys), scroll that artwork to the
   // center of the wall. Guarded against re-triggering the scroll
@@ -210,29 +262,6 @@ export function ArtworkViewer({
 
   return (
     <div className="artwork-viewer" role="region" aria-label="Artwork wall">
-      <div className="artwork-viewer-progress">
-        <div
-          className="artwork-viewer-progress-track"
-          role="progressbar"
-          aria-label="Scroll position along the wall"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(progress)}
-        >
-          <div
-            className="artwork-viewer-progress-fill"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <span className="artwork-viewer-progress-label">
-          {activeArtwork.title}
-          <span className="artwork-viewer-progress-label-muted">
-            {" "}
-            · {activeIndex + 1}/{artworks.length} · {Math.round(progress)}%
-          </span>
-        </span>
-      </div>
-
       <div
         ref={trackRef}
         className={`artwork-viewer-track ${
@@ -251,6 +280,7 @@ export function ArtworkViewer({
               }}
               className="artwork-viewer-frame"
               data-orientation={artwork.orientation}
+              data-artwork-id={artwork.id}
             >
               {onOpenFeature ? (
                 <button

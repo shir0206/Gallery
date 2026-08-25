@@ -2,66 +2,82 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 22px;
   z-index: 2;
-  padding: 16px 24px 22px;
-  /* A soft warm-brown scrim, like the floor's own shadow deepening
-     toward the viewer — not a flat dark UI bar docked on top of the
-     room. Light enough that the oak floor still reads through it. */
-  background: linear-gradient(to top, rgba(40, 30, 19, 0.4), transparent);
+  /* Just a positioning shell — no background or padding of its own.
+     The floating card below is the only thing that actually paints. */
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* The floating strip itself: a paper-colored rounded card centered
+   above the bottom edge, not an edge-to-edge scrim bar. */
+.gallery-navigation-card {
+  position: relative;
+  pointer-events: auto;
+  /* Card just wraps the strip now that the strip itself has a fixed
+     80vw width — no separate cap needed here. */
+  padding: 4px;
+  border-radius: 16px;
+  background: var(--gallery-paper);
+  box-shadow: 0 10px 30px rgba(20, 14, 8, 0.35), 0 2px 8px rgba(20, 14, 8, 0.18);
 }
 
 .gallery-navigation-strip {
   display: flex;
   gap: 2px;
-  overflow-x: auto;
-  /* Extra bottom padding gives the active-thumbnail underline (see
-     ArtworkThumbnail) room to sit below the image without being
+  /* Fixed width: the strip always spans 80% of the viewport. Every
+     thumbnail is a flex item with flex: 1 1 0 (see ArtworkThumbnail.css),
+     so the browser divides this 80vw evenly across however many
+     artworks there are — no JS measuring, no per-count CSS needed. */
+  width: 80vw;
+  overflow: hidden;
+  /* Extra top padding gives the active-thumbnail triangle marker (see
+     ArtworkThumbnail) room to sit above the image without being
      clipped by the scroll container. */
-  padding: 6px 4px 14px;
-  scroll-behavior: smooth;
-  scroll-snap-type: x proximity;
-  cursor: grab;
-  /* Touch panning is native; this just tells the browser the strip
-     itself owns horizontal gestures, so drag-to-scroll doesn't fight
-     the page. */
   touch-action: pan-x;
-  -webkit-overflow-scrolling: touch;
 }
 
-.gallery-navigation-strip.gallery-navigation-dragging {
-  cursor: grabbing;
-  scroll-behavior: auto;
-  scroll-snap-type: none;
-}
-
-.gallery-navigation-strip::-webkit-scrollbar {
-  height: 3px;
-}
-
-.gallery-navigation-strip::-webkit-scrollbar-thumb {
+/* Small centered grab affordance below the card, independent of any
+   thumbnail — signals the whole card can be dragged/panned. */
+.gallery-navigation-grab-dot {
+  position: absolute;
+  left: 50%;
+  bottom: 7px;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
   background: var(--gallery-line);
-  border-radius: 0;
 }
 
 @media (max-width: 1023px) {
   .gallery-navigation {
-    padding: 12px 16px 18px;
+    bottom: 18px;
+  }
+
+  .gallery-navigation-card {
+    padding: 4px;
+    border-radius: 14px;
   }
 
   .gallery-navigation-strip {
-    gap: 12px;
-    padding: 6px 4px 12px;
+    gap: 2px;
   }
 }
 
 @media (max-width: 639px) {
   .gallery-navigation {
-    padding: 10px 12px 14px;
+    bottom: 14px;
+  }
+
+  .gallery-navigation-card {
+    padding: 4px;
+    border-radius: 12px;
   }
 
   .gallery-navigation-strip {
-    gap: 10px;
-    padding: 4px 4px 12px;
+    gap: 2px;
   }
 }
