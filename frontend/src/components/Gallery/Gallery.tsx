@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ArtworkCollectionResponse } from '@/types/artwork';
 import { GalleryBackground } from './GalleryBackground/GalleryBackground';
 import { GalleryNavigation } from './GalleryNavigation/GalleryNavigation';
-import { ArtworkViewer } from './ArtworkViewer/ArtworkViewer';
+import { ArtworkViewer, type ArtworkScrollProgress } from './ArtworkViewer/ArtworkViewer';
 import './Gallery.css';
 
 interface GalleryProps {
@@ -17,23 +17,39 @@ interface GalleryProps {
  * Top-level gallery composition: background environment,
  * the main artwork viewer, and the bottom navigation strip.
  *
- * Selection state lives here for Phase 1 (single source of truth for
- * "which artwork is currently open"). Phase 8 adds previous/next
- * stepping on top of that same state — the navigation strip only ever
- * *reads* the selection to highlight the active thumbnail and *writes*
- * to it on an explicit click; scrolling the strip never touches it.
+ * Selection state (`selectedArtworkId`) lives here as the single
+ * source of truth for "which artwork is currently open". Unlike
+ * GalleryNavigation's thumbnail strip — which only *reads* the
+ * selection and *writes* to it on an explicit click — ArtworkViewer
+ * now renders the whole collection as one scrollable wall and both
+ * reads and writes this same state: it scrolls to the selected piece
+ * when the selection changes elsewhere, and reports back up
+ * (`onSelectArtwork`) whenever the visitor's own scrolling settles on
+ * a different piece. `scrollProgress` is a second, higher-frequency
+ * signal (0–100% along the wall) that isn't part of the selection
+ * "context" itself but rides alongside it for a live position readout.
  */
 export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
   const { environment, artworks } = data;
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     artworks[0]?.id ?? null,
   );
+  // Live scroll readout from ArtworkViewer — how far along the wall
+  // the visitor currently is (0-100%, left to right). Kept separate
+  // from `selectedArtworkId` because it updates on every scroll frame,
+  // while the selection only updates once scrolling settles on a new
+  // artwork; folding both into one state would re-render on every frame.
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const selectedIndex = useMemo(
     () => artworks.findIndex((artwork) => artwork.id === selectedArtworkId),
     [artworks, selectedArtworkId],
   );
   const selectedArtwork = selectedIndex >= 0 ? artworks[selectedIndex] : null;
+
+  const handleScrollProgress = useCallback((info: ArtworkScrollProgress) => {
+    setScrollProgress(info.progress);
+  }, []);
 
   // Wrap around at either end, so "next" from the last piece returns to
   // the first and vice versa — the collection reads as a loop rather
@@ -81,7 +97,7 @@ export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
   }, [goToPrevious, goToNext]);
 
   return (
-    <div className="gallery">
+    <div className="gallery" data-scroll-progress={Math.round(scrollProgress)}>
       <GalleryBackground environment={environment} />
       {onExitWall && (
         <button type="button" className="gallery-exit-button" onClick={onExitWall}>
@@ -89,10 +105,10 @@ export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
         </button>
       )}
       <ArtworkViewer
-        artwork={selectedArtwork}
-        onPrevious={goToPrevious}
-        onNext={goToNext}
-        hasMultiple={artworks.length > 1}
+        artworks={artworks}
+        selectedArtworkId={selectedArtworkId}
+        onSelectArtwork={setSelectedArtworkId}
+        onScrollProgress={handleScrollProgress}
         onOpenFeature={onOpenFeature}
       />
       <GalleryNavigation
@@ -108,7 +124,7 @@ export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
           advanced. Kept out of the visible layout entirely. */}
       <div aria-live="polite" className="visually-hidden">
         {selectedArtwork &&
-          `Now viewing ${selectedArtwork.title} by ${selectedArtwork.artist}, ${selectedIndex + 1} of ${artworks.length}`}
+          `Now viewing ${selectedArtwork.title} by ${selectedArtwork.artist}, ${selectedIndex + 1} of ${artworks.length}, ${Math.round(scrollProgress)}% along the wall`}
       </div>
     </div>
   );
