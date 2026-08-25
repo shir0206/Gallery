@@ -251,8 +251,6 @@ export function ArtworkViewer({
               }}
               className="artwork-viewer-frame"
               data-orientation={artwork.orientation}
-              data-active={isActive}
-              style={{ aspectRatio: `${width} / ${height}` }}
             >
               {onOpenFeature ? (
                 <button
