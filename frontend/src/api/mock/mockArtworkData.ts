@@ -1,5 +1,4 @@
-import type { Artwork } from "@/types/artwork";
-
+import type { Artwork } from "../../types/artwork";
 /**
  * Dev-only stand-in for the real backend. Shaped exactly like a real
  * Firestore-derived `Artwork`, so swapping data sources never requires

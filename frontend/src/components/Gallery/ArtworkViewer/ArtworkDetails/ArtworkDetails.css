@@ -158,6 +158,42 @@
   color: var(--gallery-paper-soft);
 }
 
+/* Quiet text-link, not a button — a way out of the wall scene into the
+   editorial feature spread (ArtworkPage) for this piece. Sits below
+   the description, in the same understated register as the rest of
+   the plaque rather than calling attention to itself. */
+.artwork-details-feature-link {
+  display: block;
+  margin: 20px 0 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--gallery-sans);
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gallery-accent-soft);
+  text-align: center;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.artwork-details-feature-link:hover {
+  color: var(--gallery-accent);
+}
+
+.artwork-details-feature-link:focus-visible {
+  outline: 1px solid var(--gallery-accent-soft);
+  outline-offset: 4px;
+}
+
+@media (max-width: 639px) {
+  .artwork-details-feature-link {
+    text-align: left;
+  }
+}
+
 @media (max-width: 1023px) {
   .artwork-details {
     max-width: 440px;

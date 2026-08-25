@@ -9,6 +9,8 @@ interface ArtworkViewerProps {
   onNext: () => void;
   /** Hide the prev/next controls entirely when there's nothing to step to. */
   hasMultiple: boolean;
+  /** Opens the editorial feature-spread view (ArtworkPage) for the current artwork. Omit to hide the link. */
+  onOpenFeature?: (artworkId: string) => void;
 }
 
 // Must match the crossfade keyframe duration in ArtworkViewer.css —
@@ -30,7 +32,13 @@ const CROSSFADE_MS = 550;
  * own light fade, offset slightly, so the reveal feels staggered
  * rather than everything blinking at once.
  */
-export function ArtworkViewer({ artwork, onPrevious, onNext, hasMultiple }: ArtworkViewerProps) {
+export function ArtworkViewer({
+  artwork,
+  onPrevious,
+  onNext,
+  hasMultiple,
+  onOpenFeature,
+}: ArtworkViewerProps) {
   const previousArtworkRef = useRef<Artwork | null>(artwork);
   const [outgoing, setOutgoing] = useState<Artwork | null>(null);
   const clearTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -125,7 +133,11 @@ export function ArtworkViewer({ artwork, onPrevious, onNext, hasMultiple }: Artw
         />
       </div>
 
-      <ArtworkDetails key={artwork.id} artwork={artwork} />
+      <ArtworkDetails
+        key={artwork.id}
+        artwork={artwork}
+        onOpenFeature={onOpenFeature ? () => onOpenFeature(artwork.id) : undefined}
+      />
 
       {hasMultiple && (
         <button

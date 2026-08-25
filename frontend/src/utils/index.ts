@@ -43,3 +43,29 @@ export function formatArtworkDimensions(
 ): string {
   return `${width} × ${height} ${unit}`;
 }
+
+/**
+ * Given a list of items with an `id` and the currently-selected id,
+ * returns the id one step in the given direction, wrapping around at
+ * either end so the collection reads as a loop rather than a
+ * dead-ended list. Mirrors the wrap-around logic Gallery.tsx uses for
+ * its own previous/next controls — shared here so GalleryPage can
+ * step through the same collection independently for the editorial
+ * ArtworkPage view without duplicating the wraparound math.
+ */
+export function getAdjacentId(
+  items: Array<{ id: string }>,
+  currentId: string | null,
+  direction: 'previous' | 'next',
+): string | null {
+  if (items.length === 0) return null;
+  const currentIndex = items.findIndex((item) => item.id === currentId);
+
+  if (direction === 'previous') {
+    const previousIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+    return items[previousIndex].id;
+  }
+
+  const nextIndex = currentIndex >= items.length - 1 ? 0 : currentIndex + 1;
+  return items[nextIndex].id;
+}

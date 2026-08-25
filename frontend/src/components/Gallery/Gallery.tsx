@@ -7,6 +7,10 @@ import './Gallery.css';
 
 interface GalleryProps {
   data: ArtworkCollectionResponse;
+  /** Opens the editorial feature-spread view (ArtworkPage) for the given artwork id. Omit to hide the link. */
+  onOpenFeature?: (artworkId: string) => void;
+  /** Returns to the HomePage grid. Omit to hide the exit control (e.g. if the wall is the only view). */
+  onExitWall?: () => void;
 }
 
 /**
@@ -19,7 +23,7 @@ interface GalleryProps {
  * *reads* the selection to highlight the active thumbnail and *writes*
  * to it on an explicit click; scrolling the strip never touches it.
  */
-export function Gallery({ data }: GalleryProps) {
+export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
   const { environment, artworks } = data;
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     artworks[0]?.id ?? null,
@@ -79,11 +83,17 @@ export function Gallery({ data }: GalleryProps) {
   return (
     <div className="gallery">
       <GalleryBackground environment={environment} />
+      {onExitWall && (
+        <button type="button" className="gallery-exit-button" onClick={onExitWall}>
+          ← Grid view
+        </button>
+      )}
       <ArtworkViewer
         artwork={selectedArtwork}
         onPrevious={goToPrevious}
         onNext={goToNext}
         hasMultiple={artworks.length > 1}
+        onOpenFeature={onOpenFeature}
       />
       <GalleryNavigation
         artworks={artworks}

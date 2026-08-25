@@ -4,3 +4,31 @@
   height: 100vh;
   overflow: hidden;
 }
+
+/* Bare text control, matching the wall's understated visual language
+   (no button chrome, same register as ArtworkViewer's prev/next
+   glyphs) — a quiet way back to the grid rather than UI bolted onto
+   the room. */
+.gallery-exit-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 3;
+  border: none;
+  background: transparent;
+  padding: 8px 10px;
+  font-family: var(--gallery-sans);
+  font-size: 13px;
+  color: var(--gallery-paper-muted);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.gallery-exit-button:hover {
+  color: var(--gallery-paper);
+}
+
+.gallery-exit-button:focus-visible {
+  outline: 1px solid var(--gallery-accent-soft);
+  outline-offset: 3px;
+}

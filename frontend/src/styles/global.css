@@ -21,6 +21,43 @@
   --gallery-line-soft: rgba(43, 36, 29, 0.09);
   --gallery-accent: #8a6a3c;
   --gallery-accent-soft: rgba(138, 106, 60, 0.55);
+
+  /* Editorial theme — for the single-art "feature spread" view
+     (ArtworkPage), distinct from the museum-wall theme above. Same
+     ink/serif/sans family, but the surface is a flat, light paper
+     tone rather than a photographed room, so typography and the
+     cropped hero image carry the page instead of a lit wall. Prefixed
+     `--editorial-*` rather than reusing `--gallery-*` so the two
+     themes can evolve independently without one accidentally bleeding
+     into the other's components. */
+  --editorial-paper-bg: #f4efe9;
+  --editorial-paper-bg-raised: #faf7f3;
+  --editorial-ink: #2b241d;
+  --editorial-ink-soft: rgba(43, 36, 29, 0.78);
+  --editorial-ink-muted: rgba(43, 36, 29, 0.56);
+  --editorial-ink-faint: rgba(43, 36, 29, 0.38);
+  --editorial-line: rgba(43, 36, 29, 0.14);
+  --editorial-accent: #a3402c;
+  --editorial-accent-soft: rgba(163, 64, 44, 0.5);
+
+  /* Display size for the single large narrative paragraph (the
+     "pull-quote") that carries the page — deliberately much larger
+     than any existing body-copy token, since it functions as the
+     visual anchor of the layout rather than as supporting text. Scales
+     down at the tablet/mobile breakpoints via the same media queries
+     used elsewhere in the gallery (1023px / 639px). */
+  --editorial-display-size: 32px;
+  --editorial-display-size-tablet: 26px;
+  --editorial-display-size-mobile: 22px;
+  --editorial-display-line-height: 1.45;
+
+  /* Small italic caption column (artist statement / short line),
+     matched to Image 2's left-column caption: quiet, condensed,
+     clearly secondary to the display paragraph. */
+  --editorial-caption-size: 13px;
+  --editorial-caption-line-height: 1.6;
+  --editorial-caption-style: italic;
+  --editorial-caption-weight: 400;
 }
 
 * {

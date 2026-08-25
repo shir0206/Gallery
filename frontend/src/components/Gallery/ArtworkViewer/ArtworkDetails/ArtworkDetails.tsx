@@ -4,6 +4,8 @@ import './ArtworkDetails.css';
 
 interface ArtworkDetailsProps {
   artwork: Artwork;
+  /** Opens the editorial feature-spread view (ArtworkPage) for this artwork. Omit to hide the link. */
+  onOpenFeature?: () => void;
 }
 
 /** Ordered (label, value) pairs for the structured description block. */
@@ -18,7 +20,7 @@ const DESCRIPTION_SECTIONS: Array<{ key: keyof Artwork['description']; label: st
  * artist, date, medium, dimensions, categories, and the structured
  * (materials / visual / inspiration) description.
  */
-export function ArtworkDetails({ artwork }: ArtworkDetailsProps) {
+export function ArtworkDetails({ artwork, onOpenFeature }: ArtworkDetailsProps) {
   const { day, month, year, dimensions } = artwork;
 
   return (
@@ -63,6 +65,12 @@ export function ArtworkDetails({ artwork }: ArtworkDetailsProps) {
           );
         })}
       </dl>
+
+      {onOpenFeature && (
+        <button type="button" className="artwork-details-feature-link" onClick={onOpenFeature}>
+          Read the feature spread →
+        </button>
+      )}
     </div>
   );
 }
