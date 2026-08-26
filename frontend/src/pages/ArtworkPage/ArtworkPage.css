@@ -112,7 +112,7 @@
   margin-bottom: 48px;
 }
 
-.artwork-page-hero[data-orientation='portrait'] {
+.artwork-page-hero[data-orientation="portrait"] {
   /* Portrait pieces get a taller crop window so the interesting part
      of a vertical composition isn't squeezed into a wide letterbox. */
   aspect-ratio: 4 / 3;
@@ -199,14 +199,14 @@
 }
 
 .artwork-page-facts-summary::before {
-  content: '+';
+  content: "+";
   font-family: var(--gallery-serif);
   font-size: 14px;
   transition: transform 0.2s ease;
 }
 
 .artwork-page-facts[open] .artwork-page-facts-summary::before {
-  content: '−';
+  content: "−";
 }
 
 .artwork-page-facts-summary:hover {
@@ -242,21 +242,6 @@
 
 /* --- Breakpoints, matching the gallery's existing 1023px/639px scheme --- */
 
-@media (max-width: 1023px) {
-  .artwork-page-title {
-    font-size: 28px;
-  }
-
-  .artwork-page-body {
-    grid-template-columns: 180px 1fr;
-    gap: 36px;
-  }
-
-  .artwork-page-narrative-text {
-    font-size: var(--editorial-display-size-tablet);
-  }
-}
-
 @media (max-width: 639px) {
   .artwork-page {
     padding: 28px 18px 72px;
@@ -272,7 +257,7 @@
   }
 
   .artwork-page-hero,
-  .artwork-page-hero[data-orientation='portrait'] {
+  .artwork-page-hero[data-orientation="portrait"] {
     aspect-ratio: 4 / 5;
     margin-bottom: 32px;
   }

@@ -121,90 +121,6 @@
   max-width: min(80vw, 1000px);
 }
 
-@media (min-width: 1440px) {
-  .artwork-viewer {
-    gap: 28px;
-    padding: 96px 0 180px;
-  }
-
-  .artwork-viewer-track {
-    gap: 96px;
-  }
-
-  .artwork-viewer-frame {
-    max-height: 66vh;
-  }
-
-  .artwork-viewer-frame[data-orientation="portrait"] {
-    max-height: 74vh;
-    max-width: min(50vw, 700px);
-  }
-
-  .artwork-viewer-frame[data-orientation="landscape"] {
-    max-height: 62vh;
-    max-width: min(74vw, 1240px);
-  }
-}
-
-@media (max-width: 1023px) {
-  .artwork-viewer {
-    gap: 16px;
-    padding: 56px 0 140px;
-  }
-
-  .artwork-viewer-track {
-    gap: 40px;
-    padding: 0 max(20px, 14vw) 32px;
-  }
-
-  .artwork-viewer-frame {
-    max-height: 56vh;
-  }
-
-  .artwork-viewer-frame[data-orientation="portrait"] {
-    max-height: 62vh;
-    max-width: min(72vw, 520px);
-  }
-
-  .artwork-viewer-frame[data-orientation="landscape"] {
-    max-height: 50vh;
-    max-width: min(84vw, 820px);
-  }
-}
-
-@media (max-width: 639px) {
-  .artwork-viewer {
-    gap: 12px;
-    /* Bottom padding clears the shorter mobile thumbnail strip (see
-       GalleryNavigation's mobile rules) while staying tight enough
-       that the artwork keeps priority over the frame. */
-    padding: 24px 0 128px;
-  }
-
-  .artwork-viewer-progress-track {
-    width: 70vw;
-  }
-
-  .artwork-viewer-track {
-    gap: 24px;
-    padding: 0 max(16px, 10vw) 24px;
-  }
-
-  .artwork-viewer-frame {
-    max-height: 42vh;
-  }
-
-  .artwork-viewer-frame[data-orientation="portrait"] {
-    max-height: 48vh;
-    max-width: min(84vw, 420px);
-  }
-
-  .artwork-viewer-frame[data-orientation="landscape"] {
-    max-height: 36vh;
-    max-width: 88vw;
-  }
-}
-
 .artwork-viewer-image-button {
   all: unset;
   display: block;
@@ -222,6 +138,16 @@
   box-shadow: 0 8px 16px rgba(35, 26, 16, 0.32);
   -webkit-user-drag: none;
   user-select: none;
+}
+
+@media (max-width: 768px) {
+  .artwork-viewer-frame[data-orientation="portrait"] .artwork-viewer-image {
+    max-height: 40vw;
+  }
+
+  .artwork-viewer-frame[data-orientation="landscape"] .artwork-viewer-image {
+    max-height: 50vw;
+  }
 }
 
 .artwork-viewer-empty {

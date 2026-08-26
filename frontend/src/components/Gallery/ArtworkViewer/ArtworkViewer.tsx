@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Artwork } from "../../../types/artwork";
 import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
 import "./ArtworkViewer.css";
@@ -76,7 +76,6 @@ export function ArtworkViewer({
   const itemRefs = useRef(new Map<string, HTMLDivElement>());
   const { isDragging } = useHorizontalScroll(trackRef);
 
-  const [progress, setProgress] = useState(0);
   const [activeId, setActiveId] = useState<string | null>(selectedArtworkId);
   // Tracked in a ref alongside the callback so the observer below can
   // read/update membership without needing to re-subscribe itself.
@@ -89,11 +88,6 @@ export function ArtworkViewer({
   const programmaticScrollTimeoutRef = useRef<ReturnType<
     typeof setTimeout
   > | null>(null);
-
-  const activeIndex = useMemo(
-    () => artworks.findIndex((artwork) => artwork.id === activeId),
-    [artworks, activeId]
-  );
 
   // Reads the DOM directly (scrollLeft + each item's bounding rect)
   // rather than IntersectionObserver ratios — artworks vary widely in
@@ -130,8 +124,6 @@ export function ArtworkViewer({
         closestIndex = index;
       }
     });
-
-    setProgress(nextProgress);
 
     if (closestId) {
       onScrollProgress?.({
@@ -258,8 +250,6 @@ export function ArtworkViewer({
     );
   }
 
-  const activeArtwork = activeIndex >= 0 ? artworks[activeIndex] : artworks[0];
-
   return (
     <div className="artwork-viewer" role="region" aria-label="Artwork wall">
       <div
@@ -269,8 +259,6 @@ export function ArtworkViewer({
         }`}
       >
         {artworks.map((artwork) => {
-          const { width, height } = artwork.dimensions;
-          const isActive = artwork.id === activeId;
           return (
             <div
               key={artwork.id}

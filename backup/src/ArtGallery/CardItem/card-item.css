@@ -112,18 +112,6 @@
   }
 }
 
-@media only screen and (max-width: 1023px) and (min-width: 768px) {
-  .card-title-container {
-    font-size: 3vw;
-  }
-  .card-date-container {
-    font-size: 2vw;
-  }
-  .overlay hr {
-    margin-top: -3vw;
-  }
-}
-
 @media only screen and (max-width: 767px) and (min-width: 1px) {
   .card-title-container {
     font-size: 4vw;

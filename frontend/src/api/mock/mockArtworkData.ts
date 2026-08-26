@@ -29,7 +29,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
         "A person steps into the night carrying private hope that darkness cannot quite swallow.",
     },
     imageUrl: "https://i.imgur.com/c2PPnGg.jpg",
-    orientation: "portrait",
+    orientation: "landscape",
+
     palette: {
       id: "P1",
       name: "Midnight & Gold",
@@ -89,7 +90,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
         "A woman lets the wind rearrange her thoughts, turning movement into a quiet form of freedom.",
     },
     imageUrl: "https://i.imgur.com/gaVudbq.jpg",
-    orientation: "portrait",
+    orientation: "landscape",
     palette: {
       id: "P4",
       name: "Garden & Sky",
@@ -119,7 +120,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
         "A dancer waits alone before a performance, holding her breath with the promise of movement.",
     },
     imageUrl: "https://i.imgur.com/urdO7iP.jpg",
-    orientation: "portrait",
+    orientation: "landscape",
     palette: {
       id: "P1",
       name: "Midnight & Gold",
@@ -149,7 +150,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
         "Two people raise a simple toast, celebrating the small pleasure of being together.",
     },
     imageUrl: "https://i.imgur.com/xOLQxNe.jpg",
-    orientation: "portrait",
+    orientation: "landscape",
     palette: {
       id: "P3",
       name: "Red & Ember",
@@ -239,7 +240,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
         "Music becomes physical as a couple finds a shared rhythm for one brief moment.",
     },
     imageUrl: "https://i.imgur.com/ofTHpUw.jpg",
-    orientation: "portrait",
+    orientation: "landscape",
     palette: {
       id: "P3",
       name: "Red & Ember",

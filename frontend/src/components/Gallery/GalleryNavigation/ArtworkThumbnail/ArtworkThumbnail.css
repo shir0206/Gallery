@@ -72,16 +72,6 @@
   border-radius: 0 14px 14px 0;
 }
 
-/* Width is no longer set here — it's whatever the flex distribution
-   in .gallery-navigation-strip works out to for the current artwork
-   count. Only height (the row's fixed cross-axis size) scales down
-   for smaller screens. */
-@media (max-width: 1023px) {
-  .artwork-thumbnail {
-    height: 56px;
-  }
-}
-
 @media (max-width: 639px) {
   .artwork-thumbnail {
     height: 52px;

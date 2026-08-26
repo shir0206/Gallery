@@ -6,7 +6,8 @@
   max-width: 480px;
   color: var(--gallery-paper);
   text-align: left;
-  animation: artwork-details-reveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) 90ms both;
+  animation: artwork-details-reveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) 90ms
+    both;
 }
 
 @keyframes artwork-details-reveal {
@@ -41,7 +42,7 @@
 }
 
 .artwork-details-title::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 50%;
@@ -122,7 +123,7 @@
 }
 
 .artwork-details-category:not(:last-child)::after {
-  content: '\00B7';
+  content: "\00B7";
   margin: 0 10px;
   color: var(--gallery-accent-soft);
 }
@@ -191,16 +192,6 @@
 @media (max-width: 639px) {
   .artwork-details-feature-link {
     text-align: left;
-  }
-}
-
-@media (max-width: 1023px) {
-  .artwork-details {
-    max-width: 440px;
-  }
-
-  .artwork-details-title {
-    font-size: 25px;
   }
 }
 

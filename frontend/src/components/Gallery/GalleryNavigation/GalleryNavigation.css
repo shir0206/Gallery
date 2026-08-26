@@ -52,21 +52,6 @@
   background: var(--gallery-line);
 }
 
-@media (max-width: 1023px) {
-  .gallery-navigation {
-    bottom: 18px;
-  }
-
-  .gallery-navigation-card {
-    padding: 4px;
-    border-radius: 14px;
-  }
-
-  .gallery-navigation-strip {
-    gap: 2px;
-  }
-}
-
 @media (max-width: 639px) {
   .gallery-navigation {
     bottom: 14px;

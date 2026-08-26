@@ -92,7 +92,7 @@
   transition: box-shadow 0.25s ease;
 }
 
-.home-card-image-wrap[data-orientation='landscape'] {
+.home-card-image-wrap[data-orientation="landscape"] {
   aspect-ratio: 5 / 4;
 }
 
@@ -146,17 +146,6 @@
 }
 
 /* --- Breakpoints, matching the gallery's existing 1023px/639px scheme --- */
-
-@media (max-width: 1023px) {
-  .home-page-title {
-    font-size: 32px;
-  }
-
-  .home-page-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 32px 20px;
-  }
-}
 
 @media (max-width: 639px) {
   .home-page {
