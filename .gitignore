@@ -1,23 +1,70 @@
-# Root and folder env files
+# ============================================================
+# Environment variables
+# ============================================================
+
 .env
 .env.*
 
-# Backend secret service account keys
-backend/*.json
-serviceAccountKey.json
+# Allow example/template env files to be committed
+!.env.example
+!.env.sample
 
-# Dist / build folders
-/dist
-/build
 
-# Ignore Firebase admin private keys
+# ============================================================
+# Secrets / service account keys
+# ============================================================
+
 serviceAccountKey.json
 backend/serviceAccountKey.json
+backend/*serviceAccount*.json
 *.json.key
 
-# Ignore backend node modules
-backend/node_modules/
-frontend/node_modules/
+
+# ============================================================
+# Dependencies
+# ============================================================
+
+node_modules/
+
+
+# ============================================================
+# Yarn 3 / Berry
+# ============================================================
+
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.pnp.*
+
+
+# ============================================================
+# Build output
+# ============================================================
+
+frontend/dist/
+frontend/build/
+backend/dist/
+backend/build/
+
+# Root-level build folders, if used
+/dist/
+/build/
+
+
+# ============================================================
+# macOS
+# ============================================================
 
 .DS_Store
 
+# Yarn generated files
+frontend/.yarn/cache/
+frontend/.yarn/install-state.gz
+frontend/.yarn/unplugged/
+
+# Yarn PnP generated files, if present
+frontend/.pnp.*
