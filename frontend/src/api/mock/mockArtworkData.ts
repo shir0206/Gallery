@@ -36,6 +36,9 @@ export const MOCK_ARTWORKS: Artwork[] = [
       name: "Midnight & Gold",
     },
     purchaseUrl: "https://example.com/purchase/butterflies",
+    price: 320,
+    salePrice: 240,
+    availability: "available",
   },
   {
     id: "1",
@@ -126,6 +129,9 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P1",
       name: "Midnight & Gold",
     },
+    purchaseUrl: "https://example.com/purchase/sunrise",
+    price: 280,
+    availability: "sold",
   },
   {
     id: "8",
@@ -246,6 +252,10 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P3",
       name: "Red & Ember",
     },
+    purchaseUrl: "https://example.com/purchase/music-of-the-night",
+    price: 450,
+    salePrice: 375,
+    availability: "available",
   },
   {
     id: "12",
@@ -336,6 +346,9 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P3",
       name: "Red & Ember",
     },
+    purchaseUrl: "https://example.com/purchase/turbulence",
+    price: 260,
+    availability: "reserved",
   },
   {
     id: "16",

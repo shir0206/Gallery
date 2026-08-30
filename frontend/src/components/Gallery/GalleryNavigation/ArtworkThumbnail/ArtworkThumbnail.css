@@ -56,6 +56,18 @@
   transform: translateX(-50%) translateY(0);
 }
 
+/* Currently under NavWindow's golden frame overlay (see NavWindow.tsx)
+   — stays fully lit no matter its visible/overflow/active state, and
+   hovering it has no effect. Thumbnails outside the frame are
+   untouched by this and keep the rules above. */
+.artwork-thumbnail.artwork-thumbnail-framed {
+  opacity: 1;
+}
+
+.artwork-thumbnail.artwork-thumbnail-framed:hover {
+  opacity: 1;
+}
+
 .artwork-thumbnail-image {
   width: 100%;
   height: 110%;

@@ -1,0 +1,124 @@
+/* Overlaid on the lower edge of a wall frame's image. Hidden by
+   default and revealed on hover/focus so it doesn't compete with the
+   art itself while just scrolling past — museums don't staple price
+   tags to the canvas, only to the placard you lean in to read. Touch
+   devices have no hover, so it stays visible there instead (see the
+   `(hover: none)` query below). */
+.artwork-purchase-cta {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px 8px 14px;
+  border-radius: 999px;
+  background: rgba(43, 36, 29, 0.78);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 2;
+}
+
+.artwork-viewer-frame:hover .artwork-purchase-cta,
+.artwork-viewer-frame:focus-within .artwork-purchase-cta {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* A small brass ribbon in the corner rather than folded into the price
+   text itself — reads at a glance before the numbers do. */
+.artwork-purchase-sale-badge {
+  font-family: var(--gallery-sans);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gallery-paper);
+  background: var(--gallery-accent);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.artwork-purchase-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--gallery-serif);
+  font-size: 15px;
+  color: var(--gallery-paper);
+  white-space: nowrap;
+}
+
+.artwork-purchase-price-original {
+  font-size: 12px;
+  color: rgba(244, 239, 233, 0.55);
+  text-decoration: line-through;
+}
+
+.artwork-purchase-price-sale {
+  color: #e8c68a;
+  font-weight: 500;
+}
+
+.artwork-purchase-button {
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--gallery-accent);
+  color: var(--gallery-paper);
+  font-family: var(--gallery-sans);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.artwork-purchase-button:hover {
+  background: #a9834e;
+  transform: translateY(-1px);
+}
+
+.artwork-purchase-button:focus-visible {
+  outline: 2px solid var(--gallery-paper);
+  outline-offset: 2px;
+}
+
+/* Touch devices can't hover a frame to reveal the CTA, so it's always
+   on for them instead of being permanently unreachable. */
+@media (hover: none) {
+  .artwork-purchase-cta {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 639px) {
+  .artwork-purchase-cta {
+    gap: 8px;
+    padding: 6px 8px 6px 12px;
+  }
+
+  .artwork-purchase-price {
+    font-size: 13px;
+  }
+
+  .artwork-purchase-button {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artwork-purchase-cta,
+  .artwork-purchase-button {
+    transition: none;
+  }
+}

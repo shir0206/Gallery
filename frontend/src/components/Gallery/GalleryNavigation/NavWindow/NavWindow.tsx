@@ -66,13 +66,20 @@ export function NavWindow({
   const activeIdRef = useRef<string | null>(selectedArtworkId);
   const didInitialCenterRef = useRef(false);
 
+  // Parallel to itemRects — the actual thumbnail elements, so the
+  // "under the frame" effect below can toggle a class directly on
+  // whichever ones the window currently overlaps.
+  const itemElsRef = useRef<HTMLElement[]>([]);
+
   const measure = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
     const trackRect = track.getBoundingClientRect();
     setTrackWidth(trackRect.width);
+    const els = Array.from(track.querySelectorAll<HTMLElement>('.artwork-thumbnail'));
+    itemElsRef.current = els;
     setItemRects(
-      Array.from(track.querySelectorAll<HTMLElement>('.artwork-thumbnail')).map((el) => {
+      els.map((el) => {
         const rect = el.getBoundingClientRect();
         return { left: rect.left - trackRect.left, width: rect.width };
       }),
@@ -168,6 +175,21 @@ export function NavWindow({
   useEffect(() => {
     setWindowLeft((current) => clamp(current, 0, maxLeft));
   }, [maxLeft]);
+
+  // Thumbnails the window is currently covering ("under the golden
+  // frame") stay fully lit and ignore hover — see
+  // .artwork-thumbnail-framed in ArtworkThumbnail.css. A thumbnail
+  // counts as covered once the window overlaps more than half its
+  // width, so the partial slivers at the window's edges don't count.
+  useEffect(() => {
+    const windowRight = windowLeft + windowWidth;
+    itemRects.forEach((rect, index) => {
+      const el = itemElsRef.current[index];
+      if (!el) return;
+      const overlap = Math.min(rect.left + rect.width, windowRight) - Math.max(rect.left, windowLeft);
+      el.classList.toggle('artwork-thumbnail-framed', overlap > rect.width / 2);
+    });
+  }, [windowLeft, windowWidth, itemRects]);
 
   const onPointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {

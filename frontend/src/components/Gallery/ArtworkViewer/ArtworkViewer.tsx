@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Artwork } from "../../../types/artwork";
 import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
+import { ArtworkPurchaseCta } from "./ArtworkPurchaseCta/ArtworkPurchaseCta";
 import "./ArtworkViewer.css";
 
 /** Reported on every scroll tick so the parent can drive a progress
@@ -328,28 +329,31 @@ export function ArtworkViewer({
               data-orientation={artwork.orientation}
               data-artwork-id={artwork.id}
             >
-              {onOpenFeature ? (
-                <button
-                  type="button"
-                  className="artwork-viewer-image-button"
-                  onClick={() => onOpenFeature(artwork.id)}
-                  aria-label={`Open ${artwork.title} by ${artwork.artist}`}
-                >
+              <div className="artwork-viewer-media">
+                {onOpenFeature ? (
+                  <button
+                    type="button"
+                    className="artwork-viewer-image-button"
+                    onClick={() => onOpenFeature(artwork.id)}
+                    aria-label={`Open ${artwork.title} by ${artwork.artist}`}
+                  >
+                    <img
+                      src={artwork.imageUrl}
+                      alt={`${artwork.title} by ${artwork.artist}`}
+                      className="artwork-viewer-image"
+                      loading="lazy"
+                    />
+                  </button>
+                ) : (
                   <img
                     src={artwork.imageUrl}
                     alt={`${artwork.title} by ${artwork.artist}`}
                     className="artwork-viewer-image"
                     loading="lazy"
                   />
-                </button>
-              ) : (
-                <img
-                  src={artwork.imageUrl}
-                  alt={`${artwork.title} by ${artwork.artist}`}
-                  className="artwork-viewer-image"
-                  loading="lazy"
-                />
-              )}
+                )}
+                <ArtworkPurchaseCta artwork={artwork} />
+              </div>
             </div>
           );
         })}

@@ -1,8 +1,10 @@
 /* No fixed viewport-height cap — allowed to grow past 100vh; the
-   outer scroller just keeps going. */
+   outer scroller just keeps going. Column direction so the Collector's
+   Panel stacks below the room photo instead of beside it. */
 .details-section {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 96px 24px 64px;
@@ -18,6 +20,9 @@
   display: block;
   width: 100%;
   height: auto;
+  filter: brightness(0.93) contrast(0.95) saturate(0.94);
+  box-shadow: 0 2px 3px rgba(23, 17, 12, 0.24),
+    0 8px 16px rgba(23, 17, 12, 0.16), 0 18px 30px rgba(23, 17, 12, 0.07);
 }
 
 /* Percentages below assume a mostly-empty wall roughly centered in
@@ -32,43 +37,216 @@
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
 }
 
-.in-your-house-painting[data-orientation='portrait'] {
+.in-your-house-painting[data-orientation="portrait"] {
   width: 24%;
 }
 
-/* The p1 room photo is framed tighter than the generic placeholder,
-   so its painting needs its own position/size per orientation. */
-.in-your-house-frame[data-room='p1'] .in-your-house-painting[data-orientation='portrait'] {
+/* Each photographed room has its own blank stretch of wall, so the
+   hung painting needs its own position/size per room, per
+   orientation. The border on each stands in for a physical frame —
+   colored to match that room's own wood/decor tones rather than one
+   generic frame for every photo. */
+
+/* P1: near-black sofa, warm walnut bookshelf — a dark espresso frame
+   disappears into the moody lighting the way a real frame would. */
+.in-your-house-frame[data-room="p1"]
+  .in-your-house-painting[data-orientation="portrait"] {
   top: 12%;
   width: 25%;
   border: 4px solid #0a0906;
+  box-shadow: 0 3px 5px rgba(20, 14, 9, 0.28), 0 10px 22px rgba(20, 14, 9, 0.16);
+  filter: brightness(0.94) contrast(0.96) saturate(0.92) blur(0.15px);
 }
 
-.in-your-house-frame[data-room='p1'] .in-your-house-painting[data-orientation='landscape'] {
+.in-your-house-frame[data-room="p1"]
+  .in-your-house-painting[data-orientation="landscape"] {
   top: 15%;
   width: 35%;
   border: 4px solid #0a0906;
 }
 
-.in-your-house-purchase {
-  position: absolute;
-  bottom: 8%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 22px;
-  border-radius: 999px;
-  background: var(--editorial-paper-bg-raised);
-  color: var(--editorial-accent);
-  font-family: var(--gallery-sans);
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  box-shadow: 0 8px 20px rgba(43, 36, 29, 0.25);
-  transition: transform 0.2s ease;
+/* P2: pastel blush/cream room, light oak shelving — a warm honey-oak
+   frame instead of black, so it reads as part of the room's own
+   furniture rather than a stark cutout. */
+.in-your-house-frame[data-room="p2"] .in-your-house-painting {
+  left: 50.5%;
 }
 
-.in-your-house-purchase:hover {
-  transform: translateX(-50%) translateY(-2px);
+.in-your-house-frame[data-room="p2"]
+  .in-your-house-painting[data-orientation="portrait"] {
+  top: 9%;
+  width: 26%;
+  border: 4px solid #b3855a;
+}
+
+.in-your-house-frame[data-room="p2"]
+  .in-your-house-painting[data-orientation="landscape"] {
+  top: 11%;
+  width: 36%;
+  border: 4px solid #b3855a;
+}
+
+/* P3: brown leather sofa, dark wood cabinets on both sides — a deep
+   espresso frame ties the piece to that furniture. */
+.in-your-house-frame[data-room="p3"]
+  .in-your-house-painting[data-orientation="portrait"] {
+  top: 10%;
+  width: 24%;
+  border: 4px solid #2b1a10;
+}
+
+.in-your-house-frame[data-room="p3"]
+  .in-your-house-painting[data-orientation="landscape"] {
+  top: 12%;
+  width: 34%;
+  border: 4px solid #2b1a10;
+}
+
+/* P4: pale boho room, natural wood shelving on the left — the blank
+   wall sits left-of-center here, and a mid walnut frame gives enough
+   contrast against the pale walls without a stark black edge. */
+.in-your-house-frame[data-room="p4"] .in-your-house-painting {
+  left: 46%;
+}
+
+.in-your-house-frame[data-room="p4"]
+  .in-your-house-painting[data-orientation="portrait"] {
+  top: 9%;
+  width: 23%;
+  border: 4px solid #4a3826;
+}
+
+.in-your-house-frame[data-room="p4"]
+  .in-your-house-painting[data-orientation="landscape"] {
+  top: 11%;
+  width: 32%;
+  border: 4px solid #4a3826;
+}
+
+/* Collector's Panel — the purchase decision lives here, in normal page
+   flow directly under the room photo, instead of floating on top of
+   it. A hairline top rule (not a shadow — that was only needed when
+   floating over a photo) separates it from the photo above, the way
+   the collage page's facts plaque sits under its images. */
+.collector-panel {
+  width: 100%;
+  max-width: 960px;
+  background: var(--editorial-paper-bg-raised);
+  border-top: 1px solid var(--editorial-line);
+  padding: 32px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.collector-panel-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.collector-panel-recap {
+  margin: 0;
+  font-family: var(--gallery-sans);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--editorial-ink-muted);
+}
+
+.collector-panel-price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--gallery-serif);
+  font-size: 26px;
+  color: var(--editorial-ink);
+}
+
+.collector-panel-sale-badge {
+  font-family: var(--gallery-sans);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--editorial-paper-bg-raised);
+  background: var(--editorial-accent);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.collector-panel-price-original {
+  font-size: 16px;
+  color: var(--editorial-ink-faint);
+  text-decoration: line-through;
+}
+
+.collector-panel-price-sale {
+  color: var(--editorial-accent);
+  font-weight: 600;
+}
+
+.collector-panel-price-plain {
+  font-weight: 500;
+}
+
+.collector-panel-action {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Neutral pill, deliberately not terracotta — availability is
+   information, sale is a reason to act, and the color difference
+   keeps the two badges from being confused at a glance. */
+.collector-panel-availability-badge {
+  font-family: var(--gallery-sans);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--editorial-ink-muted);
+  background: var(--editorial-line);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.collector-panel-purchase {
+  padding: 12px 30px;
+  border-radius: 999px;
+  border: none;
+  background: var(--editorial-accent);
+  color: var(--editorial-paper-bg-raised);
+  font-family: var(--gallery-sans);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.collector-panel-purchase:hover {
+  background: #8a331f;
+  transform: translateY(-2px);
+}
+
+.collector-panel-purchase:focus-visible {
+  outline: 2px solid var(--editorial-accent);
+  outline-offset: 2px;
+}
+
+/* Sold: visibly inert rather than a recolored active button — no
+   hover lift, no pointer cursor. */
+.collector-panel-purchase:disabled {
+  background: var(--editorial-ink-faint);
+  color: var(--editorial-paper-bg-raised);
+  cursor: not-allowed;
+  transform: none;
 }
 
 @media (max-width: 639px) {
@@ -80,13 +258,39 @@
     width: 46%;
   }
 
-  .in-your-house-painting[data-orientation='portrait'] {
+  .in-your-house-painting[data-orientation="portrait"] {
     width: 34%;
+  }
+
+  .collector-panel {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px 20px;
+    gap: 16px;
+  }
+
+  .collector-panel-info {
+    align-items: center;
+  }
+
+  .collector-panel-price {
+    font-size: 20px;
+  }
+
+  .collector-panel-action {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .collector-panel-purchase {
+    padding: 10px 24px;
+    font-size: 12px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .in-your-house-purchase {
+  .collector-panel-purchase {
     transition: none;
   }
 }

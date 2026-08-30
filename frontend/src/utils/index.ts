@@ -102,3 +102,12 @@ export function getAdjacentId(
   const nextIndex = currentIndex >= items.length - 1 ? 0 : currentIndex + 1;
   return items[nextIndex].id;
 }
+
+/**
+ * Formats a USD price with no decimals, e.g. 320 -> "$320". Artwork
+ * prices are always whole dollars, so this skips locale-aware
+ * currency formatting in favor of a plain, consistent "$" prefix.
+ */
+export function formatPrice(amount: number): string {
+  return `$${Math.round(amount).toLocaleString('en-US')}`;
+}

@@ -121,6 +121,15 @@
   max-width: min(80vw, 1000px);
 }
 
+/* Shrink-wraps to the rendered image's own box (not the taller frame
+   around it), so the purchase overlay — positioned absolute against
+   this, not the frame — anchors to the image's actual bottom edge
+   instead of floating in the frame's centering whitespace below it. */
+.artwork-viewer-media {
+  position: relative;
+  display: inline-flex;
+}
+
 .artwork-viewer-image-button {
   all: unset;
   display: block;
