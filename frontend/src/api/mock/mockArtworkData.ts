@@ -35,6 +35,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P1",
       name: "Midnight & Gold",
     },
+    purchaseUrl: "https://example.com/purchase/butterflies",
   },
   {
     id: "1",

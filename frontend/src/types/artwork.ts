@@ -37,6 +37,10 @@ export interface Artwork {
   imageUrl: string;
   orientation: ArtworkOrientation;
   palette: ArtworkPalette;
+  /** External link to buy this piece. Optional — when absent, the
+   * "in your house" page's purchase CTA is omitted entirely rather
+   * than pointing somewhere generic. */
+  purchaseUrl?: string;
 }
 
 /** Shape returned by the artwork API/data layer. */

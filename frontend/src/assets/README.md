@@ -6,3 +6,8 @@ Placeholder folder for gallery background and artwork images.
 (`gallery-background-placeholder.jpg`, `artwork-placeholder-1.jpg`, etc.)
 as mock data. Drop real images here with matching names, or swap the API
 layer for a real endpoint, once Phase 2 wires up actual artwork data.
+
+`living-room-placeholder.jpg` is used by the artwork page's "in your
+house" section (`ArtworkPage/sections/InYourHouseSection.tsx`) as the
+backdrop the painting is composited onto. Swap it for a real
+photographed room with a clear, mostly-empty wall.

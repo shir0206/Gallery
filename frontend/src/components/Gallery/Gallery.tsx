@@ -11,6 +11,12 @@ interface GalleryProps {
   onOpenFeature?: (artworkId: string) => void;
   /** Returns to the HomePage grid. Omit to hide the exit control (e.g. if the wall is the only view). */
   onExitWall?: () => void;
+  /** True while a feature spread (ArtworkPage) is open on top of the wall.
+   * The wall stays mounted underneath rather than unmounting, so this
+   * disables its global arrow-key navigation (otherwise reading the
+   * spread would silently move the hidden wall's selection) and hides
+   * it from the accessibility tree/tab order while it's covered. */
+  isCovered?: boolean;
 }
 
 /**
@@ -29,7 +35,7 @@ interface GalleryProps {
  * signal (0–100% along the wall) that isn't part of the selection
  * "context" itself but rides alongside it for a live position readout.
  */
-export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
+export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false }: GalleryProps) {
   const { environment, artworks } = data;
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     artworks[0]?.id ?? null,
@@ -84,7 +90,12 @@ export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
   }, [artworks]);
 
   // Left/right arrow keys mirror the on-screen previous/next controls.
+  // Skipped while covered by a feature spread — the wall stays mounted
+  // underneath it, and without this it would silently reposition itself
+  // in response to keys meant for whatever's on top.
   useEffect(() => {
+    if (isCovered) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       const target = event.target;
       const isTypingTarget =
@@ -105,10 +116,14 @@ export function Gallery({ data, onOpenFeature, onExitWall }: GalleryProps) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [goToPrevious, goToNext]);
+  }, [goToPrevious, goToNext, isCovered]);
 
   return (
-    <div className="gallery" data-scroll-progress={Math.round(scrollProgress)}>
+    <div
+      className={`gallery${isCovered ? ' gallery-covered' : ''}`}
+      data-scroll-progress={Math.round(scrollProgress)}
+      aria-hidden={isCovered || undefined}
+    >
       <GalleryBackground environment={environment} />
       {onExitWall && (
         <button type="button" className="gallery-exit-button" onClick={onExitWall}>

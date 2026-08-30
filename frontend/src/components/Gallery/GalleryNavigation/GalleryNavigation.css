@@ -1,68 +1,59 @@
 .gallery-navigation {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 22px;
-  z-index: 2;
-  /* Just a positioning shell — no background or padding of its own.
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 22px;
+	z-index: 2;
+	/* Just a positioning shell — no background or padding of its own.
      The floating card below is the only thing that actually paints. */
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
 }
 
 /* The floating strip itself: a paper-colored rounded card centered
    above the bottom edge, not an edge-to-edge scrim bar. */
 .gallery-navigation-card {
-  position: relative;
-  pointer-events: auto;
-  /* Card just wraps the strip now that the strip itself has a fixed
+	position: relative;
+	pointer-events: auto;
+	/* Card just wraps the strip now that the strip itself has a fixed
      80vw width — no separate cap needed here. */
-  padding: 4px;
-  border-radius: 16px;
-  background: var(--gallery-paper);
-  box-shadow: 0 10px 30px rgba(20, 14, 8, 0.35), 0 2px 8px rgba(20, 14, 8, 0.18);
+	padding: 4px;
+	border-radius: 16px;
+	background: var(--gallery-paper);
+	box-shadow:
+		0 10px 30px rgba(20, 14, 8, 0.35),
+		0 2px 8px rgba(20, 14, 8, 0.18);
 }
 
 .gallery-navigation-strip {
-  display: flex;
-  gap: 2px;
-  /* Fixed width: the strip always spans 80% of the viewport. Every
+	position: relative;
+	display: flex;
+	gap: 2px;
+	/* Fixed width: the strip always spans 80% of the viewport. Every
      thumbnail is a flex item with flex: 1 1 0 (see ArtworkThumbnail.css),
      so the browser divides this 80vw evenly across however many
      artworks there are — no JS measuring, no per-count CSS needed. */
-  width: 80vw;
-  overflow: hidden;
-  /* Extra top padding gives the active-thumbnail triangle marker (see
-     ArtworkThumbnail) room to sit above the image without being
-     clipped by the scroll container. */
-  touch-action: pan-x;
-}
-
-/* Small centered grab affordance below the card, independent of any
-   thumbnail — signals the whole card can be dragged/panned. */
-.gallery-navigation-grab-dot {
-  position: absolute;
-  left: 50%;
-  bottom: 7px;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--gallery-line);
+	width: 80vw;
+	/* Static — the strip itself never pans or scrolls; browsing happens
+     via the NavWindow overlay instead. This also clips NavWindow's
+     dimming box-shadow to the strip's own bounds. */
+	overflow: hidden;
 }
 
 @media (max-width: 639px) {
-  .gallery-navigation {
-    bottom: 14px;
-  }
+	.gallery-navigation {
+		bottom: 14px;
+	}
 
-  .gallery-navigation-card {
-    padding: 4px;
-    border-radius: 12px;
-  }
+	.gallery-navigation-card {
+		padding: 4px;
+		border-radius: 12px;
+	}
 
-  .gallery-navigation-strip {
-    gap: 2px;
-  }
+	.gallery-navigation-strip {
+		gap: 2px;
+	}
 }

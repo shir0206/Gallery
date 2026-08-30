@@ -5,6 +5,13 @@
   overflow: hidden;
 }
 
+/* Applied while a feature spread is open on top of the wall — it stays
+   mounted underneath (rather than unmounting) but shouldn't be
+   clickable or focusable while covered. */
+.gallery-covered {
+  pointer-events: none;
+}
+
 /* Bare text control, matching the wall's understated visual language
    (no button chrome, same register as ArtworkViewer's prev/next
    glyphs) — a quiet way back to the grid rather than UI bolted onto

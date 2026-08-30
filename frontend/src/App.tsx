@@ -1,7 +1,12 @@
 import { GalleryPage } from '@/pages/GalleryPage';
+import { ArtworkCollectionProvider } from '@/state/ArtworkCollectionProvider';
 
 function App() {
-  return <GalleryPage />;
+  return (
+    <ArtworkCollectionProvider>
+      <GalleryPage />
+    </ArtworkCollectionProvider>
+  );
 }
 
 export default App;

@@ -48,6 +48,14 @@ interface ArtworkViewerProps {
 // would mean it never counts as visible at all.
 const WALL_VISIBLE_THRESHOLD = 0.5;
 
+// No further scroll events within this window after a programmatic
+// scroll starts ⇒ treat it as settled. A fixed guessed duration (the
+// previous approach) reads as "settled" mid-animation for any scroll
+// that happens to take longer, which re-derives selection from a
+// still-moving position and visibly snaps it back — this instead
+// tracks the scroll's own real end.
+const SCROLL_SETTLE_IDLE_MS = 120;
+
 /**
  * Renders the entire collection as one continuous, horizontally
  * scrollable wall — every artwork hung side by side — rather than a
@@ -94,7 +102,16 @@ export function ArtworkViewer({
   // width (portrait vs landscape), so "closest item center to the
   // viewport center" is a more reliable read of "what's the visitor
   // actually looking at" than raw visible-area overlap.
-  const readScrollState = useCallback(() => {
+  // `allowSelectionChange` is false right after a programmatic scroll
+  // settles: `scrollIntoView` clamps rather than truly centering items
+  // near either end of the wall (nothing to scroll past), so "closest
+  // item to viewport center" can legitimately be a neighbor of the
+  // artwork that was actually scrolled to. Re-deriving selection from
+  // that geometry at settle-time would second-guess the explicit
+  // selection this same scroll was driven by. Progress still updates
+  // either way — only the artworkId/index it's paired with, and the
+  // isActive-selection side effect, are skipped.
+  const readScrollState = useCallback((allowSelectionChange = true) => {
     const track = trackRef.current;
     if (!track || artworks.length === 0) return;
 
@@ -133,11 +150,33 @@ export function ArtworkViewer({
       });
     }
 
-    if (closestId && closestId !== activeId) {
+    if (allowSelectionChange && closestId && closestId !== activeId) {
       setActiveId(closestId);
       onSelectArtwork(closestId);
     }
   }, [artworks, activeId, onScrollProgress, onSelectArtwork]);
+
+  // (Re)starts the "has the programmatic scroll actually stopped?"
+  // check. Called once when a programmatic scroll begins, and again on
+  // every scroll event while one is in flight — so it only fires once
+  // scroll events truly stop arriving, rather than after a guessed delay.
+  const scheduleSettleCheck = useCallback(() => {
+    if (programmaticScrollTimeoutRef.current !== null) {
+      clearTimeout(programmaticScrollTimeoutRef.current);
+    }
+    programmaticScrollTimeoutRef.current = setTimeout(() => {
+      isProgrammaticScrollRef.current = false;
+      programmaticScrollTimeoutRef.current = null;
+      readScrollState(false);
+    }, SCROLL_SETTLE_IDLE_MS);
+  }, [readScrollState]);
+
+  const cancelSettleCheck = useCallback(() => {
+    if (programmaticScrollTimeoutRef.current !== null) {
+      clearTimeout(programmaticScrollTimeoutRef.current);
+      programmaticScrollTimeoutRef.current = null;
+    }
+  }, []);
 
   // Track native scroll (touch, trackpad, wheel-via-useHorizontalScroll,
   // or drag-via-useHorizontalScroll) at animation-frame cadence.
@@ -147,17 +186,29 @@ export function ArtworkViewer({
 
     let rafId: number | null = null;
     const handleScroll = () => {
+      if (isProgrammaticScrollRef.current) {
+        // Still moving toward its target (or the visitor hasn't taken
+        // over yet) — push the settle check back out rather than
+        // reading a still-moving position.
+        scheduleSettleCheck();
+        return;
+      }
       if (rafId !== null) return;
       rafId = requestAnimationFrame(() => {
         rafId = null;
-        if (isProgrammaticScrollRef.current) return;
         readScrollState();
       });
     };
 
     track.addEventListener("scroll", handleScroll, { passive: true });
-    // Establish an initial reading on mount / whenever the collection changes.
-    readScrollState();
+    // Establish an initial progress reading on mount / whenever the
+    // collection changes. Selection changes are suppressed here: at
+    // scrollLeft 0 several frames are visible at once, and the one
+    // nearest the viewport's geometric center is often not the first
+    // artwork — reading that as "the visitor is looking at this" would
+    // override the intended initial selection before any real
+    // scrolling happened.
+    readScrollState(false);
 
     return () => {
       track.removeEventListener("scroll", handleScroll);
@@ -165,6 +216,28 @@ export function ArtworkViewer({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [artworks]);
+
+  // A visitor grabbing the wall themselves — touch, mouse-drag (via
+  // useHorizontalScroll), or a wheel nudge — takes over immediately,
+  // rather than being made to fight the tail end of an in-flight
+  // programmatic scroll until its own settle check fires.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const handleUserInput = () => {
+      if (!isProgrammaticScrollRef.current) return;
+      isProgrammaticScrollRef.current = false;
+      cancelSettleCheck();
+    };
+
+    track.addEventListener("pointerdown", handleUserInput);
+    track.addEventListener("wheel", handleUserInput, { passive: true });
+    return () => {
+      track.removeEventListener("pointerdown", handleUserInput);
+      track.removeEventListener("wheel", handleUserInput);
+    };
+  }, [cancelSettleCheck]);
 
   // Separate from readScrollState above: this tracks the *set* of
   // every artwork currently intersecting the wall's viewport, rooted
@@ -216,31 +289,16 @@ export function ArtworkViewer({
       inline: "center",
       block: "nearest",
     });
+    // Scroll events (below) keep pushing this back out for as long as
+    // the browser is still animating; this covers the case where the
+    // target is already in view and no scroll events fire at all.
+    scheduleSettleCheck();
 
-    if (programmaticScrollTimeoutRef.current !== null) {
-      clearTimeout(programmaticScrollTimeoutRef.current);
-    }
-    programmaticScrollTimeoutRef.current = setTimeout(() => {
-      isProgrammaticScrollRef.current = false;
-      readScrollState();
-      programmaticScrollTimeoutRef.current = null;
-    }, 600);
-
-    return () => {
-      if (programmaticScrollTimeoutRef.current !== null) {
-        clearTimeout(programmaticScrollTimeoutRef.current);
-      }
-    };
+    return cancelSettleCheck;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedArtworkId]);
 
-  useEffect(() => {
-    return () => {
-      if (programmaticScrollTimeoutRef.current !== null) {
-        clearTimeout(programmaticScrollTimeoutRef.current);
-      }
-    };
-  }, []);
+  useEffect(() => cancelSettleCheck, [cancelSettleCheck]);
 
   if (artworks.length === 0) {
     return (

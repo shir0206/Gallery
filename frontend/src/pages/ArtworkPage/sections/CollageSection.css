@@ -1,0 +1,148 @@
+/* No fixed viewport-height cap on this section — a long sentence or a
+   tall portrait crop is allowed to grow the container past 100vh; the
+   outer scroller (ArtworkPage.css's .artwork-page-scroller) just
+   keeps scrolling through it rather than clipping content to fit one
+   screen. */
+.collage-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 24px 64px;
+}
+
+.collage-container {
+  width: 100%;
+  max-width: 800px;
+  min-height: 78vh;
+  display: flex;
+  gap: 48px;
+}
+
+.collage-col {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.collage-col-images {
+  flex: 3;
+}
+
+.collage-col-text {
+  flex: 2;
+}
+
+.collage-crop {
+  background-image: var(--collage-image);
+  background-repeat: no-repeat;
+  background-size: 280% auto;
+}
+
+/* Each crop is a fixed aspect ratio, not a flex-stretched box, so
+   "portrait/big", "landscape/short", and "near-square" are real
+   shapes rather than relative sizing that only reads correctly at one
+   viewport width. */
+.collage-crop-a {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background-position: 15% 25%;
+}
+
+.collage-crop-b {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background-position: 85% 15%;
+}
+
+.collage-crop-c {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-size: 360% auto;
+  background-position: 45% 85%;
+}
+
+.collage-text {
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  font-family: var(--gallery-serif);
+  color: var(--editorial-ink);
+}
+
+.collage-text-story {
+  font-size: 28px;
+  line-height: 1.35;
+  flex-grow: 2;
+  border-left: 1px solid var(--editorial-line);
+  padding: 16px;
+}
+
+.collage-text-materials {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--editorial-ink-soft);
+}
+
+.collage-facts {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--gallery-sans);
+}
+
+.collage-facts-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--editorial-line);
+}
+
+.collage-facts-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.collage-facts-row dt {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--editorial-ink-faint);
+}
+
+.collage-facts-row dd {
+  margin: 0;
+  text-align: right;
+  font-family: var(--gallery-serif);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--editorial-ink);
+}
+
+@media (max-width: 1023px) {
+  .collage-text-story {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 639px) {
+  .collage-section {
+    padding: 72px 18px 48px;
+  }
+
+  .collage-container {
+    flex-direction: column;
+    min-height: 0;
+    gap: 32px;
+  }
+
+  .collage-col {
+    gap: 24px;
+  }
+}

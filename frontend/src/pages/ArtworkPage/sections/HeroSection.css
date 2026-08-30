@@ -1,0 +1,110 @@
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 120px 24px 64px;
+  text-align: center;
+}
+
+@keyframes hero-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-line-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-section-artist {
+  margin: 0;
+  font-family: var(--gallery-sans);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--editorial-ink-muted);
+  opacity: 0;
+  animation: hero-rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+.hero-section-title {
+  position: relative;
+  margin: 0;
+  padding: 20px 0;
+  font-family: var(--gallery-serif);
+  font-weight: 400;
+  font-size: 44px;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  color: var(--editorial-ink);
+  opacity: 0;
+  animation: hero-rise-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+.hero-section-title::before,
+.hero-section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--editorial-line);
+  transform: scaleX(0);
+  animation: hero-line-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+.hero-section-title::before {
+  top: 0;
+}
+
+.hero-section-title::after {
+  bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-section-artist,
+  .hero-section-title,
+  .hero-section-title::before,
+  .hero-section-title::after {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-section-image {
+  display: block;
+  max-width: min(90vw, 900px);
+  max-height: 65vh;
+  width: auto;
+  height: auto;
+  box-shadow: 0 24px 60px rgba(43, 36, 29, 0.18);
+}
+
+@media (max-width: 639px) {
+  .hero-section {
+    padding: 96px 18px 48px;
+  }
+
+  .hero-section-title {
+    font-size: 30px;
+  }
+
+  .hero-section-image {
+    max-height: 55vh;
+  }
+}

@@ -53,6 +53,39 @@ export function formatArtworkDimensions(
  * step through the same collection independently for the editorial
  * ArtworkPage view without duplicating the wraparound math.
  */
+const ROMAN_VALUES: Array<[number, string]> = [
+  [1000, 'M'],
+  [900, 'CM'],
+  [500, 'D'],
+  [400, 'CD'],
+  [100, 'C'],
+  [90, 'XC'],
+  [50, 'L'],
+  [40, 'XL'],
+  [10, 'X'],
+  [9, 'IX'],
+  [5, 'V'],
+  [4, 'IV'],
+  [1, 'I'],
+];
+
+/**
+ * Converts a positive integer to a Roman numeral, e.g. 1 -> "I", 16 -> "XVI".
+ * Used by the nav strip's engraved-plaque readout, which favors numerals
+ * over arabic digits to match the museum-placard styling.
+ */
+export function toRoman(num: number): string {
+  let remaining = num;
+  let result = '';
+  for (const [value, symbol] of ROMAN_VALUES) {
+    while (remaining >= value) {
+      result += symbol;
+      remaining -= value;
+    }
+  }
+  return result;
+}
+
 export function getAdjacentId(
   items: Array<{ id: string }>,
   currentId: string | null,

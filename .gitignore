@@ -17,5 +17,7 @@ backend/serviceAccountKey.json
 
 # Ignore backend node modules
 backend/node_modules/
+frontend/node_modules/
 
 .DS_Store
+
