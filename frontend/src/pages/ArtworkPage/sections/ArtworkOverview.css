@@ -1,5 +1,6 @@
 .artwork-overview {
   width: 100%; height: 100svh; min-height: 680px;
+  padding-bottom: 100px;
   display: grid; grid-template-columns: 10.5vw 4vw minmax(0, 55vw) minmax(290px, 1fr);
   overflow: hidden; background: var(--editorial-paper-bg-raised);
 }
