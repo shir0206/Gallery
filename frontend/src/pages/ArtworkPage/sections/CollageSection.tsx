@@ -9,15 +9,15 @@ interface CollageSectionProps {
 
 /**
  * Page 2: a two-column collage. Left: two crops of the painting, a
- * big portrait-shaped one on top and a short landscape-shaped one
+ * large portrait-shaped one on top and a short landscape-shaped one
  * below. Right: the story sentence set big, then materials set small,
- * then a small near-square third crop, then a compact facts plaque
+ * then a small landscape third crop, then a compact facts plaque
  * (date, medium, dimensions) — three crops, two sentences, and one
  * facts block, each crop a fixed aspect ratio rather than a
- * flex-stretched box, so "portrait/big", "landscape/short", and
- * "near-square" are genuine shapes and not just relative sizing. The
- * section's height is allowed to grow past one viewport; the outer
- * scroller just keeps going. The three crops share one
+ * flex-stretched box, so "portrait/big" and "landscape/short" are
+ * genuine shapes and not just relative sizing. The
+ * desktop collage is bounded by the viewport while mobile returns to
+ * a naturally flowing stack. The three crops share one
  * `background-image` via a CSS custom property so the image URL
  * isn't repeated three times.
  */
