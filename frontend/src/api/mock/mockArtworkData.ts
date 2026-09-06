@@ -1140,7 +1140,6 @@ export const MOCK_ARTWORKS: Artwork[] = MOCK_ARTWORK_DATA.map((artwork) => {
       offerLabel: "Studio offer",
       signed: true,
       certificateIncluded: true,
-      reservationDays: 7,
       ...artwork.commerce,
       shipping: {
         worldwide: true,
@@ -1156,6 +1155,6 @@ export const MOCK_ARTWORKS: Artwork[] = MOCK_ARTWORK_DATA.map((artwork) => {
         alt: `${artwork.title} detail`,
       },
     ],
-    interiorImageUrl: artwork.interiorImageUrl ?? artwork.imageUrl,
+    ...(artwork.interiorImageUrl ? { interiorImageUrl: artwork.interiorImageUrl } : {}),
   };
 });

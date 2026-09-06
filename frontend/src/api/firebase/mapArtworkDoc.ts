@@ -82,9 +82,16 @@ function parseOrientation(data: RawDoc): ArtworkOrientation {
 }
 
 function parseCommerce(data: RawDoc): ArtworkCommerce {
-  const raw = data.commerce;
-  if (!isPlainObject(raw)) throw new Error('missing or invalid required field "commerce"');
-  const commerce: ArtworkCommerce = {};
+  const raw = isPlainObject(data.commerce) ? data.commerce : {};
+  // These are gallery-wide guarantees for every original in the
+  // collection. Artwork-specific values below can still override the
+  // defaults when the catalogue explicitly says otherwise.
+  const commerce: ArtworkCommerce = {
+    currency: 'USD',
+    signed: true,
+    certificateIncluded: true,
+    shipping: { worldwide: true, insured: true },
+  };
   if (raw.currency === 'USD' || raw.currency === 'EUR' || raw.currency === 'GBP') commerce.currency = raw.currency;
   if (isString(raw.offerLabel) && raw.offerLabel.trim()) commerce.offerLabel = raw.offerLabel;
   if (typeof raw.signed === 'boolean') commerce.signed = raw.signed;
@@ -154,7 +161,9 @@ export function mapDocToArtwork(id: string, rawData: unknown): Artwork {
           })(),
     commerce: parseCommerce(rawData),
     detailImages: parseDetailImages(rawData),
-    interiorImageUrl: requireString(rawData, 'interiorImageUrl'),
+    ...(isString(rawData.interiorImageUrl) && rawData.interiorImageUrl.trim()
+      ? { interiorImageUrl: rawData.interiorImageUrl }
+      : {}),
   };
   return artwork;
 }

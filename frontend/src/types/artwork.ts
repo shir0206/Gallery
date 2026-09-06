@@ -73,7 +73,8 @@ export interface Artwork {
   availability: 'available' | 'reserved' | 'sold';
   commerce: ArtworkCommerce;
   detailImages: ArtworkDetailImage[];
-  interiorImageUrl: string;
+  /** Optional artwork-specific room photograph. Palette room is the fallback. */
+  interiorImageUrl?: string;
 }
 
 /** Shape returned by the artwork API/data layer. */

@@ -1,6 +1,8 @@
 import type { ArtworkCollectionResponse } from '@/types/artwork';
 
-const CACHE_KEY = 'gallery:artworkCollection';
+// Version the key whenever the normalized artwork shape changes. This keeps
+// older, incomplete records from surviving a deployment for the full TTL.
+const CACHE_KEY = 'gallery:artworkCollection:v3';
 const CACHE_TTL_MS = 48 * 60 * 60 * 1000;
 
 interface CacheEntry {
