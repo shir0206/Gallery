@@ -100,14 +100,25 @@
 .artwork-overview[data-orientation="landscape"] .overview-crop-image { object-fit: cover; filter: none; }
 
 @media (max-width: 639px) {
-  .artwork-overview[data-orientation="landscape"] { padding: 14px 18px 100px; display: flex; flex-direction: column; gap: 22px; }
+  .artwork-overview[data-orientation="landscape"] { padding: 14px 0 100px; display: flex; flex-direction: column; gap: 22px; }
   .artwork-overview[data-orientation="landscape"] .overview-information { display: contents; }
-  .artwork-overview[data-orientation="landscape"] .overview-back { position: static; order: 0; color: var(--editorial-ink-muted); text-shadow: none; }
+  .artwork-overview[data-orientation="landscape"] .overview-back { position: static; order: 0; margin-left: 18px; color: var(--editorial-ink-muted); text-shadow: none; }
   .artwork-overview[data-orientation="landscape"] .overview-visual { order: 1; display: flex; flex-direction: column; min-height: 0; gap: 7px; }
   .artwork-overview[data-orientation="landscape"] .overview-detail-label { display: none; }
   .artwork-overview[data-orientation="landscape"] .overview-main-art img { width: 100%; height: auto; max-height: none; object-fit: contain; }
   .artwork-overview[data-orientation="landscape"] .overview-crops { width: auto; height: 72px; flex: none; display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
-  .artwork-overview[data-orientation="landscape"] .overview-copy { order: 2; margin: 0; padding: 0; }
+  .artwork-overview[data-orientation="landscape"] .overview-copy { order: 2; margin: 0; padding: 0 18px; }
   .artwork-overview[data-orientation="landscape"] .overview-copy h1 { margin-top: 2px; font-size: 42px; }
   .artwork-overview[data-orientation="landscape"] .overview-description { max-width: 100%; }
+}
+
+@media (max-width: 639px) {
+  .editorial-header + .artwork-page-content .artwork-overview[data-orientation="portrait"],
+  .editorial-header + .artwork-page-content .artwork-overview[data-orientation="landscape"] { height: auto; min-height: 100svh; }
+  .artwork-overview[data-orientation="landscape"] .overview-main-art { height: auto; overflow: visible; }
+  .artwork-overview[data-orientation="landscape"] .overview-main-art img { width: 100%; height: auto; object-fit: contain; }
+  .artwork-overview[data-orientation="landscape"] .overview-visual { width: 100%; margin-inline: 0; }
+  .artwork-overview[data-orientation="landscape"] .overview-crops { width: 100%; }
+  .artwork-overview[data-orientation="landscape"] .overview-copy { width: 100%; }
+  .artwork-overview .overview-metadata { display: block; width: 100%; max-width: none; }
 }

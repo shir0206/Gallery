@@ -5,3 +5,4 @@
 @media(prefers-reduced-motion:reduce){.acquisition-offer button:after,.acquisition-offer button span:last-child{transition:none}}
 .acquisition-panel h2{margin-bottom:0}.acquisition-panel .acquisition-rule{margin:31px 0 24px}.acquisition-artwork-title{margin:0 0 57px}
 @media(max-width:639px){.acquisition-panel h2{margin-bottom:0}.acquisition-panel .acquisition-rule{margin:20px 0 16px}.acquisition-artwork-title{margin-bottom:28px}}
+.acquisition-panel{left:5%}

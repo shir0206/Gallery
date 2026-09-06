@@ -14,5 +14,5 @@ export function ConfidenceStrip({ artwork }: { artwork: Artwork }) {
     commerce?.shipping?.worldwide?{label:'Worldwide shipping',icon:<Truck/>}:null,
     {label:'One of one',icon:<Diamond/>},
   ].filter((item):item is NonNullable<typeof item>=>Boolean(item));
-  return <div className="confidence-strip" aria-label="Collector benefits">{items.map(item=><div className="confidence-item" key={item.label}><span className="confidence-icon" aria-hidden="true">{item.icon}</span><strong>{item.label}</strong></div>)}</div>;
+  return <div className="confidence-strip" aria-label="Collector benefits">{items.map(item=><div className="confidence-item" key={item.label}><span className="confidence-icon" aria-hidden="true">{item.icon}</span><span className="confidence-label">{item.label}</span></div>)}</div>;
 }
