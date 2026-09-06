@@ -11,6 +11,8 @@ interface ArtworkPageProps {
   /** Optional prev/next stepping, mirroring ArtworkViewer's controls. Both must be provided together. */
   onPrevious?: () => void;
   onNext?: () => void;
+  onStartPurchase: (artworkId: string) => void;
+  isCovered?: boolean;
 }
 
 /**
@@ -22,11 +24,11 @@ interface ArtworkPageProps {
  * of them, since they need to stay reachable regardless of scroll
  * position.
  */
-export function ArtworkPage({ artwork, onBack, onPrevious, onNext }: ArtworkPageProps) {
+export function ArtworkPage({ artwork, onBack, onPrevious, onNext, onStartPurchase, isCovered = false }: ArtworkPageProps) {
   const hasStepping = Boolean(onPrevious && onNext);
 
   return (
-    <div className="artwork-page">
+    <div className="artwork-page" aria-hidden={isCovered || undefined}>
       <header className="artwork-page-chrome">
         {onBack ? (
           <button type="button" className="artwork-page-back" onClick={onBack}>
@@ -61,7 +63,7 @@ export function ArtworkPage({ artwork, onBack, onPrevious, onNext }: ArtworkPage
       <div className="artwork-page-scroller">
         <HeroSection artwork={artwork} />
         <CollageSection artwork={artwork} />
-        <DetailsSection artwork={artwork} />
+        <DetailsSection artwork={artwork} onStartPurchase={onStartPurchase} />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import type { Artwork } from '@/types/artwork';
 import { formatPrice } from '@/utils';
+import { getAcquisitionState, getArtworkCurrency, getEffectivePrice, getOfferDetails } from '@/utils/commerce';
 import './ArtworkPurchaseCta.css';
 
 interface ArtworkPurchaseCtaProps {
@@ -14,30 +15,28 @@ interface ArtworkPurchaseCtaProps {
  * already follows, so pieces not for sale show no partial affordance.
  */
 export function ArtworkPurchaseCta({ artwork }: ArtworkPurchaseCtaProps) {
-  const { price, salePrice, purchaseUrl } = artwork;
-  if (!price || !purchaseUrl) return null;
-
-  const onSale = typeof salePrice === 'number' && salePrice < price;
+  const state = getAcquisitionState(artwork);
+  const price = getEffectivePrice(artwork);
+  const offer = getOfferDetails(artwork);
+  if (state === 'hidden' || price === null) return null;
 
   return (
     <div className="artwork-purchase-cta">
-      {onSale && <span className="artwork-purchase-sale-badge">Sale</span>}
+      {offer && <span className="artwork-purchase-sale-badge">{offer.label}</span>}
       <span className="artwork-purchase-price">
-        {onSale && <span className="artwork-purchase-price-original">{formatPrice(price)}</span>}
-        <span className={onSale ? 'artwork-purchase-price-sale' : undefined}>
-          {formatPrice(onSale ? salePrice! : price)}
+        {offer && <span className="artwork-purchase-price-original">{formatPrice(offer.originalPrice, getArtworkCurrency(artwork))}</span>}
+        <span className={offer ? 'artwork-purchase-price-sale' : undefined}>
+          {formatPrice(price, getArtworkCurrency(artwork))}
         </span>
       </span>
-      <a
-        href={purchaseUrl}
+      {state === 'available' ? <a
+        href={artwork.purchaseUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="artwork-purchase-button"
         onClick={(event) => event.stopPropagation()}
         aria-label={`Purchase ${artwork.title} now`}
-      >
-        Purchase Now
-      </a>
+      >Purchase this piece</a> : <span className="artwork-purchase-unavailable">{state === 'sold' ? 'Private collection' : 'Reserved'}</span>}
     </div>
   );
 }

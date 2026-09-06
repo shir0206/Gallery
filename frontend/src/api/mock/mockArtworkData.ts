@@ -1,10 +1,34 @@
 import type { Artwork } from "../../types/artwork";
+
+type ArtworkMockInput = Omit<
+  Artwork,
+  | "purchaseUrl"
+  | "price"
+  | "salePrice"
+  | "availability"
+  | "commerce"
+  | "detailImages"
+  | "interiorImageUrl"
+> &
+  Partial<
+    Pick<
+      Artwork,
+      | "purchaseUrl"
+      | "price"
+      | "salePrice"
+      | "availability"
+      | "commerce"
+      | "detailImages"
+      | "interiorImageUrl"
+    >
+  >;
+
 /**
  * Dev-only stand-in for the real backend. Shaped exactly like a real
  * Firestore-derived `Artwork`, so swapping data sources never requires
  * changing consumers.
  */
-export const MOCK_ARTWORKS: Artwork[] = [
+const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
   {
     id: "0",
     title: "Butterflies",
@@ -39,6 +63,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     price: 320,
     salePrice: 240,
     availability: "available",
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "1",
@@ -69,6 +100,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P2",
       name: "Paper & Blush",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "2",
@@ -98,6 +136,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P4",
       name: "Garden & Sky",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -132,6 +177,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     purchaseUrl: "https://example.com/purchase/sunrise",
     price: 280,
     availability: "sold",
+    commerce: { currency: "USD", signed: true },
   },
   {
     id: "8",
@@ -161,6 +207,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P3",
       name: "Red & Ember",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -192,6 +245,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P4",
       name: "Garden & Sky",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "10",
@@ -221,6 +281,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P1",
       name: "Midnight & Gold",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -256,6 +323,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     price: 450,
     salePrice: 375,
     availability: "available",
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "12",
@@ -286,6 +360,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P4",
       name: "Garden & Sky",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "13",
@@ -315,6 +396,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P1",
       name: "Midnight & Gold",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -349,6 +437,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     purchaseUrl: "https://example.com/purchase/turbulence",
     price: 260,
     availability: "reserved",
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "16",
@@ -378,6 +473,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P2",
       name: "Paper & Blush",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -409,6 +511,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P2",
       name: "Paper & Blush",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "19",
@@ -438,6 +547,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P3",
       name: "Red & Ember",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -469,6 +585,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P4",
       name: "Garden & Sky",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "21",
@@ -499,6 +622,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P2",
       name: "Paper & Blush",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "22",
@@ -528,6 +658,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P3",
       name: "Red & Ember",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -568,6 +705,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P1",
       name: "Midnight & Gold",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "24",
@@ -597,6 +741,16 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P1",
       name: "Midnight & Gold",
+    },
+    purchaseUrl: "https://example.com/purchase/fly",
+    price: 480,
+    availability: "available",
+    commerce: {
+      currency: "EUR",
+      signed: true,
+      certificateIncluded: true,
+      reservationDays: 7,
+      shipping: { worldwide: true, insured: true, estimatedBusinessDays: { min: 3, max: 7 } },
     },
   },
   {
@@ -628,6 +782,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P3",
       name: "Red & Ember",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "28",
@@ -657,6 +818,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P3",
       name: "Red & Ember",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -688,6 +856,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P3",
       name: "Red & Ember",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "30",
@@ -717,6 +892,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P2",
       name: "Paper & Blush",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -748,6 +930,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P3",
       name: "Red & Ember",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "32",
@@ -777,6 +966,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P2",
       name: "Paper & Blush",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -808,6 +1004,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P1",
       name: "Midnight & Gold",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "34",
@@ -837,6 +1040,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
     palette: {
       id: "P4",
       name: "Garden & Sky",
+    },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
     },
   },
   {
@@ -868,6 +1078,13 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P3",
       name: "Red & Ember",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
   {
     id: "36",
@@ -898,5 +1115,47 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: "P1",
       name: "Midnight & Gold",
     },
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      shipping: { worldwide: true, insured: true },
+    },
   },
 ];
+
+export const MOCK_ARTWORKS: Artwork[] = MOCK_ARTWORK_DATA.map((artwork) => {
+  const price = artwork.price ?? 300;
+
+  return {
+    ...artwork,
+    purchaseUrl:
+      artwork.purchaseUrl ?? `https://example.com/purchase/${artwork.id}`,
+    price,
+    salePrice: artwork.salePrice ?? price,
+    availability: artwork.availability ?? "available",
+    commerce: {
+      currency: "USD",
+      offerLabel: "Studio offer",
+      signed: true,
+      certificateIncluded: true,
+      reservationDays: 7,
+      ...artwork.commerce,
+      shipping: {
+        worldwide: true,
+        insured: true,
+        estimatedBusinessDays: { min: 3, max: 7 },
+        ...artwork.commerce?.shipping,
+      },
+    },
+    detailImages: artwork.detailImages ?? [
+      {
+        id: `${artwork.id}-detail-1`,
+        imageUrl: artwork.imageUrl,
+        alt: `${artwork.title} detail`,
+      },
+    ],
+    interiorImageUrl: artwork.interiorImageUrl ?? artwork.imageUrl,
+  };
+});

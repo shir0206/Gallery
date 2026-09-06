@@ -4,6 +4,8 @@ import type {
   ArtworkDimensions,
   ArtworkOrientation,
   ArtworkPalette,
+  ArtworkCommerce,
+  ArtworkDetailImage,
 } from '@/types/artwork';
 
 type RawDoc = Record<string, unknown>;
@@ -79,6 +81,39 @@ function parseOrientation(data: RawDoc): ArtworkOrientation {
   return value;
 }
 
+function parseCommerce(data: RawDoc): ArtworkCommerce {
+  const raw = data.commerce;
+  if (!isPlainObject(raw)) throw new Error('missing or invalid required field "commerce"');
+  const commerce: ArtworkCommerce = {};
+  if (raw.currency === 'USD' || raw.currency === 'EUR' || raw.currency === 'GBP') commerce.currency = raw.currency;
+  if (isString(raw.offerLabel) && raw.offerLabel.trim()) commerce.offerLabel = raw.offerLabel;
+  if (typeof raw.signed === 'boolean') commerce.signed = raw.signed;
+  if (typeof raw.certificateIncluded === 'boolean') commerce.certificateIncluded = raw.certificateIncluded;
+  if (isNumber(raw.reservationDays) && raw.reservationDays > 0) commerce.reservationDays = raw.reservationDays;
+  if (isPlainObject(raw.shipping) && typeof raw.shipping.worldwide === 'boolean' && typeof raw.shipping.insured === 'boolean') {
+    commerce.shipping = { worldwide: raw.shipping.worldwide, insured: raw.shipping.insured };
+    const estimate = raw.shipping.estimatedBusinessDays;
+    if (isPlainObject(estimate) && isNumber(estimate.min) && isNumber(estimate.max) && estimate.min > 0 && estimate.max >= estimate.min) {
+      commerce.shipping.estimatedBusinessDays = { min: estimate.min, max: estimate.max };
+    }
+  }
+  return commerce;
+}
+
+function parseDetailImages(data: RawDoc): ArtworkDetailImage[] {
+  if (!Array.isArray(data.detailImages)) {
+    throw new Error('missing or invalid required field "detailImages"');
+  }
+  const images = data.detailImages.flatMap((value): ArtworkDetailImage[] => {
+    if (!isPlainObject(value) || !isString(value.id) || !isString(value.imageUrl) || !isString(value.alt)) return [];
+    return [{ id: value.id, imageUrl: value.imageUrl, alt: value.alt, ...(isString(value.objectPosition) ? { objectPosition: value.objectPosition } : {}) }];
+  });
+  if (images.length !== data.detailImages.length) {
+    throw new Error('invalid item in required field "detailImages"');
+  }
+  return images;
+}
+
 /**
  * Maps a raw Firestore document into the app's Artwork domain type.
  *
@@ -91,7 +126,7 @@ export function mapDocToArtwork(id: string, rawData: unknown): Artwork {
     throw new Error('document data is not an object');
   }
 
-  return {
+  const artwork: Artwork = {
     id,
     title: requireString(rawData, 'title'),
     artist: requireString(rawData, 'artist'),
@@ -106,5 +141,20 @@ export function mapDocToArtwork(id: string, rawData: unknown): Artwork {
     imageUrl: requireString(rawData, 'imageUrl'),
     orientation: parseOrientation(rawData),
     palette: parsePalette(rawData),
+    purchaseUrl: requireString(rawData, 'purchaseUrl'),
+    price: requireNumber(rawData, 'price'),
+    salePrice: requireNumber(rawData, 'salePrice'),
+    availability:
+      rawData.availability === 'available' ||
+      rawData.availability === 'reserved' ||
+      rawData.availability === 'sold'
+        ? rawData.availability
+        : (() => {
+            throw new Error('missing or invalid required field "availability"');
+          })(),
+    commerce: parseCommerce(rawData),
+    detailImages: parseDetailImages(rawData),
+    interiorImageUrl: requireString(rawData, 'interiorImageUrl'),
   };
+  return artwork;
 }

@@ -5,6 +5,7 @@ import { GalleryStatus } from "@/components/Gallery/GalleryStatus/GalleryStatus"
 import { ArtworkPage } from "@/pages/ArtworkPage/ArtworkPage";
 import { HomePage } from "@/pages/HomePage/HomePage";
 import { getAdjacentId } from "@/utils";
+import { PurchaseFlow } from '@/components/Commerce/PurchaseFlow/PurchaseFlow';
 
 /**
  * Top-level screen: reads the artwork collection from the
@@ -36,6 +37,7 @@ export function GalleryPage() {
 	const { data, error, refetch } = useArtworkCollection();
 	const [featureArtworkId, setFeatureArtworkId] = useState<string | null>(null);
 	const [showWallView, setShowWallView] = useState(true);
+	const [purchaseArtworkId, setPurchaseArtworkId] = useState<string | null>(null);
 
 	const retry = () => {
 		setFeatureArtworkId(null);
@@ -63,6 +65,7 @@ export function GalleryPage() {
 	const featureArtwork = featureArtworkId
 		? data.artworks.find((artwork) => artwork.id === featureArtworkId)
 		: undefined;
+	const purchaseArtwork = purchaseArtworkId ? data.artworks.find((artwork) => artwork.id === purchaseArtworkId) : undefined;
 
 	return (
 		<>
@@ -71,7 +74,7 @@ export function GalleryPage() {
 					data={data}
 					onOpenFeature={setFeatureArtworkId}
 					onExitWall={() => setShowWallView(false)}
-					isCovered={Boolean(featureArtwork)}
+					isCovered={Boolean(featureArtwork || purchaseArtwork)}
 				/>
 			) : (
 				<HomePage
@@ -83,6 +86,8 @@ export function GalleryPage() {
 			{featureArtwork && (
 				<ArtworkPage
 					artwork={featureArtwork}
+					onStartPurchase={setPurchaseArtworkId}
+					isCovered={Boolean(purchaseArtwork)}
 					onBack={() => setFeatureArtworkId(null)}
 					onPrevious={() =>
 						setFeatureArtworkId(
@@ -96,6 +101,7 @@ export function GalleryPage() {
 					}
 				/>
 			)}
+			{purchaseArtwork && <PurchaseFlow artwork={purchaseArtwork} onClose={() => setPurchaseArtworkId(null)} />}
 		</>
 	);
 }

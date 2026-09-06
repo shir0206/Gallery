@@ -108,6 +108,10 @@ export function getAdjacentId(
  * prices are always whole dollars, so this skips locale-aware
  * currency formatting in favor of a plain, consistent "$" prefix.
  */
-export function formatPrice(amount: number): string {
-  return `$${Math.round(amount).toLocaleString('en-US')}`;
+export function formatPrice(amount: number, currency = 'USD'): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 0,
+  }).format(amount);
 }

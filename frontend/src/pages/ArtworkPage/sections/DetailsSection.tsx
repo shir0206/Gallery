@@ -1,5 +1,9 @@
+import { useState } from 'react';
 import type { Artwork } from '@/types/artwork';
 import { formatPrice } from '@/utils';
+import { getAcquisitionState, getArtworkCurrency, getEffectivePrice, getOfferDetails } from '@/utils/commerce';
+import { ConfidenceStrip } from '@/components/Commerce/ConfidenceStrip/ConfidenceStrip';
+import { ArtworkCommercePanel } from '@/components/Commerce/ArtworkCommercePanel/ArtworkCommercePanel';
 import livingRoomPlaceholder from '@/assets/living-room-placeholder.jpg';
 import livingRoomP1 from '@/assets/livingroom-p1.png';
 import livingRoomP2 from '@/assets/livingroom-p2.png';
@@ -9,6 +13,7 @@ import './DetailsSection.css';
 
 interface DetailsSectionProps {
   artwork: Artwork;
+  onStartPurchase: (artworkId: string) => void;
 }
 
 /** Room photo to composite the painting onto, keyed by palette id.
@@ -19,11 +24,6 @@ const PALETTE_ROOM_IMAGES: Record<string, string> = {
   P2: livingRoomP2,
   P3: livingRoomP3,
   P4: livingRoomP4,
-};
-
-const AVAILABILITY_LABEL: Record<'reserved' | 'sold', string> = {
-  reserved: 'Reserved',
-  sold: 'Sold',
 };
 
 /**
@@ -38,19 +38,31 @@ const AVAILABILITY_LABEL: Record<'reserved' | 'sold', string> = {
  * shown disabled) when `purchaseUrl` is absent, rather than pointing
  * somewhere generic.
  */
-export function DetailsSection({ artwork }: DetailsSectionProps) {
+export function DetailsSection({ artwork, onStartPurchase }: DetailsSectionProps) {
   const roomKey = artwork.palette.id in PALETTE_ROOM_IMAGES ? artwork.palette.id.toLowerCase() : undefined;
-  const { price, salePrice, purchaseUrl, availability } = artwork;
-  const onSale = typeof price === 'number' && typeof salePrice === 'number' && salePrice < price;
-  const isSold = availability === 'sold';
-  const showAvailabilityBadge = availability === 'reserved' || availability === 'sold';
+  const price = getEffectivePrice(artwork);
+  const offer = getOfferDetails(artwork);
+  const acquisitionState = getAcquisitionState(artwork);
+  const canPurchase = acquisitionState === 'available';
+  const favoriteKey = `shir-gallery:favorites:${artwork.id}`;
+  const [isFavorite, setIsFavorite] = useState(() => {
+    try { return window.localStorage.getItem(favoriteKey) === 'true'; } catch { return false; }
+  });
+
+  const toggleFavorite = () => {
+    setIsFavorite((current) => {
+      const next = !current;
+      try { window.localStorage.setItem(favoriteKey, String(next)); } catch { /* storage is optional */ }
+      return next;
+    });
+  };
 
   return (
     <section className="details-section" aria-label={`${artwork.title}, in your home`}>
       <div className="in-your-house-frame" data-room={roomKey}>
         <img
-          src={PALETTE_ROOM_IMAGES[artwork.palette.id] ?? livingRoomPlaceholder}
-          alt="A living room wall"
+          src={artwork.interiorImageUrl ?? PALETTE_ROOM_IMAGES[artwork.palette.id] ?? livingRoomPlaceholder}
+          alt={`A curated living room composition featuring ${artwork.title}`}
           className="in-your-house-room"
         />
         <img
@@ -59,49 +71,32 @@ export function DetailsSection({ artwork }: DetailsSectionProps) {
           className="in-your-house-painting"
           data-orientation={artwork.orientation}
         />
+        {price !== null && acquisitionState !== 'hidden' && (
+          <div className="interior-price-plaque">
+            <span>{offer ? offer.label : 'Original artwork'}</span>
+            <strong>{formatPrice(price, getArtworkCurrency(artwork))}</strong>
+            <small>{offer ? `Previously ${formatPrice(offer.originalPrice, getArtworkCurrency(artwork))}` : 'One of a kind'}</small>
+          </div>
+        )}
+        <button
+          type="button"
+          className="interior-favorite-button"
+          aria-pressed={isFavorite}
+          aria-label={isFavorite ? `Remove ${artwork.title} from saved works` : `Save ${artwork.title}`}
+          onClick={toggleFavorite}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.8 4.8a5.4 5.4 0 0 0-7.7 0L12 5.9l-1.1-1.1a5.4 5.4 0 0 0-7.7 7.7L12 21l8.8-8.5a5.4 5.4 0 0 0 0-7.7Z" />
+          </svg>
+        </button>
+        {canPurchase && (
+          <button type="button" className="interior-purchase-button" onClick={() => onStartPurchase(artwork.id)}>
+            <span aria-hidden="true">✦</span><span>Make this feeling yours.</span><span className="interior-purchase-arrow" aria-hidden="true">→</span>
+          </button>
+        )}
       </div>
-      {purchaseUrl && (
-        <div className="collector-panel">
-          <div className="collector-panel-info">
-            <p className="collector-panel-recap">
-              {artwork.title} — {artwork.artist}
-            </p>
-            {typeof price === 'number' && (
-              <div className="collector-panel-price">
-                {onSale && <span className="collector-panel-sale-badge">Sale</span>}
-                {onSale && (
-                  <span className="collector-panel-price-original">{formatPrice(price)}</span>
-                )}
-                <span className={onSale ? 'collector-panel-price-sale' : 'collector-panel-price-plain'}>
-                  {formatPrice(onSale ? salePrice! : price)}
-                </span>
-              </div>
-            )}
-          </div>
-          <div className="collector-panel-action">
-            {showAvailabilityBadge && (
-              <span className="collector-panel-availability-badge" data-availability={availability}>
-                {AVAILABILITY_LABEL[availability as 'reserved' | 'sold']}
-              </span>
-            )}
-            {isSold ? (
-              <button type="button" className="collector-panel-purchase" disabled>
-                Sold
-              </button>
-            ) : (
-              <a
-                href={purchaseUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="collector-panel-purchase"
-                aria-label={`Purchase ${artwork.title} now`}
-              >
-                Purchase Now
-              </a>
-            )}
-          </div>
-        </div>
-      )}
+      <ConfidenceStrip artwork={artwork} />
+      <ArtworkCommercePanel artwork={artwork} onStartPurchase={onStartPurchase} />
     </section>
   );
 }

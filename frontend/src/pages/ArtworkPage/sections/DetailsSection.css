@@ -7,19 +7,71 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 96px 24px 64px;
+  padding: 72px clamp(18px, 1.8vw, 36px) 80px;
 }
 
 .in-your-house-frame {
   position: relative;
   width: 100%;
-  max-width: 960px;
+  max-width: none;
+  aspect-ratio: 1.68 / 1;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(35, 28, 20, 0.1);
 }
+
+.interior-favorite-button {
+  position: absolute;
+  top: clamp(20px, 2vw, 34px);
+  right: clamp(20px, 2vw, 34px);
+  z-index: 3;
+  width: clamp(52px, 4vw, 66px);
+  height: clamp(52px, 4vw, 66px);
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(43, 36, 29, 0.12);
+  border-radius: 50%;
+  background: rgba(250, 247, 243, 0.94);
+  color: var(--editorial-ink);
+  box-shadow: 0 8px 22px rgba(35, 28, 20, 0.12);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.interior-favorite-button svg { width: 42%; height: 42%; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.interior-favorite-button[aria-pressed="true"] svg { fill: var(--editorial-ink); }
+.interior-favorite-button:focus-visible { outline: 2px solid var(--gallery-accent); outline-offset: 3px; }
+
+.interior-price-plaque {
+  position: absolute;
+  top: clamp(20px, 2vw, 34px);
+  left: clamp(20px, 2vw, 34px);
+  z-index: 2;
+  width: clamp(132px, 10.5vw, 184px);
+  max-width: 184px;
+  padding: clamp(14px, 1.2vw, 21px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgba(250, 247, 243, 0.18);
+  border-radius: 14px;
+  background: rgba(31, 26, 21, 0.86);
+  color: var(--editorial-paper-bg-raised);
+  backdrop-filter: blur(8px);
+}
+.interior-price-plaque span,.interior-price-plaque small { font:600 clamp(9px,.7vw,11px) var(--gallery-sans); text-transform:uppercase; letter-spacing:.14em; text-align:center; }
+.interior-price-plaque strong { margin:6px 0; font:500 clamp(30px,2.4vw,43px) var(--gallery-serif); }
+.interior-price-plaque small { padding:3px 7px; border-radius:4px; background:rgba(250,247,243,.12); font-size:8px; }
+.interior-purchase-button { position:absolute; right:clamp(24px,2.6vw,46px); bottom:clamp(24px,2.6vw,46px); z-index:2; width:clamp(330px,25vw,470px); min-height:clamp(72px,6vw,98px); padding:0 clamp(28px,2.4vw,42px); display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:clamp(18px,1.7vw,28px); border:1px solid rgba(43,36,29,.12); border-radius:999px; background:rgba(250,247,243,.96); box-shadow:0 14px 36px rgba(35,28,20,.13); color:var(--editorial-ink); font:500 clamp(18px,1.5vw,25px)/1.12 var(--gallery-serif); text-align:left; cursor:pointer; backdrop-filter:blur(8px); }
+.interior-purchase-button > span:first-child { color:#d69c2d; font-size:1.35em; }
+.interior-purchase-arrow { font-size:25px; transition:transform .2s ease; }.interior-purchase-button:hover .interior-purchase-arrow{transform:translateX(5px)}
+.interior-purchase-button:focus-visible{outline:2px solid var(--gallery-accent);outline-offset:3px}
 
 .in-your-house-room {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   filter: brightness(0.93) contrast(0.95) saturate(0.94);
   box-shadow: 0 2px 3px rgba(23, 17, 12, 0.24),
     0 8px 16px rgba(23, 17, 12, 0.16), 0 18px 30px rgba(23, 17, 12, 0.07);
@@ -262,6 +314,12 @@
     width: 34%;
   }
 
+  .in-your-house-frame { aspect-ratio:1.2/1; overflow:visible; margin-bottom:72px; border-radius:12px; }
+  .interior-price-plaque { top:14px; left:14px; padding:11px 13px; }
+  .interior-favorite-button { top:14px; right:14px; width:46px; height:46px; }
+  .interior-price-plaque strong { font-size:25px; }
+  .interior-purchase-button { right:0; bottom:-62px; width:100%; min-height:54px; font-size:16px; }
+
   .collector-panel {
     flex-direction: column;
     align-items: center;
@@ -293,4 +351,5 @@
   .collector-panel-purchase {
     transition: none;
   }
+  .interior-purchase-arrow { transition:none; }
 }
