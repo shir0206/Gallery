@@ -39,6 +39,10 @@
   --editorial-line: rgba(43, 36, 29, 0.14);
   --editorial-accent: #a3402c;
   --editorial-accent-soft: rgba(163, 64, 44, 0.5);
+  --editorial-paper-deep: #eae3d8;
+  --gold: #b8944f;
+  --button: #1c1916;
+  --sale-old-price: #9b958e;
 
   /* Display size for the single large narrative paragraph (the
      "pull-quote") that carries the page — deliberately much larger

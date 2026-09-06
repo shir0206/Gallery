@@ -1,70 +1,15 @@
+import { useEffect, useRef } from 'react';
 import type { Artwork } from '@/types/artwork';
-import { HeroSection } from './sections/HeroSection';
-import { CollageSection } from './sections/CollageSection';
+import { ArtworkOverview } from './sections/ArtworkOverview';
 import { DetailsSection } from './sections/DetailsSection';
+import { EditorialHeader } from './components/EditorialHeader';
 import './ArtworkPage.css';
 
-interface ArtworkPageProps {
-  artwork: Artwork;
-  /** Optional — omit to render without a "back to gallery" link (e.g. in isolation/preview). */
-  onBack?: () => void;
-  /** Optional prev/next stepping, mirroring ArtworkViewer's controls. Both must be provided together. */
-  onPrevious?: () => void;
-  onNext?: () => void;
-  onStartPurchase: (artworkId: string) => void;
-  isCovered?: boolean;
-}
+interface ArtworkPageProps { artwork: Artwork; onBack?: () => void; onPrevious?: () => void; onNext?: () => void; onStartPurchase: (artworkId: string) => void; isCovered?: boolean; }
 
-/**
- * Three-part scrollytelling spread for a single artwork: a hero, a
- * collage of cropped details + unlabeled text, and a details section
- * combining the catalogue facts with an "in your house" mockup and
- * purchase link. The back/stepper controls are a fixed "chrome" bar
- * pinned above all three sections, rather than living inside any one
- * of them, since they need to stay reachable regardless of scroll
- * position.
- */
-export function ArtworkPage({ artwork, onBack, onPrevious, onNext, onStartPurchase, isCovered = false }: ArtworkPageProps) {
-  const hasStepping = Boolean(onPrevious && onNext);
-
-  return (
-    <div className="artwork-page" aria-hidden={isCovered || undefined}>
-      <header className="artwork-page-chrome">
-        {onBack ? (
-          <button type="button" className="artwork-page-back" onClick={onBack}>
-            ← Gallery
-          </button>
-        ) : (
-          <span />
-        )}
-
-        {hasStepping && (
-          <div className="artwork-page-stepper">
-            <button
-              type="button"
-              className="artwork-page-step-button"
-              onClick={onPrevious}
-              aria-label="Previous artwork"
-            >
-              ‹
-            </button>
-            <button
-              type="button"
-              className="artwork-page-step-button"
-              onClick={onNext}
-              aria-label="Next artwork"
-            >
-              ›
-            </button>
-          </div>
-        )}
-      </header>
-
-      <div className="artwork-page-scroller">
-        <HeroSection artwork={artwork} />
-        <CollageSection artwork={artwork} />
-        <DetailsSection artwork={artwork} onStartPurchase={onStartPurchase} />
-      </div>
-    </div>
-  );
+export function ArtworkPage({ artwork, onBack, onPrevious, onNext, onStartPurchase, isCovered=false }: ArtworkPageProps) {
+  const scrollerRef=useRef<HTMLDivElement>(null);
+  useEffect(()=>{scrollerRef.current?.scrollTo({top:0,behavior:'auto'})},[artwork.id]);
+  useEffect(()=>{if(isCovered)return;const handle=(event:KeyboardEvent)=>{if(event.key==='Escape')onBack?.();else if(event.key==='ArrowLeft')onPrevious?.();else if(event.key==='ArrowRight')onNext?.()};document.addEventListener('keydown',handle);return()=>document.removeEventListener('keydown',handle)},[isCovered,onBack,onPrevious,onNext]);
+  return <div className="artwork-page" aria-hidden={isCovered||undefined}><div className="artwork-page-scroller" ref={scrollerRef}><EditorialHeader artwork={artwork} onPrevious={onPrevious} onNext={onNext}/><main className="artwork-page-content" key={artwork.id}><ArtworkOverview artwork={artwork} onBack={onBack}/><DetailsSection artwork={artwork} onStartPurchase={onStartPurchase}/></main></div></div>;
 }
