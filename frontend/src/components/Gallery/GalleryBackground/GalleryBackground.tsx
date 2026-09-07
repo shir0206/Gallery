@@ -17,9 +17,11 @@ export function GalleryBackground({ environment }: GalleryBackgroundProps) {
   return (
     <div className="gallery-background" role="presentation" aria-hidden="true">
       {environment.backgroundImageUrl && (
-        <div
+        <img
           className="gallery-background-image"
-          style={{ backgroundImage: `url(${environment.backgroundImageUrl})` }}
+          src={environment.backgroundImageUrl}
+          alt=""
+          decoding="async"
         />
       )}
     </div>

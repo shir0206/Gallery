@@ -19,10 +19,8 @@ export function ContactPage() {
 
           <div className="contact-note">
             <span>Artwork enquiries <i>·</i> Commissions <i>·</i> Collaborations</span>
-            <p>For enquiries about a specific work, please include the artwork title.</p>
           </div>
 
-          <p className="contact-signature"><span aria-hidden="true" />Shir Zabolotny <i>·</i> Studio</p>
         </section>
         {sent ? (
           <section className="contact-success" role="status"><span>Thank you</span><h2>Your message is ready.</h2><p>This demo form has been completed successfully. Connect it to your preferred inbox service to receive submissions.</p><button type="button" className="text-link" onClick={() => setSent(false)}>Send another message</button></section>
@@ -35,7 +33,7 @@ export function ContactPage() {
             <label className="contact-select">Subject<select name="subject" defaultValue="Artwork enquiry"><option>Artwork enquiry</option><option>Commission</option><option>Exhibition or press</option><option>Other</option></select><span aria-hidden="true" /></label>
             <label>Message<textarea name="message" rows={5} placeholder="Tell me about the artwork or project you have in mind…" required /></label>
             <button className="contact-submit" type="submit"><span>Send enquiry</span><i aria-hidden="true">→</i></button>
-            <p className="contact-email">Prefer email? <a href="mailto:studio@shirzabolotny.com">studio@shirzabolotny.com</a></p>
+            <p className="contact-enquiry">For enquiries about a specific work, please include the artwork title.</p>
           </form>
         )}
       </main>

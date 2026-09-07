@@ -19,9 +19,8 @@ interface HomePageProps {
  * since rebuilding it as a scrollable multi-painting perspective is a
  * bigger, separate effort.
  *
- * Cards are plain buttons rather than links — there's no router in
- * this app yet (see GalleryPage's routing note), so navigation is
- * handled by GalleryPage's own view state via these callbacks.
+ * Cards delegate navigation to GalleryPage, which opens the selected
+ * artwork's URL while preserving this grid as its background view.
  */
 export function HomePage({ artworks, onSelectArtwork, onViewWall }: HomePageProps) {
   return (
