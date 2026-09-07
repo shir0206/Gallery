@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import type { Artwork } from '@/types/artwork';
 import { formatArtworkDimensions, formatPrice } from '@/utils';
 import { getAcquisitionState, getArtworkCurrency, getEffectivePrice, getOfferDetails } from '@/utils/commerce';
@@ -26,14 +27,16 @@ export function DetailsSection({ artwork, onAddToCart }: DetailsSectionProps) {
     artwork.dimensions.height,
     artwork.dimensions.unit
   );
+  const roomStyle = {
+    '--room-image': `url("${isPortrait ? roomPortrait : roomLandscape}")`,
+    '--room-mobile-image': `url("${isPortrait ? mobileRoomPortrait : mobileRoomLandscape}")`,
+  } as CSSProperties;
 
   return (
     <section className="details-section" aria-labelledby="acquisition-title" data-orientation={artwork.orientation}>
-      <picture className="details-room" aria-hidden="true">
-        <source media="(max-width: 639px)" srcSet={isPortrait ? mobileRoomPortrait : mobileRoomLandscape} />
-        <img src={isPortrait ? roomPortrait : roomLandscape} alt="" />
+      <div className="details-room" style={roomStyle} aria-hidden="true">
         <img src={artwork.imageUrl} alt="" className="details-room-artwork" />
-      </picture>
+      </div>
       <div className="acquisition-panel">
         <h2 id="acquisition-title">Bring that feeling at your home</h2>
         <span className="acquisition-rule" aria-hidden="true" />

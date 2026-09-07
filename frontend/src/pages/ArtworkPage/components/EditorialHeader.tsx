@@ -21,7 +21,7 @@ export function EditorialHeader({ artwork, onGallery, onAbout, onContact, onCart
   let isSaved = false;
   try { isSaved = artwork ? window.localStorage.getItem(`shir-gallery:favorites:${artwork.id}`) === 'true' : false; } catch { /* optional storage */ }
   return <header className="editorial-header">
-    <div className="editorial-brand" aria-label="Shir Zabolotny Artworks"><span>SZ</span><small>Shir Zabolotny<br/>Artworks</small></div>
+    <button type="button" className="editorial-brand" aria-label="Go to gallery" onClick={onGallery}><span>SZ</span><small>Shir Zabolotny<br/>Artworks</small></button>
     <nav className="editorial-primary-nav" aria-label="Primary navigation">
       <button type="button" onClick={onGallery}>Gallery</button>
       <button type="button" onClick={onAbout}>About</button>

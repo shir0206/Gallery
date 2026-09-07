@@ -1,4 +1,5 @@
 import type { Artwork, ArtworkApiResponse, ArtworkCollectionResponse, GalleryEnvironment } from '@/types/artwork';
+import galleryBackgroundUrl from '@/assets/gallery-background-placeholder.webp';
 import { isFirebaseConfigured } from './firebase/firebaseClient';
 import { fetchArtworksFromFirebase } from './firebase/firebaseArtworkApi';
 import { fetchArtworksFromMock } from './mock/mockArtworkApi';
@@ -13,7 +14,7 @@ export { ArtworkApiError } from './errors';
  */
 export const GALLERY_ENVIRONMENT: GalleryEnvironment = {
   name: 'Main Hall',
-  backgroundImageUrl: '/src/assets/gallery-background-placeholder.jpg',
+  backgroundImageUrl: galleryBackgroundUrl,
 };
 
 /**

@@ -1,3 +1,4 @@
+import { ArtworkSearchGrid } from '@/components/ArtworkSearchGrid/ArtworkSearchGrid';
 import type { Artwork } from '@/types/artwork';
 import './HomePage.css';
 
@@ -35,27 +36,7 @@ export function HomePage({ artworks, onSelectArtwork, onViewWall }: HomePageProp
         </button>
       </header>
 
-      <div className="home-page-grid">
-        {artworks.map((artwork) => (
-          <button
-            type="button"
-            key={artwork.id}
-            className="home-card"
-            onClick={() => onSelectArtwork(artwork.id)}
-            aria-label={`View ${artwork.title} by ${artwork.artist}`}
-          >
-            <div className="home-card-image-wrap" data-orientation={artwork.orientation}>
-              <img src={artwork.imageUrl} alt="" className="home-card-image" />
-            </div>
-            <div className="home-card-meta">
-              <p className="home-card-title">{artwork.title}</p>
-              <p className="home-card-artist">
-                {artwork.artist} · {artwork.year}
-              </p>
-            </div>
-          </button>
-        ))}
-      </div>
+      <ArtworkSearchGrid artworks={artworks} onSelectArtwork={onSelectArtwork} />
     </div>
   );
 }
