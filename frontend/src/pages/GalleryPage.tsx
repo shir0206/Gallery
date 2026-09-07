@@ -6,6 +6,13 @@ import { ArtworkPage } from "@/pages/ArtworkPage/ArtworkPage";
 import { HomePage } from "@/pages/HomePage/HomePage";
 import { getAdjacentId } from "@/utils";
 import { PurchaseFlow } from '@/components/Commerce/PurchaseFlow/PurchaseFlow';
+import { AboutPage } from '@/pages/AboutPage/AboutPage';
+import { ContactPage } from '@/pages/ContactPage/ContactPage';
+import { CartPage } from '@/pages/CartPage/CartPage';
+import { EditorialHeader } from '@/pages/ArtworkPage/components/EditorialHeader';
+import { ArtworkSearch } from '@/pages/ArtworkPage/components/ArtworkSearch';
+
+type MainView = 'gallery' | 'about' | 'contact' | 'cart';
 
 /**
  * Top-level screen: reads the artwork collection from the
@@ -38,6 +45,17 @@ export function GalleryPage() {
 	const [featureArtworkId, setFeatureArtworkId] = useState<string | null>(null);
 	const [showWallView, setShowWallView] = useState(true);
 	const [purchaseArtworkId, setPurchaseArtworkId] = useState<string | null>(null);
+	const [cartArtworkIds, setCartArtworkIds] = useState<string[]>([]);
+	const [mainView, setMainView] = useState<MainView>('gallery');
+	const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+	const navigate = (view: MainView) => {
+		setFeatureArtworkId(null);
+		setPurchaseArtworkId(null);
+		setIsSearchOpen(false);
+		setMainView(view);
+		window.scrollTo({ top: 0, behavior: 'auto' });
+	};
 
 	const retry = () => {
 		setFeatureArtworkId(null);
@@ -66,15 +84,39 @@ export function GalleryPage() {
 		? data.artworks.find((artwork) => artwork.id === featureArtworkId)
 		: undefined;
 	const purchaseArtwork = purchaseArtworkId ? data.artworks.find((artwork) => artwork.id === purchaseArtworkId) : undefined;
+	const cartArtworks = cartArtworkIds
+		.map((artworkId) => data.artworks.find((artwork) => artwork.id === artworkId))
+		.filter((artwork): artwork is (typeof data.artworks)[number] => Boolean(artwork));
+	const addToCart = (artworkId: string) => {
+		setCartArtworkIds((currentIds) => currentIds.includes(artworkId) ? currentIds : [...currentIds, artworkId]);
+		navigate('cart');
+	};
 
 	return (
 		<>
-			{showWallView ? (
+			<EditorialHeader
+				artwork={featureArtwork}
+				onGallery={() => navigate('gallery')}
+				onAbout={() => navigate('about')}
+				onContact={() => navigate('contact')}
+				onCart={() => navigate('cart')}
+				cartCount={cartArtworks.length}
+				onSearch={() => setIsSearchOpen(true)}
+				onPrevious={featureArtwork ? () => setFeatureArtworkId(getAdjacentId(data.artworks, featureArtwork.id, 'previous')) : undefined}
+				onNext={featureArtwork ? () => setFeatureArtworkId(getAdjacentId(data.artworks, featureArtwork.id, 'next')) : undefined}
+			/>
+			{mainView === 'about' ? (
+				<AboutPage onGallery={() => navigate('gallery')} />
+			) : mainView === 'contact' ? (
+				<ContactPage />
+			) : mainView === 'cart' ? (
+				<CartPage artworks={cartArtworks} onGallery={() => navigate('gallery')} onRemove={(artworkId) => setCartArtworkIds((currentIds) => currentIds.filter((id) => id !== artworkId))} onCheckout={(artworkId) => setPurchaseArtworkId(artworkId)} />
+			) : showWallView ? (
 				<Gallery
 					data={data}
 					onOpenFeature={setFeatureArtworkId}
 					onExitWall={() => setShowWallView(false)}
-					isCovered={Boolean(featureArtwork || purchaseArtwork)}
+					isCovered={Boolean(featureArtwork || purchaseArtwork || isSearchOpen)}
 				/>
 			) : (
 				<HomePage
@@ -86,8 +128,8 @@ export function GalleryPage() {
 			{featureArtwork && (
 				<ArtworkPage
 					artwork={featureArtwork}
-					onStartPurchase={setPurchaseArtworkId}
-					isCovered={Boolean(purchaseArtwork)}
+					onAddToCart={addToCart}
+					isCovered={Boolean(purchaseArtwork || isSearchOpen)}
 					onBack={() => setFeatureArtworkId(null)}
 					onPrevious={() =>
 						setFeatureArtworkId(
@@ -102,6 +144,7 @@ export function GalleryPage() {
 				/>
 			)}
 			{purchaseArtwork && <PurchaseFlow artwork={purchaseArtwork} onClose={() => setPurchaseArtworkId(null)} />}
+			{isSearchOpen && <ArtworkSearch artworks={data.artworks} onClose={() => setIsSearchOpen(false)} onSelectArtwork={(artworkId) => { setIsSearchOpen(false); setMainView('gallery'); setFeatureArtworkId(artworkId); }} />}
 		</>
 	);
 }

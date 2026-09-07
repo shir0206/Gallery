@@ -4,7 +4,6 @@ import "./ArtworkOverview.css";
 
 interface ArtworkOverviewProps {
   artwork: Artwork;
-  onBack?: () => void;
 }
 function DetailCrop({ artwork, index }: { artwork: Artwork; index: number }) {
   return (
@@ -23,7 +22,7 @@ function ArtworkFacts({ artwork }: { artwork: Artwork }) {
   return (
     <>
       <p className="overview-technical">
-        Original {artwork.medium.toLowerCase()} · {dimensions} · {artwork.year}.
+        {artwork.description.materials}
       </p>
       <dl className="overview-metadata">
         <div>
@@ -53,7 +52,7 @@ function ArtworkFacts({ artwork }: { artwork: Artwork }) {
   );
 }
 
-export function ArtworkOverview({ artwork, onBack }: ArtworkOverviewProps) {
+export function ArtworkOverview({ artwork }: ArtworkOverviewProps) {
   if (artwork.orientation !== "portrait") {
     return (
       <section
@@ -62,11 +61,6 @@ export function ArtworkOverview({ artwork, onBack }: ArtworkOverviewProps) {
         aria-labelledby="artwork-title"
       >
         <div className="overview-information">
-          {onBack && (
-            <button className="overview-back" type="button" onClick={onBack}>
-              ← <span>Gallery</span>
-            </button>
-          )}
           <div className="overview-copy">
             <h1 id="artwork-title">{artwork.title}</h1>
             <p className="overview-description">
@@ -122,11 +116,6 @@ export function ArtworkOverview({ artwork, onBack }: ArtworkOverviewProps) {
         />
       </div>
       <div className="overview-information">
-        {onBack && (
-          <button className="overview-back" type="button" onClick={onBack}>
-            ← <span>Gallery</span>
-          </button>
-        )}
         <div className="overview-copy">
           <h1 id="artwork-title">{artwork.title}</h1>
           <p className="overview-description">

@@ -46,9 +46,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Painted silhouette with rough blue, ochre, green, and yellow pigment on a textured ground.",
+        "Rough pigments painted on textured ground.",
       visual:
-        "Deep blue, mossy green, and glowing yellow contrast the figure with the light behind it.",
+        "Glowing colors silhouette the central figure.",
       inspiration:
         "A person steps into the night carrying private hope that darkness cannot quite swallow.",
     },
@@ -88,9 +88,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Fine pencil-like lines, soft gray shading, pale paper, and small warmer accents.",
+        "Fine pencil shading on pale paper.",
       visual:
-        "The face emerges quietly, with a restrained, almost photographic surface and an intimate expression.",
+        "A quiet face emerges with intimacy.",
       inspiration:
         "The figure feels caught between being observed and observing, about closeness, silence, and fragile distance.",
     },
@@ -125,9 +125,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Pencil and soft watercolor-like color on smooth pale paper, with fine drawn lines.",
+        "Pencil and watercolor on smooth paper.",
       visual:
-        "Soft yellows, greens, pinks, and muted violets move through long strands of hair.",
+        "Pastel colors flow through windswept hair.",
       inspiration:
         "A woman lets the wind rearrange her thoughts, turning movement into a quiet form of freedom.",
     },
@@ -162,9 +162,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Acrylic or gouache-like brushwork on a matte ground, with pale figure and red dress.",
+        "Acrylic brushwork layered across matte ground.",
       visual:
-        "Charcoal black, dusty flesh tones, and muted coral create a dramatic, theatrical atmosphere.",
+        "Muted coral and charcoal evoke theater.",
       inspiration:
         "A dancer waits alone before a performance, holding her breath with the promise of movement.",
     },
@@ -196,9 +196,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "A small metal cup or ring rests on a granular pale surface with warm shadows.",
+        "Metal form rests on granular ground.",
       visual:
-        "Warm ochre, brown, cream, and graphite-like shadows create a quiet still life.",
+        "Warm earth tones shape quiet stillness.",
       inspiration:
         "Two people raise a simple toast, celebrating the small pleasure of being together.",
     },
@@ -233,9 +233,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Layered acrylic-like color across a painted surface, with broad strokes in pink, violet, orange, blue, and yellow.",
+        "Layered acrylic sweeps across painted surface.",
       visual:
-        "A tiny figure stands beneath a luminous sky of soft horizontal color bands.",
+        "Luminous color bands dwarf one figure.",
       inspiration:
         "Standing alone beneath an enormous evening makes solitude feel less like emptiness and more like possibility.",
     },
@@ -270,9 +270,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Grainy acrylic or mixed-media marks on paper or canvas, with rough golden strokes.",
+        "Grainy mixed media with golden strokes.",
       visual:
-        "Deep blue and black surround a figure while golden marks glow near the ground.",
+        "Darkness surrounds a softly glowing figure.",
       inspiration:
         "A figure walks into the last minutes of day, carrying uncertainty between hope and loss.",
     },
@@ -307,9 +307,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Loose acrylic-like strokes in red, coral, gray, and white on a painted ground.",
+        "Loose acrylic strokes cross painted ground.",
       visual:
-        "Two dancers twist through the surface while pale marks resemble falling notes or sparks.",
+        "Dancers twist beneath falling musical sparks.",
       inspiration:
         "Music becomes physical as a couple finds a shared rhythm for one brief moment.",
     },
@@ -348,9 +348,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Pencil contours, pale yellow and ochre material, and layered paper create the tree and hand.",
+        "Pencil and ochre layer on paper.",
       visual:
-        "Muted earth colors and white paper keep the scene quiet, like fragments from an old notebook.",
+        "Earth tones suggest forgotten notebook fragments.",
       inspiration:
         "Love is something we cultivate rather than possess, carefully passed from one pair of hands.",
     },
@@ -385,9 +385,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Graphite on grainy paper, with soft erased areas creating the cloud around the house.",
+        "Graphite and erasure shape grainy paper.",
       visual:
-        "Smoky grays, whites, and black accents make the house feel dreamlike and distant.",
+        "Smoky shadows make home feel distant.",
       inspiration:
         "The piece searches for home in memory, where a familiar place survives after we change.",
     },
@@ -422,9 +422,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Broad acrylic-like strokes in scarlet and crimson on a white and dark ground.",
+        "Broad crimson acrylic strokes slash ground.",
       visual:
-        "A vivid red form dominates the composition with loose, expressive edges.",
+        "Vivid red dominates with expressive edges.",
       inspiration:
         "Red becomes an emotional current moving through the figure, expressing passion that refuses to stay contained.",
     },
@@ -462,9 +462,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Rough graphite and soft erased areas sit in a pale, granular sugar-like field.",
+        "Rough graphite crosses a granular field.",
       visual:
-        "White, beige, and smoky gray create a dry, tactile contrast around the darker pencil marks.",
+        "Pale textures contrast darker pencil marks.",
       inspiration:
         "Burying one's head becomes a small story about avoiding an uncomfortable world.",
     },
@@ -499,9 +499,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Expressive graphite on textured paper, with darker strokes defining the guitar and softer clothing shadows.",
+        "Expressive graphite layered on textured paper.",
       visual:
-        "The monochrome palette creates a quiet, intimate atmosphere like a song heard late at night.",
+        "Monochrome shadows evoke a midnight song.",
       inspiration:
         "Music becomes visible in her posture as she disappears into the rhythm she is making.",
     },
@@ -536,9 +536,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Watercolor-like washes and sharper pen contours create the face on pale paper.",
+        "Watercolor washes meet sharp pen contours.",
       visual:
-        "Warm skin tones and saturated red lips contrast with darker hair and the pale ground.",
+        "Red lips punctuate warm facial tones.",
       inspiration:
         "The piece feels like a confession held behind closed lips, with a voice present before words.",
     },
@@ -573,9 +573,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Fine colored-pencil or pen marks outline two hands on a light, clean surface.",
+        "Colored pencil outlines hands on paper.",
       visual:
-        "Muted reds, oranges, and yellows create a warm atmosphere around the meeting hands.",
+        "Warm colors gather around meeting hands.",
       inspiration:
         "A quiet promise passes between friends: nothing grand, just reassurance that someone is still there.",
     },
@@ -610,9 +610,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Fine graphite, soft facial shading, and grainy paper create a traditional studio drawing.",
+        "Fine graphite shades subtly grainy paper.",
       visual:
-        "Black, white, and smoky grays create a calm, glamorous atmosphere centered on the expression.",
+        "Smoky monochrome frames a glamorous expression.",
       inspiration:
         "The portrait shows the person behind the familiar image, revealing a fleeting human moment.",
     },
@@ -647,9 +647,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Watercolor and colored-pencil-like marks decorate a folding fan on paper.",
+        "Watercolor and pencil decorate folded paper.",
       visual:
-        "Peach and coral segments carry delicate floral details with a dry, handmade surface.",
+        "Coral panels carry delicate floral details.",
       inspiration:
         "Beauty is something to hold, open, admire, and then gently fold away.",
     },
@@ -693,9 +693,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Pencil-like silhouettes and mixed-media marks build the figure, landscape, birds, branches, and musical imagery.",
+        "Pencil and mixed media build silhouettes.",
       visual:
-        "Soft grays and black sit against pale blues and warm sunset tones, creating nostalgia.",
+        "Sunset tones mingle with nostalgic shadows.",
       inspiration:
         "Music remains as daylight fades, carrying the landscape into night like a final song.",
     },
@@ -730,9 +730,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Broad, slightly rough acrylic-like strokes paint birds, grass, plants, and sky on paper or canvas.",
+        "Rough acrylic strokes paint natural forms.",
       visual:
-        "Warm orange-yellow sunset contrasts with an almost-black foreground, making the image feel fleeting.",
+        "Golden sunset meets a dark foreground.",
       inspiration:
         "The sun goes down, birds leave, and freedom becomes a direction rather than a destination.",
     },
@@ -770,9 +770,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "A handmade metal ring rests on a pale sandy surface, catching a narrow band of warm light.",
+        "Handmade metal rests on sandy ground.",
       visual:
-        "Ochre, bronze, cream, and soft gray create a restrained still-life atmosphere.",
+        "Bronze and cream create restrained stillness.",
       inspiration:
         "The ring is at the beginning of its life, waiting for someone to give it meaning.",
     },
@@ -807,9 +807,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Thick acrylic-like color covers the books and background, with lighter painted highlights.",
+        "Thick acrylic covers books and background.",
       visual:
-        "Purple and mauve shadows create an illustrated dream where the fairy seems almost weightless.",
+        "Mauve shadows suspend a weightless fairy.",
       inspiration:
         "Imagination turns forgotten books into a kingdom, with a resting fairy guarding its stories.",
     },
@@ -844,9 +844,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Acrylic-like painted designs cover the white shoes, with bright colors on a dark ground.",
+        "Bright acrylic designs cover white shoes.",
       visual:
-        "Blues, pinks, yellows, and purples turn an everyday object into a lively wearable painting.",
+        "Vivid colors transform everyday footwear playfully.",
       inspiration:
         "The shoes suggest that identity can grow from ordinary things, one personal mark at a time.",
     },
@@ -881,9 +881,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Delicate graphite on white paper uses fine hair strokes and soft facial shading.",
+        "Delicate graphite shades clean white paper.",
       visual:
-        "The monochrome palette makes the child's expression stark and vulnerable against untouched paper.",
+        "Monochrome isolates the child's vulnerable expression.",
       inspiration:
         "The piece shows the helpless honesty of a child whose feelings are too large to hide.",
     },
@@ -918,9 +918,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Loose pencil outlines and dense red pigment create a dress against a pale background.",
+        "Pencil and dense pigment shape fabric.",
       visual:
-        "Crimson fabric feels tactile and collage-like, with bold folds standing out from the delicate sketch.",
+        "Crimson folds command the delicate sketch.",
       inspiration:
         "A woman moves through silence like a sudden flare of emotion, carrying confidence, danger, and beauty.",
     },
@@ -955,9 +955,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Pencil lines meet rough yellow-beige material resembling sand or granular paper.",
+        "Pencil meets rough sandlike paper texture.",
       visual:
-        "Ochre, cream, graphite, and muted brown create a dry, tactile atmosphere.",
+        "Earthy tones create a dry tactility.",
       inspiration:
         "A hand tries to hold something impossible, reflecting on love, impermanence, and traces left behind.",
     },
@@ -992,9 +992,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Layered graphite strokes on rough paper build fur, shadows, and the wolves' bodies.",
+        "Layered graphite builds fur and shadows.",
       visual:
-        "The monochrome palette creates a quiet winter atmosphere, like an old field notebook.",
+        "Monochrome wolves inhabit quiet winter stillness.",
       inspiration:
         "The wolves feel protective rather than threatening, sharing warmth in a world that seems cold.",
     },
@@ -1029,9 +1029,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Delicate pencil marks and soft colored accents leave plenty of pale paper around the buds.",
+        "Delicate pencil accents bloom across paper.",
       visual:
-        "Gentle pinks, greens, and grays create a restrained spring atmosphere like a botanical study.",
+        "Gentle colors suggest a botanical spring.",
       inspiration:
         "The piece shows a beginning too small to announce itself, holding a quiet promise before opening.",
     },
@@ -1066,9 +1066,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Pen and colored marks sketch a heart and anatomical forms on white paper.",
+        "Pen and color sketch anatomical forms.",
       visual:
-        "Pink, red, blue, and black lines overlap like layers of thought, mixing clinical and emotional moods.",
+        "Overlapping lines blend emotion with anatomy.",
       inspiration:
         "Breathing, loving, and surviving become physical acts carried by the same fragile organ.",
     },
@@ -1103,9 +1103,9 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
     status: "published",
     description: {
       materials:
-        "Broad graphite strokes on textured paper build the woman, horse, mane, and surrounding scene.",
+        "Broad graphite shapes figures on paper.",
       visual:
-        "A muted gray palette creates a spacious, cinematic atmosphere as the figures move forward.",
+        "Muted figures advance through cinematic space.",
       inspiration:
         "The journey has no fixed destination, only a quiet decision to keep moving when the road is unclear.",
     },

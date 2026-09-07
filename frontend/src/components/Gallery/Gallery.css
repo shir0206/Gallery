@@ -1,8 +1,12 @@
 .gallery {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 72px);
   overflow: hidden;
+}
+
+@media (max-width: 800px) {
+  .gallery { height: calc(100vh - 64px); }
 }
 
 /* Applied while a feature spread is open on top of the wall — it stays

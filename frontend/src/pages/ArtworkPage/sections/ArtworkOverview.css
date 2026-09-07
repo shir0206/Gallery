@@ -1,11 +1,11 @@
 .artwork-overview {
-  width: 100%; height: 100svh; min-height: 680px;
+  width: 100%; height: calc(100vh - var(--editorial-header-height, 72px)); min-height: 0;
   padding-bottom: 100px;
   display: grid; grid-template-columns: 10.5vw 4vw minmax(0, 55vw) minmax(290px, 1fr);
   overflow: hidden; background: var(--editorial-paper-bg-raised);
 }
-.editorial-header + .artwork-page-content .artwork-overview[data-orientation="portrait"] { height: calc(100svh - 72px); min-height: 608px; }
-.editorial-header + .artwork-page-content .artwork-overview[data-orientation="landscape"] { height: calc(100svh - 72px); min-height: 608px; }
+.editorial-header + .artwork-page-content .artwork-overview[data-orientation="portrait"] { height: calc(100vh - var(--editorial-header-height, 72px)); min-height: 0; }
+.editorial-header + .artwork-page-content .artwork-overview[data-orientation="landscape"] { height: calc(100vh - var(--editorial-header-height, 72px)); min-height: 0; }
 .overview-crops { display: grid; grid-template-rows: repeat(4, 1fr); gap: 7px; min-width: 0; overflow: hidden; background: var(--editorial-paper-bg-raised); }
 .overview-crop { position: relative; min-height: 0; overflow: hidden; background: var(--editorial-paper-deep); }
 .overview-crop-image {
@@ -54,7 +54,7 @@
   .overview-description { font-size: 17px; }
 }
 @media (max-width: 639px) {
-  .artwork-overview { position: relative; height: auto; min-height: 100svh; display: flex; flex-wrap: wrap; overflow: visible; }
+  .artwork-overview { position: relative; height: calc(100vh - var(--editorial-header-height, 64px)); min-height: 0; display: flex; flex-wrap: wrap; overflow: auto; }
   .overview-crops { order: 2; width: 100%; height: 82px; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr; gap: 5px; }
   .overview-detail-label { display: none; }
   .overview-main-art { order: 1; width: 100%; height: 64svh; margin: 0; }
@@ -66,17 +66,17 @@
 }
 @media (max-width: 800px) {
   .editorial-header + .artwork-page-content .artwork-overview[data-orientation="portrait"],
-  .editorial-header + .artwork-page-content .artwork-overview[data-orientation="landscape"] { height: calc(100svh - 64px); }
+  .editorial-header + .artwork-page-content .artwork-overview[data-orientation="landscape"] { height: calc(100vh - var(--editorial-header-height, 64px)); }
 }
 @media (max-width: 800px) and (min-width: 640px) {
-  .editorial-header + .artwork-page-content .artwork-overview[data-orientation="portrait"] { height: calc(100svh - 64px); }
+  .editorial-header + .artwork-page-content .artwork-overview[data-orientation="portrait"] { height: calc(100vh - var(--editorial-header-height, 64px)); }
 }
 @media (prefers-reduced-motion: reduce) { .overview-rule { animation: none; } .overview-crop-image { transition: none; } }
 
 /* The reference-inspired crop rail is portrait-only. Landscape work keeps
    the original catalogue overview and horizontal detail strip. */
 .artwork-overview[data-orientation="landscape"] {
-  width: 100%; max-width: none; height: 100svh; min-height: 680px; margin: 0;
+  width: 100%; max-width: none; height: calc(100vh - var(--editorial-header-height, 72px)); min-height: 0; margin: 0;
   padding: 22px clamp(28px,2.4vw,42px) 100px;
   display: grid; grid-template-columns: minmax(0,3fr) minmax(300px,1fr); gap: clamp(42px,4vw,70px);
   overflow: visible; background: transparent;
@@ -114,7 +114,7 @@
 
 @media (max-width: 639px) {
   .editorial-header + .artwork-page-content .artwork-overview[data-orientation="portrait"],
-  .editorial-header + .artwork-page-content .artwork-overview[data-orientation="landscape"] { height: auto; min-height: 100svh; }
+  .editorial-header + .artwork-page-content .artwork-overview[data-orientation="landscape"] { height: calc(100vh - var(--editorial-header-height, 64px)); min-height: 0; }
   .artwork-overview[data-orientation="landscape"] .overview-main-art { height: auto; overflow: visible; }
   .artwork-overview[data-orientation="landscape"] .overview-main-art img { width: 100%; height: auto; object-fit: contain; }
   .artwork-overview[data-orientation="landscape"] .overview-visual { width: 100%; margin-inline: 0; }

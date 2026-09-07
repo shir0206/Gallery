@@ -13,6 +13,7 @@
 .home-page-header {
   max-width: 1280px;
   margin: 0 auto 40px;
+  padding: 16px 0;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -154,6 +155,7 @@
 
   .home-page-header {
     margin-bottom: 28px;
+    padding: 12px 0;
   }
 
   .home-page-title {

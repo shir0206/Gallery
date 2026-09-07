@@ -1,5 +1,5 @@
 import type { Artwork } from '@/types/artwork';
-import { formatPrice } from '@/utils';
+import { formatArtworkDimensions, formatPrice } from '@/utils';
 import { getAcquisitionState, getArtworkCurrency, getEffectivePrice, getOfferDetails } from '@/utils/commerce';
 import { ConfidenceStrip } from '@/components/Commerce/ConfidenceStrip/ConfidenceStrip';
 import roomLandscape from '@/assets/room-landscape.webp';
@@ -10,10 +10,10 @@ import './DetailsSection.css';
 
 interface DetailsSectionProps {
   artwork: Artwork;
-  onStartPurchase: (artworkId: string) => void;
+  onAddToCart: (artworkId: string) => void;
 }
 
-export function DetailsSection({ artwork, onStartPurchase }: DetailsSectionProps) {
+export function DetailsSection({ artwork, onAddToCart }: DetailsSectionProps) {
   const price = getEffectivePrice(artwork);
   const offer = getOfferDetails(artwork);
   const state = getAcquisitionState(artwork);
@@ -21,18 +21,26 @@ export function DetailsSection({ artwork, onStartPurchase }: DetailsSectionProps
   const canPurchase = state === 'available';
   const showCommerce = state !== 'hidden' && price !== null;
   const isPortrait = artwork.orientation === 'portrait';
+  const dimensions = formatArtworkDimensions(
+    artwork.dimensions.width,
+    artwork.dimensions.height,
+    artwork.dimensions.unit
+  );
 
   return (
     <section className="details-section" aria-labelledby="acquisition-title" data-orientation={artwork.orientation}>
       <picture className="details-room" aria-hidden="true">
         <source media="(max-width: 639px)" srcSet={isPortrait ? mobileRoomPortrait : mobileRoomLandscape} />
         <img src={isPortrait ? roomPortrait : roomLandscape} alt="" />
+        <img src={artwork.imageUrl} alt="" className="details-room-artwork" />
       </picture>
-      <img src={artwork.imageUrl} alt="" className="details-room-artwork" />
       <div className="acquisition-panel">
         <h2 id="acquisition-title">Bring that feeling at your home</h2>
         <span className="acquisition-rule" aria-hidden="true" />
         <p className="overview-description acquisition-artwork-title">{artwork.title}</p>
+        <p className="overview-technical">
+          Original {artwork.medium.toLowerCase()} · {dimensions}.
+        </p>
         {showCommerce && (
           <div className="acquisition-offer">
             {offer && (
@@ -43,7 +51,7 @@ export function DetailsSection({ artwork, onStartPurchase }: DetailsSectionProps
             )}
             <strong>{formatPrice(price, currency)}</strong>
             {canPurchase ? (
-              <button type="button" onClick={() => onStartPurchase(artwork.id)}>
+              <button type="button" onClick={() => onAddToCart(artwork.id)}>
                 <span>Add to collection</span><span aria-hidden="true">→</span>
               </button>
             ) : (
