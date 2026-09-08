@@ -1,7 +1,11 @@
 .artwork-page {
   position: fixed;
   inset: 72px 0 0;
-  z-index: auto;
+  /* Above the transformed gallery camera (z:1), but below checkout,
+     search, and the sticky header (z:50/60/100). Without an explicit
+     layer the feature sections scroll behind the camera and appear
+     blank after opening a painting. */
+  z-index: 20;
   background: transparent;
   color: var(--editorial-ink);
 }

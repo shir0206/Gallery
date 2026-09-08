@@ -3,6 +3,17 @@
   width: 100%;
   height: calc(100vh - 72px);
   overflow: hidden;
+  /* A stationary continuation of the plaster wall. During the artwork
+     camera zoom its transformed top edge can move away from the fixed
+     light strip; this matching layer keeps wall attached to the light
+     instead of exposing the page background through that opening. */
+  background:
+    radial-gradient(ellipse 17% 110% at 7% 5%, rgba(255,247,228,.48) 0%, rgba(255,234,203,.24) 30%, rgba(255,222,186,.08) 56%, transparent 78%),
+    radial-gradient(ellipse 19% 112% at 30% 5%, rgba(255,247,228,.48) 0%, rgba(255,235,205,.22) 32%, transparent 76%),
+    radial-gradient(ellipse 20% 114% at 52% 5%, rgba(255,248,231,.49) 0%, rgba(255,237,212,.22) 34%, transparent 77%),
+    radial-gradient(ellipse 21% 114% at 75% 5%, rgba(255,249,233,.52) 0%, rgba(255,239,216,.22) 34%, transparent 77%),
+    radial-gradient(ellipse 19% 110% at 97% 5%, rgba(255,248,232,.45) 0%, rgba(255,236,210,.19) 34%, transparent 77%),
+    linear-gradient(90deg, #c7aa8e 0%, #ceb297 17%, #d7c0a7 47%, #d8c3ad 76%, #cfb49a 100%);
 }
 
 @media (max-width: 800px) {
@@ -20,7 +31,8 @@
   display: none;
 }
 
-.gallery-camera { position:absolute;inset:0;z-index:0; }
+.gallery-camera { position:absolute;inset:0;z-index:1; }
+.gallery-light-strip{position:absolute;z-index:4;inset:0 0 auto;height:4px;pointer-events:none;background:#fffaf0;box-shadow:0 0 5px rgba(255,251,240,1),0 0 14px rgba(255,228,191,.95),0 9px 28px rgba(255,206,144,.38)}
 .gallery-camera-surface{position:absolute;inset:-100vmax;z-index:0;background:var(--editorial-paper-bg-raised);opacity:0;pointer-events:none}
 
 /* One wrapper owns the room and complete artwork wall. A single matrix
@@ -29,6 +41,12 @@
   transform:translate(var(--gallery-camera-x,0),var(--gallery-camera-y,0)) scale(var(--gallery-camera-scale,1));
   transform-origin:0 0;
   transition:transform 1.8s cubic-bezier(.65,0,.35,1),opacity .4s ease;
+  will-change:transform;
+}
+.gallery[data-transition-phase]:not([data-transition-phase="idle"]) > .gallery-background {
+  transform:translateX(var(--gallery-camera-x,0)) scale(var(--gallery-camera-scale,1));
+  transform-origin:0 0;
+  transition:transform 1.8s cubic-bezier(.65,0,.35,1);
   will-change:transform;
 }
 .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .artwork-viewer {
@@ -42,17 +60,21 @@
   transform:translate(var(--gallery-camera-x,0),var(--gallery-camera-y,0)) scale(var(--gallery-camera-scale,1));
   transition:none;
 }
+.gallery[data-transition-phase="ready"] > .gallery-background {
+  transform:translateX(var(--gallery-camera-x,0)) scale(var(--gallery-camera-scale,1));
+  transition:none;
+}
 .gallery[data-transition-phase="ready"] .gallery-camera-surface { opacity:var(--shared-surface-in,0); }
 .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .artwork-title-label{opacity:0!important}
-.gallery[data-transition-phase="ready"] .artwork-viewer-track{
-  /* The selected wall image travels to the editorial slot during
-     scroll. Its original horizontal scroller must not crop that
-     transformed element once it leaves the old frame position. */
+.gallery[data-transition-phase]:not([data-transition-phase="idle"]) .artwork-viewer-track{
+  /* Freeze the row from the first camera frame. Waiting until ready
+     left the native scroller moving underneath the zoom, so momentum
+     or an in-flight smooth scroll changed the painting's source
+     position and caused a visible jump at the handoff. */
   overflow:visible;
-  /* `overflow:visible` removes this element's horizontal scrolling
-     state. Reapply the exact pre-transition scroll offset so the row —
-     and therefore the selected painting — does not jump back to its
-     natural unscrolled position at the title/ready handoff. */
+  /* overflow:visible removes the element's horizontal scrolling state.
+     Reapply the exact offset captured before the transition so the row
+     remains pixel-aligned while the camera and wall zoom. */
   transform:translateX(var(--wall-scroll-offset,0px));
 }
 
@@ -81,6 +103,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .gallery-camera { transition:opacity .2s ease; }
+  .gallery[data-transition-phase]:not([data-transition-phase="idle"]) > .gallery-background { transition:none; }
 }
 
 /* Bare text control, matching the wall's understated visual language

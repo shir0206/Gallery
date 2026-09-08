@@ -16,12 +16,13 @@ interface EditorialHeaderProps {
   onPrevious?: () => void;
   onNext?: () => void;
   isArtworkNavigationDisabled?: boolean;
+  isGalleryWall?: boolean;
 }
 
-export function EditorialHeader({ artwork, onGallery, onAbout, onContact, onCart, cartCount, onSearch, onPrevious, onNext, isArtworkNavigationDisabled=false }: EditorialHeaderProps) {
+export function EditorialHeader({ artwork, onGallery, onAbout, onContact, onCart, cartCount, onSearch, onPrevious, onNext, isArtworkNavigationDisabled=false, isGalleryWall=false }: EditorialHeaderProps) {
   let isSaved = false;
   try { isSaved = artwork ? window.localStorage.getItem(`shir-gallery:favorites:${artwork.id}`) === 'true' : false; } catch { /* optional storage */ }
-  return <header className="editorial-header">
+  return <header className={`editorial-header${isGalleryWall ? ' editorial-header-gallery-wall' : ''}`}>
     <button type="button" className="editorial-brand" aria-label="Go to gallery" onClick={onGallery}><span>SZ</span><small>Shir Zabolotny<br/>Artworks</small></button>
     <nav className="editorial-primary-nav" aria-label="Primary navigation">
       <button type="button" onClick={onGallery}>Gallery</button>

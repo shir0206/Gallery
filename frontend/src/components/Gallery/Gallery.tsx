@@ -128,10 +128,12 @@ export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, tr
       data-scroll-progress={Math.round(scrollProgress)}
       aria-hidden={isCovered || undefined}
     >
+      {/* The room zooms with the camera horizontally, but remains outside
+          its vertical movement so its top stays attached to the light. */}
+      <GalleryBackground environment={environment} />
       <div className="gallery-camera" onTransitionEnd={(event) => {
         if (event.target === event.currentTarget && event.propertyName === 'transform') onCameraSettled?.();
       }}>
-        <GalleryBackground environment={environment} />
         <div className="gallery-camera-surface" aria-hidden="true" />
         <ArtworkViewer
           artworks={artworks}
@@ -144,6 +146,9 @@ export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, tr
           transitionPhase={transitionPhase}
         />
       </div>
+      {/* Kept outside `.gallery-camera` so the architectural light stays
+          attached to the header while the room zooms into an artwork. */}
+      <div className="gallery-light-strip" role="presentation" aria-hidden="true" />
       {onExitWall && (
         <button type="button" className="gallery-exit-button" onClick={onExitWall}>
           ← Grid view

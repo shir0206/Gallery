@@ -227,6 +227,7 @@ export function GalleryPage() {
 				onPrevious={featureArtwork ? () => browseArtwork(getAdjacentId(data.artworks, featureArtwork.id, 'previous'), 'previous') : undefined}
 				onNext={featureArtwork ? () => browseArtwork(getAdjacentId(data.artworks, featureArtwork.id, 'next'), 'next') : undefined}
 				isArtworkNavigationDisabled={isBrowseTransitioning}
+				isGalleryWall={location.pathname === '/'}
 			/>
 			<Routes>
 				<Route path="/" element={<Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered={Boolean(featureArtwork || isPurchaseOpen || isSearchOpen)} transitionArtworkId={transitionArtworkId} transitionPhase={transitionPhase} onCameraSettled={handleCameraSettled} />} />
