@@ -159,6 +159,14 @@
   user-select: none;
 }
 
+/* The wall keeps its natural hanging shadow, but the same image becomes a
+   clean editorial plate once the artwork page covers the gallery. */
+.gallery-covered .artwork-viewer-image,
+.gallery-covered[data-transition-phase="title"] .artwork-viewer-frame-transition-target .artwork-viewer-image,
+.gallery-covered[data-transition-phase="ready"] .artwork-viewer-frame-transition-target .artwork-viewer-image {
+  box-shadow: none;
+}
+
 @media (max-width: 768px) {
   .artwork-viewer-frame[data-orientation="portrait"] .artwork-viewer-image {
     max-height: 40vw;

@@ -43,7 +43,7 @@
   transition:none;
 }
 .gallery[data-transition-phase="ready"] .gallery-camera-surface { opacity:var(--shared-surface-in,0); }
-.gallery[data-transition-phase]:not([data-transition-phase="idle"]) .artwork-purchase-cta{opacity:0!important;pointer-events:none!important}
+.gallery[data-transition-phase]:not([data-transition-phase="idle"]) .artwork-title-label{opacity:0!important}
 .gallery[data-transition-phase="ready"] .artwork-viewer-track{
   /* The selected wall image travels to the editorial slot during
      scroll. Its original horizontal scroller must not crop that

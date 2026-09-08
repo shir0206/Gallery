@@ -42,9 +42,9 @@ export function useScrollPresentation(ref: RefObject<HTMLElement>, enabled = tru
         const imageRatio = sharedStart.width / sharedStart.height;
         const slotRatio = slot.width / Math.max(1, slot.height);
         const fittedWidth = slotRatio > imageRatio ? slot.height * imageRatio : slot.width;
-        const fittedHeight = slotRatio > imageRatio ? slot.height : slot.width / imageRatio;
-        const targetLeft = slot.left + (slot.width - fittedWidth) / 2;
-        const targetTop = slot.top + (slot.height - fittedHeight) / 2;
+        const isPortrait = track.dataset.orientation === "portrait";
+        const targetLeft = isPortrait ? slot.left : slot.left + (slot.width - fittedWidth) / 2;
+        const targetTop = slot.top;
         const settle = range(progress, .035, .29);
         const eased = 1 - Math.pow(1 - settle, 3);
         const desiredLeft = sharedStart.left + (targetLeft - sharedStart.left) * eased;

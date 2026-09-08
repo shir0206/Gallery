@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Artwork } from "../../../types/artwork";
 import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
-import { ArtworkPurchaseCta } from "./ArtworkPurchaseCta/ArtworkPurchaseCta";
+import { ArtworkTitleLabel } from "./ArtworkTitleLabel/ArtworkTitleLabel";
 import "./ArtworkViewer.css";
 
 /** Reported on every scroll tick so the parent can drive a progress
@@ -371,7 +371,7 @@ export function ArtworkViewer({
                     loading="lazy"
                   />
                 )}
-                <ArtworkPurchaseCta artwork={artwork} />
+                <ArtworkTitleLabel artwork={artwork} />
               </div>
             </div>
           );
