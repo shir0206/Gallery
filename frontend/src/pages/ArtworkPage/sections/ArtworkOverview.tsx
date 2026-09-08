@@ -5,7 +5,7 @@ import { useScrollPresentation } from "./useScrollPresentation";
 import "./ArtworkOverview.css";
 
 type TransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready';
-interface ArtworkOverviewProps { artwork: Artwork; transitionPhase?: TransitionPhase; usesSharedArtwork?: boolean }
+interface ArtworkOverviewProps { artwork: Artwork; transitionPhase?: TransitionPhase; usesSharedArtwork?: boolean; browseDirection?: 'previous' | 'next' | null; onIntroReady?: () => void }
 
 function orientationFromImage(artwork: Artwork): Artwork['orientation'] {
   if (typeof document === 'undefined') return artwork.orientation;
@@ -31,28 +31,40 @@ function ArtworkFacts({ artwork }: { artwork: Artwork }) {
   </dl></div>;
 }
 
-export function ArtworkOverview({ artwork, transitionPhase='ready', usesSharedArtwork=false }: ArtworkOverviewProps) {
+export function ArtworkOverview({ artwork, transitionPhase='ready', usesSharedArtwork=false, browseDirection=null, onIntroReady }: ArtworkOverviewProps) {
   const trackRef = useRef<HTMLElement>(null);
   // When the feature opens from the wall, its source image is already loaded.
   // Read that ratio during the first render so shared-transition geometry does
   // not move after the animation has started. Direct routes fall back to the
   // catalogue value and reconcile when their own image finishes loading.
   const [layoutOrientation, setLayoutOrientation] = useState(() => orientationFromImage(artwork));
+  const [layoutShape, setLayoutShape] = useState<'square' | 'oblong'>(() => {
+    const ratio = artwork.dimensions.width / Math.max(1, artwork.dimensions.height);
+    return ratio >= .88 && ratio <= 1.12 ? 'square' : 'oblong';
+  });
+  const [imageStatus, setImageStatus] = useState<'loading' | 'ready' | 'error'>(usesSharedArtwork ? 'ready' : 'loading');
   const syncLayoutOrientation = (image: HTMLImageElement) => {
     if (!image.naturalWidth || !image.naturalHeight) return;
-    setLayoutOrientation(image.naturalWidth >= image.naturalHeight ? 'landscape' : 'portrait');
+    const ratio = image.naturalWidth / image.naturalHeight;
+    setLayoutOrientation(ratio >= 1 ? 'landscape' : 'portrait');
+    setLayoutShape(ratio >= .88 && ratio <= 1.12 ? 'square' : 'oblong');
   };
   useScrollPresentation(trackRef, transitionPhase === 'ready');
   const titleWords = useMemo(() => artwork.title.trim().split(/\s+/), [artwork.title]);
-  return <section ref={trackRef} className="artwork-presentation-track" data-orientation={layoutOrientation} data-transition-phase={transitionPhase} data-shared-artwork={usesSharedArtwork || undefined} aria-labelledby="artwork-title">
+  const settleImage = (image: HTMLImageElement) => {
+    syncLayoutOrientation(image);
+    void image.decode().then(() => { setImageStatus('ready'); onIntroReady?.(); }).catch(() => { setImageStatus('error'); onIntroReady?.(); });
+  };
+  return <section ref={trackRef} className="artwork-presentation-track" data-orientation={layoutOrientation} data-shape={layoutShape} data-transition-phase={transitionPhase} data-shared-artwork={usesSharedArtwork || undefined} data-image-ready={imageStatus !== 'loading' || undefined} data-image-error={imageStatus === 'error' || undefined} data-browse-direction={browseDirection || undefined} aria-labelledby="artwork-title">
     <div className="artwork-overview">
       <div className="overview-atmosphere" aria-hidden="true"/>
       <div className="overview-intro-meta" aria-hidden="true"><strong>{artwork.artist}</strong><span>{artwork.title}, {artwork.year}</span></div>
       <div className="overview-cinematic-title" aria-hidden="true">{titleWords.map((word,index) => <span className="overview-title-mask" key={`${word}-${index}`} style={{ "--word-index": index } as CSSProperties}><span className="overview-title-word">{word}</span></span>)}</div>
+      <p className="overview-scroll-hint"><span>Scroll to explore</span><i aria-hidden="true">↓</i></p>
       <figure
         className="overview-main-art"
         style={{ "--artwork-ratio": `${artwork.dimensions.width} / ${artwork.dimensions.height}` } as CSSProperties}
-      >{!usesSharedArtwork && <img src={artwork.imageUrl} alt={`${artwork.title} by ${artwork.artist}`} onLoad={(event) => syncLayoutOrientation(event.currentTarget)}/>}</figure>
+      >{!usesSharedArtwork && <img src={artwork.imageUrl} alt={`${artwork.title} by ${artwork.artist}`} fetchPriority="high" onLoad={(event) => settleImage(event.currentTarget)} onError={() => { setImageStatus('error'); onIntroReady?.(); }}/>} {imageStatus === 'error' && <span className="overview-image-fallback" role="img" aria-label={`Image unavailable for ${artwork.title}`}>Artwork image unavailable</span>}</figure>
       <div className="overview-detail-label" aria-hidden="true"><span>Details</span><i/></div>
       <div className="overview-crops" aria-hidden="true">{[0,1,2,3].map(index => <DetailCrop artwork={artwork} index={index} key={index}/>)}</div>
       <div className="overview-information"><h1 id="artwork-title" className="overview-final-title">{artwork.title}</h1><p className="overview-description">{artwork.description.inspiration}</p><span className="overview-rule" aria-hidden="true"/><ArtworkFacts artwork={artwork}/></div>

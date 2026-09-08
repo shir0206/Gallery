@@ -15,6 +15,10 @@
 .gallery-covered {
   pointer-events: none;
 }
+.gallery-covered .gallery-navigation,
+.gallery-covered .gallery-exit-button {
+  display: none;
+}
 
 .gallery-camera { position:absolute;inset:0;z-index:0; }
 .gallery-camera-surface{position:absolute;inset:-100vmax;z-index:0;background:var(--editorial-paper-bg-raised);opacity:0;pointer-events:none}

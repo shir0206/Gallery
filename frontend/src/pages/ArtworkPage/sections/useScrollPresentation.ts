@@ -26,12 +26,12 @@ export function useScrollPresentation(ref: RefObject<HTMLElement>, enabled = tru
       }
       const artworkReveal = .58 + range(progress, 0, .18) * .42;
       const values = {
-        "--p": progress, "--surface-in": range(progress,.015,.16), "--title-in": 1, "--title-part": range(progress,.13,.29),
+		"--p": progress, "--opening": 1 - range(progress,0,.3), "--surface-in": range(progress,.015,.16), "--title-in": 1, "--title-part": range(progress,.05,.18),
         "--art-in": artworkReveal, "--art-settle": range(progress,.04,.26),
-        "--detail-1": range(progress,.26,.36), "--detail-2": range(progress,.32,.42),
-        "--detail-3": range(progress,.38,.48), "--detail-4": range(progress,.44,.54),
-        "--rail-in": range(progress,.42,.58), "--copy-in": range(progress,.54,.7),
-        "--facts-in": range(progress,.65,.82),
+		"--detail-1": range(progress,.2,.3), "--detail-2": range(progress,.26,.36),
+		"--detail-3": range(progress,.32,.42), "--detail-4": range(progress,.38,.48),
+		"--rail-in": range(progress,.28,.42), "--copy-in": range(progress,.4,.55),
+		"--facts-in": range(progress,.52,.7),
       };
       Object.entries(values).forEach(([name,value]) => track.style.setProperty(name, value.toFixed(4)));
       document.documentElement.style.setProperty('--shared-scroll', range(progress,.02,.27).toFixed(4));
