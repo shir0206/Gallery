@@ -24,7 +24,10 @@
 .artwork-page-content { min-height: 100%; }
 .direct-artwork-background { position:fixed; inset:72px 0 0; background:var(--editorial-paper-bg-raised); }
 .artwork-page-content > section { scroll-snap-stop: normal; }
-.artwork-page-content > section:first-child { scroll-snap-align: none; }
+.artwork-page-content > .artwork-presentation-track:first-child {
+  scroll-snap-align: end;
+  scroll-snap-stop: always;
+}
 .artwork-page-content > section:last-child { scroll-snap-align: end; }
 
 @media (max-width: 800px) {
