@@ -1,4 +1,4 @@
-import { useMemo, useRef, type CSSProperties } from "react";
+import { useMemo, useRef, useState, type CSSProperties } from "react";
 import type { Artwork } from "@/types/artwork";
 import { formatArtworkDimensions } from "@/utils";
 import { useScrollPresentation } from "./useScrollPresentation";
@@ -6,6 +6,17 @@ import "./ArtworkOverview.css";
 
 type TransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready';
 interface ArtworkOverviewProps { artwork: Artwork; transitionPhase?: TransitionPhase; usesSharedArtwork?: boolean }
+
+function orientationFromImage(artwork: Artwork): Artwork['orientation'] {
+  if (typeof document === 'undefined') return artwork.orientation;
+  const image = Array.from(document.images).find((candidate) =>
+    (candidate.currentSrc === artwork.imageUrl || candidate.src === artwork.imageUrl) &&
+    candidate.complete && candidate.naturalWidth > 0,
+  );
+  return image
+    ? image.naturalWidth >= image.naturalHeight ? 'landscape' : 'portrait'
+    : artwork.orientation;
+}
 
 function DetailCrop({ artwork, index }: { artwork: Artwork; index: number }) {
   return <div className={`overview-crop overview-crop-${index + 1}`}><img className="overview-crop-image" src={artwork.imageUrl} alt=""/></div>;
@@ -22,9 +33,18 @@ function ArtworkFacts({ artwork }: { artwork: Artwork }) {
 
 export function ArtworkOverview({ artwork, transitionPhase='ready', usesSharedArtwork=false }: ArtworkOverviewProps) {
   const trackRef = useRef<HTMLElement>(null);
+  // When the feature opens from the wall, its source image is already loaded.
+  // Read that ratio during the first render so shared-transition geometry does
+  // not move after the animation has started. Direct routes fall back to the
+  // catalogue value and reconcile when their own image finishes loading.
+  const [layoutOrientation, setLayoutOrientation] = useState(() => orientationFromImage(artwork));
+  const syncLayoutOrientation = (image: HTMLImageElement) => {
+    if (!image.naturalWidth || !image.naturalHeight) return;
+    setLayoutOrientation(image.naturalWidth >= image.naturalHeight ? 'landscape' : 'portrait');
+  };
   useScrollPresentation(trackRef, transitionPhase === 'ready');
   const titleWords = useMemo(() => artwork.title.trim().split(/\s+/), [artwork.title]);
-  return <section ref={trackRef} className="artwork-presentation-track" data-orientation={artwork.orientation} data-transition-phase={transitionPhase} data-shared-artwork={usesSharedArtwork || undefined} aria-labelledby="artwork-title">
+  return <section ref={trackRef} className="artwork-presentation-track" data-orientation={layoutOrientation} data-transition-phase={transitionPhase} data-shared-artwork={usesSharedArtwork || undefined} aria-labelledby="artwork-title">
     <div className="artwork-overview">
       <div className="overview-atmosphere" aria-hidden="true"/>
       <div className="overview-intro-meta" aria-hidden="true"><strong>{artwork.artist}</strong><span>{artwork.title}, {artwork.year}</span></div>
@@ -32,7 +52,7 @@ export function ArtworkOverview({ artwork, transitionPhase='ready', usesSharedAr
       <figure
         className="overview-main-art"
         style={{ "--artwork-ratio": `${artwork.dimensions.width} / ${artwork.dimensions.height}` } as CSSProperties}
-      >{!usesSharedArtwork && <img src={artwork.imageUrl} alt={`${artwork.title} by ${artwork.artist}`}/>}</figure>
+      >{!usesSharedArtwork && <img src={artwork.imageUrl} alt={`${artwork.title} by ${artwork.artist}`} onLoad={(event) => syncLayoutOrientation(event.currentTarget)}/>}</figure>
       <div className="overview-detail-label" aria-hidden="true"><span>Details</span><i/></div>
       <div className="overview-crops" aria-hidden="true">{[0,1,2,3].map(index => <DetailCrop artwork={artwork} index={index} key={index}/>)}</div>
       <div className="overview-information"><h1 id="artwork-title" className="overview-final-title">{artwork.title}</h1><p className="overview-description">{artwork.description.inspiration}</p><span className="overview-rule" aria-hidden="true"/><ArtworkFacts artwork={artwork}/></div>
