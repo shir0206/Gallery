@@ -135,6 +135,16 @@
   display: block;
   cursor: pointer;
 }
+.artwork-viewer-frame-transition-target .artwork-viewer-image-button[data-scroll-settling] {
+  position:relative;
+  z-index:6;
+  transform:translate(var(--shared-image-x,0),var(--shared-image-y,0)) scale(var(--shared-image-scale,1));
+  transform-origin:top left;
+  will-change:transform;
+}
+
+.gallery[data-transition-phase="title"] .artwork-viewer-frame-transition-target .artwork-viewer-image,
+.gallery[data-transition-phase="ready"] .artwork-viewer-frame-transition-target .artwork-viewer-image { box-shadow:0 16px 38px rgb(35 26 16/.25); }
 
 .artwork-viewer-image {
   display: block;

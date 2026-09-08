@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, Route, Routes, matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { useArtworkCollection } from "@/state/ArtworkCollectionProvider";
 import { Gallery } from "@/components/Gallery/Gallery";
@@ -22,6 +22,15 @@ function artworkSlug(title: string): string {
 		.replace(/&/g, ' and ')
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/^-|-$/g, '');
+}
+
+type ArtworkTransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready';
+
+function setGalleryCamera(camera: { x: number; y: number; scale: number }) {
+	const root = document.documentElement.style;
+	root.setProperty('--gallery-camera-x', `${camera.x}px`);
+	root.setProperty('--gallery-camera-y', `${camera.y}px`);
+	root.setProperty('--gallery-camera-scale', `${camera.scale}`);
 }
 
 /**
@@ -50,6 +59,9 @@ export function GalleryPage() {
 	const location = useLocation();
 	const [isPurchaseOpen, setIsPurchaseOpen] = useState(false);
 	const [cartArtworkIds, setCartArtworkIds] = useState<string[]>([]);
+	const [transitionPhase, setTransitionPhase] = useState<ArtworkTransitionPhase>('idle');
+	const [transitionArtworkId, setTransitionArtworkId] = useState<string | null>(null);
+	const transitionTimers = useRef<number[]>([]);
 	const artworkMatch = matchPath('/artworks/:artworkSlug', location.pathname);
 	const featureArtworkSlug = artworkMatch?.params.artworkSlug ?? null;
 	const isSearchOpen = location.pathname === '/search';
@@ -68,16 +80,68 @@ export function GalleryPage() {
 		routerNavigate(path);
 		window.scrollTo({ top: 0, behavior: 'auto' });
 	};
-	const openArtwork = (artworkId: string) => {
+	const clearTransitionTimers = useCallback(() => {
+		transitionTimers.current.forEach(window.clearTimeout);
+		transitionTimers.current = [];
+	}, []);
+	const openArtwork = (artworkId: string, sourceImage?: HTMLImageElement) => {
 		const artwork = data?.artworks.find((item) => item.id === artworkId);
 		if (!artwork) return;
 		const currentBackground = location.pathname === '/collection' || (location.pathname === '/search' && backgroundPath === '/collection') ? '/collection' : '/';
+		clearTransitionTimers();
+		if (sourceImage && currentBackground === '/') {
+			const measured = sourceImage.getBoundingClientRect();
+			const wallTrack = sourceImage.closest<HTMLElement>('.artwork-viewer-track');
+			document.documentElement.style.setProperty('--wall-scroll-offset', `${-(wallTrack?.scrollLeft ?? 0)}px`);
+			const ratio = artwork.dimensions.width / Math.max(1, artwork.dimensions.height);
+			const headerHeight = window.innerWidth <= 800 ? 64 : 72;
+			const fallbackHeight = Math.min((window.innerHeight - headerHeight) * .6, 620);
+			const fallbackWidth = fallbackHeight * ratio;
+			const source = measured.width > 20 && measured.height > 20 ? measured : {
+				left: (window.innerWidth - fallbackWidth) / 2,
+				top: headerHeight + (window.innerHeight - headerHeight - fallbackHeight) / 2,
+				width: fallbackWidth,
+				height: fallbackHeight,
+			};
+			const galleryHeight = window.innerHeight - headerHeight;
+			const sourceCenterX = source.left + source.width / 2;
+			const sourceTopY = source.top - headerHeight;
+			const isolateScale = Math.max(2.25, Math.min(3.4, (window.innerWidth * .86) / Math.max(1, source.width)));
+			const cameraFor = (scale: number, targetTop: number) => ({
+				scale,
+				x: window.innerWidth / 2 - sourceCenterX * scale,
+				y: targetTop - sourceTopY * scale,
+			});
+			const isolate = cameraFor(isolateScale, galleryHeight - source.height * isolateScale * .25);
+
+			setGalleryCamera({ x: 0, y: 0, scale: 1 });
+			document.documentElement.style.setProperty('--shared-surface-in', '0');
+			document.documentElement.style.setProperty('--shared-scroll', '0');
+			setTransitionArtworkId(artworkId);
+			const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			setTransitionPhase(reducedMotion ? 'title' : 'focus');
+			requestAnimationFrame(() => requestAnimationFrame(() => setGalleryCamera(isolate)));
+			if (reducedMotion) transitionTimers.current.push(window.setTimeout(() => setTransitionPhase('ready'), 320));
+		} else {
+			setTransitionArtworkId(null);
+			setTransitionPhase('ready');
+		}
 		routerNavigate(`/artworks/${artworkSlug(artwork.title)}`, { state: { backgroundPath: currentBackground } });
 	};
+	const handleCameraSettled = useCallback(() => {
+		if (transitionPhase !== 'focus') return;
+		setTransitionPhase('title');
+		const wordCount = Math.max(1, featureArtwork?.title.trim().split(/\s+/).length ?? 1);
+		const titleDuration = 1220 + (wordCount - 1) * 100;
+		transitionTimers.current.push(window.setTimeout(() => setTransitionPhase('ready'), titleDuration));
+	}, [transitionPhase, featureArtwork]);
 	const browseArtwork = (artworkId: string | null) => {
 		if (!artworkId) return;
 		const artwork = data?.artworks.find((item) => item.id === artworkId);
 		if (!artwork) return;
+		clearTransitionTimers();
+		setTransitionArtworkId(null);
+		setTransitionPhase('ready');
 		routerNavigate(`/artworks/${artworkSlug(artwork.title)}`, { replace: true, state: { backgroundPath } });
 	};
 	const openSearch = () => {
@@ -85,6 +149,20 @@ export function GalleryPage() {
 		routerNavigate('/search', { state: { returnPath, backgroundPath } });
 	};
 	const closeSearch = () => navigate(routeState?.returnPath || '/');
+
+	useEffect(() => () => clearTransitionTimers(), [clearTransitionTimers]);
+	useEffect(() => {
+		if (featureArtwork) return;
+		clearTransitionTimers();
+		setTransitionArtworkId(null);
+		setTransitionPhase('idle');
+		document.documentElement.style.removeProperty('--shared-surface-in');
+		document.documentElement.style.removeProperty('--shared-scroll');
+		document.documentElement.style.removeProperty('--gallery-camera-x');
+		document.documentElement.style.removeProperty('--gallery-camera-y');
+		document.documentElement.style.removeProperty('--gallery-camera-scale');
+		document.documentElement.style.removeProperty('--wall-scroll-offset');
+	}, [featureArtwork, clearTransitionTimers]);
 
 	const retry = () => {
 		refetch();
@@ -130,9 +208,9 @@ export function GalleryPage() {
 				onNext={featureArtwork ? () => browseArtwork(getAdjacentId(data.artworks, featureArtwork.id, 'next')) : undefined}
 			/>
 			<Routes>
-				<Route path="/" element={<Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered={Boolean(featureArtwork || isPurchaseOpen || isSearchOpen)} />} />
+				<Route path="/" element={<Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered={Boolean(featureArtwork || isPurchaseOpen || isSearchOpen)} transitionArtworkId={transitionArtworkId} transitionPhase={transitionPhase} onCameraSettled={handleCameraSettled} />} />
 				<Route path="/collection" element={<HomePage artworks={data.artworks} onSelectArtwork={openArtwork} onViewWall={() => navigate('/')} />} />
-				<Route path="/artworks/:artworkSlug" element={backgroundPath === '/collection' ? <HomePage artworks={data.artworks} onSelectArtwork={openArtwork} onViewWall={() => navigate('/')} /> : <Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered />} />
+				<Route path="/artworks/:artworkSlug" element={backgroundPath === '/collection' ? <HomePage artworks={data.artworks} onSelectArtwork={openArtwork} onViewWall={() => navigate('/')} /> : <Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered transitionArtworkId={transitionArtworkId} transitionPhase={transitionPhase} onCameraSettled={handleCameraSettled} />} />
 				<Route path="/search" element={backgroundPath === '/collection' ? <HomePage artworks={data.artworks} onSelectArtwork={openArtwork} onViewWall={() => navigate('/')} /> : <Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered />} />
 				<Route path="/about" element={<AboutPage onGallery={() => navigate('/')} />} />
 				<Route path="/contact" element={<ContactPage />} />
@@ -146,6 +224,8 @@ export function GalleryPage() {
 					artwork={featureArtwork}
 					onAddToCart={addToCart}
 					isCovered={Boolean(isPurchaseOpen || isSearchOpen)}
+					transitionPhase={transitionPhase}
+					usesSharedArtwork={Boolean(transitionArtworkId)}
 					onBack={() => navigate(backgroundPath)}
 					onPrevious={() =>
 					browseArtwork(

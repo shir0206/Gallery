@@ -24,6 +24,8 @@
   object-position: center;
 }
 
+.gallery-background-overscan{position:absolute;z-index:-1;inset:-45vmax;width:calc(100% + 90vmax);height:calc(100% + 90vmax);display:block;object-fit:cover;object-position:center;filter:blur(28px) saturate(.82);transform:scale(1.03)}
+
 /* A soft edge vignette only — not a flat scrim. The room is meant to
    read bright and airy, the way the reference does; this just eases
    the far corners back a touch so the artwork stays the clear focal

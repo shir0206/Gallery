@@ -17,12 +17,10 @@ export function GalleryBackground({ environment }: GalleryBackgroundProps) {
   return (
     <div className="gallery-background" role="presentation" aria-hidden="true">
       {environment.backgroundImageUrl && (
-        <img
-          className="gallery-background-image"
-          src={environment.backgroundImageUrl}
-          alt=""
-          decoding="async"
-        />
+        <>
+          <img className="gallery-background-overscan" src={environment.backgroundImageUrl} alt="" decoding="async" />
+          <img className="gallery-background-image" src={environment.backgroundImageUrl} alt="" decoding="async" />
+        </>
       )}
     </div>
   );

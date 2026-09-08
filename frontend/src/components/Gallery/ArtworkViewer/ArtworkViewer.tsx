@@ -38,7 +38,9 @@ interface ArtworkViewerProps {
    * viewport, 1-2 on a narrow one), not only the active one. */
   onVisibleArtworksChange?: (artworkIds: Set<string>) => void;
   /** Opens the editorial feature-spread view (ArtworkPage) for the current artwork. Omit to hide the affordance. */
-  onOpenFeature?: (artworkId: string) => void;
+  onOpenFeature?: (artworkId: string, image: HTMLImageElement) => void;
+  transitionArtworkId?: string | null;
+  transitionPhase?: "idle" | "focus" | "isolate" | "title" | "ready";
 }
 
 // An artwork counts as "on the wall" once at least this fraction of it
@@ -80,6 +82,8 @@ export function ArtworkViewer({
   onScrollProgress,
   onVisibleArtworksChange,
   onOpenFeature,
+  transitionArtworkId = null,
+  transitionPhase = "idle",
 }: ArtworkViewerProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef(new Map<string, HTMLDivElement>());
@@ -325,7 +329,7 @@ export function ArtworkViewer({
                 if (el) itemRefs.current.set(artwork.id, el);
                 else itemRefs.current.delete(artwork.id);
               }}
-              className="artwork-viewer-frame"
+              className={`artwork-viewer-frame${transitionArtworkId === artwork.id ? " artwork-viewer-frame-transition-target" : ""}`}
               data-orientation={artwork.orientation}
               data-artwork-id={artwork.id}
             >
@@ -334,7 +338,21 @@ export function ArtworkViewer({
                   <button
                     type="button"
                     className="artwork-viewer-image-button"
-                    onClick={() => onOpenFeature(artwork.id)}
+                    onClick={(event) => {
+                      const gallery = event.currentTarget.closest<HTMLElement>(".gallery");
+                      if (gallery) {
+                        const galleryRect = gallery.getBoundingClientRect();
+                        const artworkRect = event.currentTarget.getBoundingClientRect();
+                        const focusX = ((artworkRect.left + artworkRect.width / 2 - galleryRect.left) / galleryRect.width) * 100;
+                        const focusY = ((artworkRect.top + artworkRect.height / 2 - galleryRect.top) / galleryRect.height) * 100;
+                        gallery.style.setProperty("--gallery-focus-x", `${focusX}%`);
+                        gallery.style.setProperty("--gallery-focus-y", `${focusY}%`);
+                        document.documentElement.style.setProperty("--gallery-focus-x", `${focusX}%`);
+                        document.documentElement.style.setProperty("--gallery-focus-y", `${focusY}%`);
+                      }
+                      const image = event.currentTarget.querySelector<HTMLImageElement>(".artwork-viewer-image");
+                      if (image) onOpenFeature(artwork.id, image);
+                    }}
                     aria-label={`Open ${artwork.title} by ${artwork.artist}`}
                   >
                     <img
@@ -342,6 +360,7 @@ export function ArtworkViewer({
                       alt={`${artwork.title} by ${artwork.artist}`}
                       className="artwork-viewer-image"
                       loading="lazy"
+                      data-transition-phase={transitionArtworkId === artwork.id ? transitionPhase : undefined}
                     />
                   </button>
                 ) : (

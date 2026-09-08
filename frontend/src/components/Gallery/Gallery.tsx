@@ -8,7 +8,7 @@ import './Gallery.css';
 interface GalleryProps {
   data: ArtworkCollectionResponse;
   /** Opens the editorial feature-spread view (ArtworkPage) for the given artwork id. Omit to hide the link. */
-  onOpenFeature?: (artworkId: string) => void;
+  onOpenFeature?: (artworkId: string, image: HTMLImageElement) => void;
   /** Returns to the HomePage grid. Omit to hide the exit control (e.g. if the wall is the only view). */
   onExitWall?: () => void;
   /** True while a feature spread (ArtworkPage) is open on top of the wall.
@@ -17,6 +17,9 @@ interface GalleryProps {
    * spread would silently move the hidden wall's selection) and hides
    * it from the accessibility tree/tab order while it's covered. */
   isCovered?: boolean;
+  transitionArtworkId?: string | null;
+  transitionPhase?: "idle" | "focus" | "isolate" | "title" | "ready";
+  onCameraSettled?: () => void;
 }
 
 /**
@@ -35,7 +38,7 @@ interface GalleryProps {
  * signal (0–100% along the wall) that isn't part of the selection
  * "context" itself but rides alongside it for a live position readout.
  */
-export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false }: GalleryProps) {
+export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, transitionArtworkId = null, transitionPhase = "idle", onCameraSettled }: GalleryProps) {
   const { environment, artworks } = data;
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     artworks[0]?.id ?? null,
@@ -121,23 +124,31 @@ export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false }: 
   return (
     <div
       className={`gallery${isCovered ? ' gallery-covered' : ''}`}
+      data-transition-phase={transitionPhase}
       data-scroll-progress={Math.round(scrollProgress)}
       aria-hidden={isCovered || undefined}
     >
-      <GalleryBackground environment={environment} />
+      <div className="gallery-camera" onTransitionEnd={(event) => {
+        if (event.target === event.currentTarget && event.propertyName === 'transform') onCameraSettled?.();
+      }}>
+        <GalleryBackground environment={environment} />
+        <div className="gallery-camera-surface" aria-hidden="true" />
+        <ArtworkViewer
+          artworks={artworks}
+          selectedArtworkId={selectedArtworkId}
+          onSelectArtwork={setSelectedArtworkId}
+          onScrollProgress={handleScrollProgress}
+          onVisibleArtworksChange={handleVisibleArtworksChange}
+          onOpenFeature={onOpenFeature}
+          transitionArtworkId={transitionArtworkId}
+          transitionPhase={transitionPhase}
+        />
+      </div>
       {onExitWall && (
         <button type="button" className="gallery-exit-button" onClick={onExitWall}>
           ← Grid view
         </button>
       )}
-      <ArtworkViewer
-        artworks={artworks}
-        selectedArtworkId={selectedArtworkId}
-        onSelectArtwork={setSelectedArtworkId}
-        onScrollProgress={handleScrollProgress}
-        onVisibleArtworksChange={handleVisibleArtworksChange}
-        onOpenFeature={onOpenFeature}
-      />
       <GalleryNavigation
         artworks={artworks}
         selectedArtworkId={selectedArtworkId}
