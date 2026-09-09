@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Artwork } from "../../../types/artwork";
 import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
 import { ArtworkTitleLabel } from "./ArtworkTitleLabel/ArtworkTitleLabel";
@@ -104,6 +104,7 @@ export function ArtworkViewer({
     typeof setTimeout
   > | null>(null);
   const openingArtworkIdRef = useRef<string | null>(null);
+  const deferredSelectionIdRef = useRef<string | null>(null);
 
   // Reads the DOM directly (scrollLeft + each item's bounding rect)
   // rather than IntersectionObserver ratios — artworks vary widely in
@@ -285,17 +286,38 @@ export function ArtworkViewer({
   // previous/next controls, arrow keys), scroll that artwork to the
   // center of the wall. Guarded against re-triggering the scroll
   // handler above so this doesn't fight the visitor's own scrolling.
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!selectedArtworkId || selectedArtworkId === activeId) return;
+    // During the feature transition CSS deliberately makes the track's
+    // overflow visible and freezes its row with a transform. scrollIntoView
+    // cannot move the native scroller in that state, so remember the route's
+    // selection and apply it on the first idle layout before the wall paints.
+    if (transitionPhase !== "idle") {
+      deferredSelectionIdRef.current = selectedArtworkId;
+      return;
+    }
+    const track = trackRef.current;
     const el = itemRefs.current.get(selectedArtworkId);
-    if (!el) return;
+    if (!track || !el) return;
 
+    const wasDeferred = deferredSelectionIdRef.current === selectedArtworkId;
+    deferredSelectionIdRef.current = null;
     isProgrammaticScrollRef.current = true;
     setActiveId(selectedArtworkId);
-    el.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
+    // Use the scroller's intrinsic layout coordinates, not viewport rects.
+    // The latter can still include the gallery camera/row transforms while
+    // returning from ArtworkPage and produce a visibly off-center target.
+    const targetLeft =
+      el.offsetLeft + el.offsetWidth / 2 - track.clientWidth / 2;
+    track.scrollTo({
+      left: Math.max(
+        0,
+        Math.min(
+          track.scrollWidth - track.clientWidth,
+          targetLeft,
+        ),
+      ),
+      behavior: wasDeferred ? "auto" : "smooth",
     });
     // Scroll events (below) keep pushing this back out for as long as
     // the browser is still animating; this covers the case where the
@@ -304,7 +326,7 @@ export function ArtworkViewer({
 
     return cancelSettleCheck;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedArtworkId]);
+  }, [selectedArtworkId, transitionPhase]);
 
   useEffect(() => cancelSettleCheck, [cancelSettleCheck]);
 

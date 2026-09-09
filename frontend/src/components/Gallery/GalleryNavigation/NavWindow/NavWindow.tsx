@@ -162,13 +162,17 @@ export function NavWindow({
   // window echoed itself (see reportCentered above).
   useEffect(() => {
     if (!selectedArtworkId || selectedArtworkId === activeIdRef.current) return;
-    activeIdRef.current = selectedArtworkId;
     const index = artworks.findIndex((artwork) => artwork.id === selectedArtworkId);
-    if (index < 0) return;
+    // A covered gallery can measure at zero width. Do not consume the
+    // external selection until the strip has real geometry; centerFor would
+    // otherwise clamp it to zero and the active-id guard would prevent a
+    // retry when the gallery becomes visible again.
+    if (index < 0 || windowWidth <= 0) return;
+    activeIdRef.current = selectedArtworkId;
     setSettling(true);
     setWindowLeft(centerFor(index));
     onCenteredIndexChange?.(index);
-  }, [selectedArtworkId, artworks, centerFor, onCenteredIndexChange]);
+  }, [selectedArtworkId, artworks, windowWidth, centerFor, onCenteredIndexChange]);
 
   // Re-clamp (never animated) if the strip's own layout changes the
   // available range, e.g. a viewport resize.

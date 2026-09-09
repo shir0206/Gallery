@@ -7,6 +7,10 @@ import './Gallery.css';
 
 interface GalleryProps {
   data: ArtworkCollectionResponse;
+  /** Keeps the wall's shared selection aligned with an artwork feature
+   * layered over it. This matters when previous/next navigation changes
+   * the feature route while the wall remains mounted underneath. */
+  focusedArtworkId?: string | null;
   /** Opens the editorial feature-spread view (ArtworkPage) for the given artwork id. Omit to hide the link. */
   onOpenFeature?: (artworkId: string, image: HTMLImageElement) => void;
   /** Returns to the HomePage grid. Omit to hide the exit control (e.g. if the wall is the only view). */
@@ -39,7 +43,7 @@ interface GalleryProps {
  * signal (0–100% along the wall) that isn't part of the selection
  * "context" itself but rides alongside it for a live position readout.
  */
-export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, transitionArtworkId = null, transitionPhase = "idle", onCameraSettled, suppressReveal = false }: GalleryProps) {
+export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWall, isCovered = false, transitionArtworkId = null, transitionPhase = "idle", onCameraSettled, suppressReveal = false }: GalleryProps) {
   const { environment, artworks } = data;
   const galleryRef = useRef<HTMLDivElement>(null);
   const previousTransitionPhaseRef = useRef(transitionPhase);
@@ -60,6 +64,16 @@ export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, tr
   const [visibleArtworkIds, setVisibleArtworkIds] = useState<Set<string>>(
     new Set(),
   );
+
+  // ArtworkPage is layered over this still-mounted gallery. Route-based
+  // previous/next navigation therefore has to feed its current artwork back
+  // into the gallery's canonical selection so ArtworkViewer and NavWindow
+  // are already on the same piece when the overlay closes.
+  useEffect(() => {
+    if (!focusedArtworkId) return;
+    if (!artworks.some((artwork) => artwork.id === focusedArtworkId)) return;
+    setSelectedArtworkId(focusedArtworkId);
+  }, [artworks, focusedArtworkId]);
 
   const selectedIndex = useMemo(
     () => artworks.findIndex((artwork) => artwork.id === selectedArtworkId),
