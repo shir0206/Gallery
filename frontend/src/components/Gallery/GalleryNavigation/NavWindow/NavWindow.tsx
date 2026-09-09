@@ -246,7 +246,7 @@ export function NavWindow({
         left: windowLeft,
         width: windowWidth,
         cursor: dragging ? 'grabbing' : 'grab',
-        transition: settling ? 'left 0.4s cubic-bezier(.2, .8, .2, 1)' : 'none',
+        transition: settling ? 'left 0.2s cubic-bezier(.2, .8, .2, 1)' : 'none',
       }}
     >
       <span className="nav-window-grip nav-window-grip-left" />

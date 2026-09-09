@@ -7,7 +7,7 @@
 .commerce-panel-price { margin-top:4px; font-family:var(--gallery-serif); font-size:30px; }
 .commerce-panel-previous { font:12px var(--gallery-sans); color:var(--editorial-ink-muted); }
 .commerce-panel-action button { min-height:50px; padding:0 25px; border:0; border-radius:999px; background:#211c17; color:var(--editorial-paper-bg-raised); font:600 12px var(--gallery-sans); text-transform:uppercase; letter-spacing:.08em; cursor:pointer; }
-.commerce-panel-action button span { display:inline-block; margin-left:12px; transition:transform .2s ease; }.commerce-panel-action button:hover span { transform:translateX(4px); }
+.commerce-panel-action button span { display:inline-block; margin-left:12px; transition:transform .1s ease; }.commerce-panel-action button:hover span { transform:translateX(4px); }
 .commerce-panel-action button:focus-visible { outline:2px solid var(--gallery-accent); outline-offset:3px; }
 @media(max-width:800px){.commerce-panel{grid-template-columns:1fr 1fr}.commerce-panel-action{grid-column:1/-1}.commerce-panel-action button{width:100%}}
 @media(max-width:639px){.commerce-panel{grid-template-columns:1fr;padding:26px 22px}.commerce-panel-action{grid-column:auto}.commerce-panel-action button{min-height:54px}}

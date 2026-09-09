@@ -5,17 +5,17 @@ import { DetailsSection } from './sections/DetailsSection';
 import './ArtworkPage.css';
 
 type TransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready' | 'closing';
-interface ArtworkPageProps { artwork: Artwork; onBack?: () => void; onScrollBack?: () => void; onPrevious?: () => void; onNext?: () => void; onAddToCart: (artworkId: string) => void; isCovered?: boolean; transitionPhase?: TransitionPhase; usesSharedArtwork?: boolean; browseDirection?: 'previous' | 'next' | null; }
+interface ArtworkPageProps { artwork: Artwork; onBack?: () => void; onScrollBack?: () => void; onPrevious?: () => void; onNext?: () => void; onAddToCart: (artworkId: string) => void; isCovered?: boolean; transitionPhase?: TransitionPhase; usesSharedArtwork?: boolean; browseDirection?: 'previous' | 'next' | null; isStaticPreview?: boolean; }
 
-export function ArtworkPage({ artwork, onBack, onScrollBack, onPrevious, onNext, onAddToCart, isCovered=false, transitionPhase='ready', usesSharedArtwork=false, browseDirection=null }: ArtworkPageProps) {
+export function ArtworkPage({ artwork, onBack, onScrollBack, onPrevious, onNext, onAddToCart, isCovered=false, transitionPhase='ready', usesSharedArtwork=false, browseDirection=null, isStaticPreview=false }: ArtworkPageProps) {
   const scrollerRef=useRef<HTMLDivElement>(null);
   const introTimerRef=useRef<number | null>(null);
   const touchStartYRef=useRef<number | null>(null);
   const isScrollBackRequestedRef=useRef(false);
-  const [isIntroLocked,setIsIntroLocked]=useState(!usesSharedArtwork);
+  const [isIntroLocked,setIsIntroLocked]=useState(!usesSharedArtwork&&!isStaticPreview);
   useEffect(()=>{scrollerRef.current?.scrollTo({top:0,behavior:'auto'})},[artwork.id]);
-  useEffect(()=>{setIsIntroLocked(!usesSharedArtwork);return()=>{if(introTimerRef.current!==null)window.clearTimeout(introTimerRef.current)}},[artwork.id,usesSharedArtwork]);
-  const handleIntroReady=useCallback(()=>{if(usesSharedArtwork)return;if(introTimerRef.current!==null)window.clearTimeout(introTimerRef.current);if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setIsIntroLocked(false);return}introTimerRef.current=window.setTimeout(()=>setIsIntroLocked(false),1050)},[usesSharedArtwork]);
+  useEffect(()=>{setIsIntroLocked(!usesSharedArtwork&&!isStaticPreview);return()=>{if(introTimerRef.current!==null)window.clearTimeout(introTimerRef.current)}},[artwork.id,usesSharedArtwork,isStaticPreview]);
+  const handleIntroReady=useCallback(()=>{if(usesSharedArtwork)return;if(introTimerRef.current!==null)window.clearTimeout(introTimerRef.current);if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setIsIntroLocked(false);return}introTimerRef.current=window.setTimeout(()=>setIsIntroLocked(false),525)},[usesSharedArtwork]);
   useEffect(()=>{if(isCovered)return;const handle=(event:KeyboardEvent)=>{if(event.key==='Escape')onBack?.();else if(event.key==='ArrowLeft')onPrevious?.();else if(event.key==='ArrowRight')onNext?.()};document.addEventListener('keydown',handle);return()=>document.removeEventListener('keydown',handle)},[isCovered,onBack,onPrevious,onNext]);
   useEffect(()=>{isScrollBackRequestedRef.current=false},[artwork.id]);
   useEffect(()=>{
@@ -33,5 +33,5 @@ export function ArtworkPage({ artwork, onBack, onScrollBack, onPrevious, onNext,
     scroller.addEventListener('touchcancel',clearTouch,{passive:true});
     return()=>{scroller.removeEventListener('wheel',handleWheel);scroller.removeEventListener('touchstart',handleTouchStart);scroller.removeEventListener('touchmove',handleTouchMove);scroller.removeEventListener('touchend',clearTouch);scroller.removeEventListener('touchcancel',clearTouch)};
   },[isCovered,onScrollBack,transitionPhase]);
-  return <div className="artwork-page" data-transition-phase={transitionPhase} data-intro-locked={isIntroLocked||undefined} aria-hidden={isCovered||undefined}><div className="artwork-page-scroller" ref={scrollerRef}><main className="artwork-page-content" key={artwork.id} data-browse-direction={browseDirection||undefined}><ArtworkOverview artwork={artwork} transitionPhase={transitionPhase} usesSharedArtwork={usesSharedArtwork} browseDirection={browseDirection} onIntroReady={handleIntroReady}/><DetailsSection artwork={artwork} onAddToCart={onAddToCart}/></main></div></div>;
+  return <div className="artwork-page" data-transition-phase={transitionPhase} data-intro-locked={isIntroLocked||undefined} data-static-preview={isStaticPreview||undefined} data-active-section="00" aria-hidden={isCovered||undefined}><div className="artwork-page-scroller" ref={scrollerRef}><main className="artwork-page-content" key={artwork.id} data-browse-direction={browseDirection||undefined}><ArtworkOverview artwork={artwork} transitionPhase={transitionPhase} usesSharedArtwork={usesSharedArtwork} browseDirection={browseDirection} onIntroReady={handleIntroReady} isStaticPreview={isStaticPreview}/><DetailsSection artwork={artwork} onAddToCart={onAddToCart}/></main></div><p className="artwork-section-progress" aria-hidden="true"><span>00</span><i className="artwork-progress-animation"/><span>01</span><i className="artwork-progress-sections"/><span>02</span></p></div>;
 }

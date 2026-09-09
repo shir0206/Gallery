@@ -57,9 +57,9 @@ const WALL_VISIBLE_THRESHOLD = 0.5;
 // that happens to take longer, which re-derives selection from a
 // still-moving position and visibly snaps it back — this instead
 // tracks the scroll's own real end.
-const SCROLL_SETTLE_IDLE_MS = 120;
+const SCROLL_SETTLE_IDLE_MS = 60;
 const CLICK_CENTER_TOLERANCE_PX = 2;
-const CLICK_CENTER_TIMEOUT_MS = 1400;
+const CLICK_CENTER_TIMEOUT_MS = 700;
 
 /**
  * Renders the entire collection as one continuous, horizontally
@@ -347,7 +347,7 @@ export function ArtworkViewer({
 
         track.addEventListener("scroll", handleScroll, { passive: true });
         track.addEventListener("scrollend", finish, { once: true });
-        fallbackTimer = setTimeout(finish, reducedMotion ? 50 : CLICK_CENTER_TIMEOUT_MS);
+        fallbackTimer = setTimeout(finish, reducedMotion ? 25 : CLICK_CENTER_TIMEOUT_MS);
         track.scrollTo({
           left: Math.max(0, Math.min(track.scrollWidth - track.clientWidth, track.scrollLeft + centerDelta)),
           behavior: reducedMotion ? "auto" : "smooth",

@@ -23,7 +23,7 @@
   text-overflow: ellipsis;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity .1s ease, transform .1s ease;
 }
 
 .artwork-viewer-frame:hover .artwork-title-label,

@@ -5,7 +5,7 @@ import { useScrollPresentation } from "./useScrollPresentation";
 import "./ArtworkOverview.css";
 
 type TransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready' | 'closing';
-interface ArtworkOverviewProps { artwork: Artwork; transitionPhase?: TransitionPhase; usesSharedArtwork?: boolean; browseDirection?: 'previous' | 'next' | null; onIntroReady?: () => void }
+interface ArtworkOverviewProps { artwork: Artwork; transitionPhase?: TransitionPhase; usesSharedArtwork?: boolean; browseDirection?: 'previous' | 'next' | null; onIntroReady?: () => void; isStaticPreview?: boolean }
 
 function orientationFromImage(artwork: Artwork): Artwork['orientation'] {
   if (typeof document === 'undefined') return artwork.orientation;
@@ -31,7 +31,7 @@ function ArtworkFacts({ artwork }: { artwork: Artwork }) {
   </dl></div>;
 }
 
-export function ArtworkOverview({ artwork, transitionPhase='ready', usesSharedArtwork=false, browseDirection=null, onIntroReady }: ArtworkOverviewProps) {
+export function ArtworkOverview({ artwork, transitionPhase='ready', usesSharedArtwork=false, browseDirection=null, onIntroReady, isStaticPreview=false }: ArtworkOverviewProps) {
   const trackRef = useRef<HTMLElement>(null);
   // When the feature opens from the wall, its source image is already loaded.
   // Read that ratio during the first render so shared-transition geometry does
@@ -49,7 +49,7 @@ export function ArtworkOverview({ artwork, transitionPhase='ready', usesSharedAr
     setLayoutOrientation(ratio >= 1 ? 'landscape' : 'portrait');
     setLayoutShape(ratio >= .88 && ratio <= 1.12 ? 'square' : 'oblong');
   };
-  useScrollPresentation(trackRef, transitionPhase === 'ready');
+  useScrollPresentation(trackRef, transitionPhase === 'ready' && !isStaticPreview);
   const titleWords = useMemo(() => artwork.title.trim().split(/\s+/), [artwork.title]);
   const settleImage = (image: HTMLImageElement) => {
     syncLayoutOrientation(image);
@@ -68,7 +68,6 @@ export function ArtworkOverview({ artwork, transitionPhase='ready', usesSharedAr
       <div className="overview-detail-label" aria-hidden="true"><span>Details</span><i/></div>
       <div className="overview-crops" aria-hidden="true">{[0,1,2,3].map(index => <DetailCrop artwork={artwork} index={index} key={index}/>)}</div>
       <div className="overview-information"><h1 id="artwork-title" className="overview-final-title">{artwork.title}</h1><p className="overview-description">{artwork.description.inspiration}</p><span className="overview-rule" aria-hidden="true"/><ArtworkFacts artwork={artwork}/></div>
-      <p className="overview-progress" aria-hidden="true"><span>01</span><i/><span>02</span></p>
     </div>
   </section>;
 }

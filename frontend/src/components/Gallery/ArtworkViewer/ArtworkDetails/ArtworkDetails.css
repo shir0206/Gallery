@@ -6,7 +6,7 @@
   max-width: 480px;
   color: var(--gallery-paper);
   text-align: left;
-  animation: artwork-details-reveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) 90ms
+  animation: artwork-details-reveal .225s cubic-bezier(0.22, 1, 0.36, 1) 45ms
     both;
 }
 
@@ -177,7 +177,7 @@
   color: var(--gallery-accent-soft);
   text-align: center;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color .1s ease;
 }
 
 .artwork-details-feature-link:hover {

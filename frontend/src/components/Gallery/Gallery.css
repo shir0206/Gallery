@@ -32,7 +32,11 @@
 }
 .gallery-covered[data-transition-phase="closing"] .gallery-navigation {
   display:flex;
-  animation:gallery-navigation-return 1.8s cubic-bezier(.65,0,.35,1) both;
+  animation:gallery-navigation-return .9s cubic-bezier(.65,0,.35,1) both;
+}
+.gallery-covered[data-transition-phase="closing"] .gallery-exit-button {
+  display:block;
+  animation:gallery-navigation-return .9s cubic-bezier(.65,0,.35,1) both;
 }
 @keyframes gallery-navigation-return {
   0%,45% { opacity:0; transform:translateY(12px); }
@@ -48,13 +52,13 @@
 .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .gallery-camera {
   transform:translate(var(--gallery-camera-x,0),var(--gallery-camera-y,0)) scale(var(--gallery-camera-scale,1));
   transform-origin:0 0;
-  transition:transform 1.8s cubic-bezier(.65,0,.35,1),opacity .4s ease;
+  transition:transform .9s cubic-bezier(.65,0,.35,1),opacity .2s ease;
   will-change:transform;
 }
 .gallery[data-transition-phase]:not([data-transition-phase="idle"]) > .gallery-background {
   transform:translateX(var(--gallery-camera-x,0)) scale(var(--gallery-camera-scale,1));
   transform-origin:0 0;
-  transition:transform 1.8s cubic-bezier(.65,0,.35,1);
+  transition:transform .9s cubic-bezier(.65,0,.35,1);
   will-change:transform;
 }
 .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .artwork-viewer {
@@ -74,7 +78,7 @@
 }
 .gallery[data-transition-phase="closing"] .gallery-camera,
 .gallery[data-transition-phase="closing"] > .gallery-background {
-  transition-duration:1.8s;
+  transition-duration:.9s;
 }
 .gallery[data-transition-phase="ready"] .gallery-camera-surface { opacity:var(--shared-surface-in,0); }
 .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .artwork-title-label{opacity:0!important}
@@ -97,7 +101,7 @@
 .gallery[data-transition-phase="focus"] .gallery-exit-button,
 .gallery[data-transition-phase="isolate"] .gallery-exit-button,
 .gallery[data-transition-phase="title"] .gallery-exit-button,
-.gallery[data-transition-phase="ready"] .gallery-exit-button { opacity:0; pointer-events:none; transition:opacity .35s ease; }
+.gallery[data-transition-phase="ready"] .gallery-exit-button { opacity:0; pointer-events:none; transition:opacity .175s ease; }
 
 /* All frames participate in the same camera scale first. During the
    latter portion of the isolation move, only the neighbors dissolve;
@@ -105,7 +109,7 @@
 .gallery .artwork-viewer-frame { opacity:1; }
 .gallery[data-transition-phase="focus"] .artwork-viewer-frame:not(.artwork-viewer-frame-transition-target) {
   opacity:0;
-  transition:opacity .42s ease 1.08s;
+  transition:opacity .21s ease .54s;
 }
 .gallery[data-transition-phase="title"] .artwork-viewer-frame:not(.artwork-viewer-frame-transition-target),
 .gallery[data-transition-phase="ready"] .artwork-viewer-frame:not(.artwork-viewer-frame-transition-target) {
@@ -114,11 +118,11 @@
 }
 .gallery[data-transition-phase="closing"] .artwork-viewer-frame:not(.artwork-viewer-frame-transition-target) {
   opacity:1;
-  transition:opacity .42s ease .72s;
+  transition:opacity .21s ease .36s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .gallery-camera { transition:opacity .2s ease; }
+  .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .gallery-camera { transition:opacity .1s ease; }
   .gallery[data-transition-phase]:not([data-transition-phase="idle"]) > .gallery-background { transition:none; }
 }
 
@@ -138,7 +142,7 @@
   font-size: 13px;
   color: var(--gallery-paper-muted);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color .1s ease;
 }
 
 .gallery-exit-button:hover {

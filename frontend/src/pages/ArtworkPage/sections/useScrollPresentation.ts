@@ -2,12 +2,17 @@ import { useEffect, type RefObject } from "react";
 
 const clamp = (value: number) => Math.min(1, Math.max(0, value));
 const range = (progress: number, start: number, end: number) => clamp((progress - start) / (end - start));
+// The presentation's last reveal historically finished at 70% of a much
+// longer sticky track. Keep that animation timing, but let the track itself
+// end as soon as the reveal is complete so scrolling continues immediately.
+const PRESENTATION_TIMELINE_END = .7;
 
 export function useScrollPresentation(ref: RefObject<HTMLElement>, enabled = true) {
   useEffect(() => {
     const track = ref.current;
     const scroller = track?.closest<HTMLElement>(".artwork-page-scroller");
-    if (!track || !scroller || !enabled) return;
+    const page = track?.closest<HTMLElement>(".artwork-page");
+    if (!track || !scroller || !page || !enabled) return;
     const sharedImage = document.querySelector<HTMLElement>(
       ".artwork-viewer-frame-transition-target .artwork-viewer-image-button",
     );
@@ -20,22 +25,29 @@ export function useScrollPresentation(ref: RefObject<HTMLElement>, enabled = tru
       frame = 0;
       const max = Math.max(1, track.offsetHeight - scroller.clientHeight);
       const progress = clamp((scroller.scrollTop - track.offsetTop) / max);
+      const timelineProgress = progress * PRESENTATION_TIMELINE_END;
+      const detailsProgress = clamp(
+        (scroller.scrollTop - track.offsetTop - max) / scroller.clientHeight,
+      );
+      page.style.setProperty("--overview-progress", progress.toFixed(4));
+      page.style.setProperty("--section-progress", detailsProgress.toFixed(4));
+      page.dataset.activeSection = progress < 1 ? "00" : detailsProgress > .5 ? "02" : "01";
       if (!hasScrolled && progress > .001) {
         hasScrolled = true;
         track.setAttribute("data-has-scrolled", "");
       }
-      const artworkReveal = .58 + range(progress, 0, .18) * .42;
+      const artworkReveal = .58 + range(timelineProgress, 0, .18) * .42;
       const values = {
-		"--p": progress, "--opening": 1 - range(progress,0,.3), "--surface-in": range(progress,.015,.16), "--title-in": 1, "--title-part": range(progress,.05,.18),
-        "--art-in": artworkReveal, "--art-settle": range(progress,.04,.26),
-		"--detail-1": range(progress,.2,.3), "--detail-2": range(progress,.26,.36),
-		"--detail-3": range(progress,.32,.42), "--detail-4": range(progress,.38,.48),
-		"--rail-in": range(progress,.28,.42), "--copy-in": range(progress,.4,.55),
-		"--facts-in": range(progress,.52,.7),
+		"--p": progress, "--opening": 1 - range(timelineProgress,0,.3), "--surface-in": range(timelineProgress,.015,.16), "--title-in": 1, "--title-part": range(timelineProgress,.05,.18),
+        "--art-in": artworkReveal, "--art-settle": range(timelineProgress,.04,.26),
+		"--detail-1": range(timelineProgress,.2,.3), "--detail-2": range(timelineProgress,.26,.36),
+		"--detail-3": range(timelineProgress,.32,.42), "--detail-4": range(timelineProgress,.38,.48),
+		"--rail-in": range(timelineProgress,.28,.42), "--copy-in": range(timelineProgress,.4,.55),
+		"--facts-in": range(timelineProgress,.52,PRESENTATION_TIMELINE_END),
       };
       Object.entries(values).forEach(([name,value]) => track.style.setProperty(name, value.toFixed(4)));
-      document.documentElement.style.setProperty('--shared-scroll', range(progress,.02,.27).toFixed(4));
-      document.documentElement.style.setProperty('--shared-surface-in', range(progress,.015,.16).toFixed(4));
+      document.documentElement.style.setProperty('--shared-scroll', range(timelineProgress,.02,.27).toFixed(4));
+      document.documentElement.style.setProperty('--shared-surface-in', range(timelineProgress,.015,.16).toFixed(4));
 
       if (sharedImage && sharedStart && destination && camera && sharedStart.width > 1 && sharedStart.height > 1) {
         const slot = destination.getBoundingClientRect();
@@ -45,7 +57,7 @@ export function useScrollPresentation(ref: RefObject<HTMLElement>, enabled = tru
         const isPortrait = track.dataset.orientation === "portrait";
         const targetLeft = isPortrait ? slot.left : slot.left + (slot.width - fittedWidth) / 2;
         const targetTop = slot.top;
-        const settle = range(progress, .035, .29);
+        const settle = range(timelineProgress, .035, .29);
         const eased = 1 - Math.pow(1 - settle, 3);
         const desiredLeft = sharedStart.left + (targetLeft - sharedStart.left) * eased;
         const desiredTop = sharedStart.top + (targetTop - sharedStart.top) * eased;
@@ -73,6 +85,9 @@ export function useScrollPresentation(ref: RefObject<HTMLElement>, enabled = tru
         sharedImage.style.removeProperty("--shared-image-scale");
         sharedImage.removeAttribute("data-scroll-settling");
       }
+      page.style.removeProperty("--section-progress");
+      page.style.removeProperty("--overview-progress");
+      page.dataset.activeSection = "00";
     };
   }, [ref, enabled]);
 }

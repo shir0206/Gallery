@@ -70,7 +70,7 @@ export function GalleryPage() {
 	const artworkMatch = matchPath('/artworks/:artworkSlug', location.pathname);
 	const featureArtworkSlug = artworkMatch?.params.artworkSlug ?? null;
 	const isSearchOpen = location.pathname === '/search';
-	const routeState = location.state as { backgroundPath?: string; returnPath?: string } | null;
+	const routeState = location.state as { backgroundPath?: string; returnPath?: string; staticPreview?: boolean; animateCartEntry?: boolean } | null;
 	const backgroundPath = routeState?.backgroundPath === '/collection' ? '/collection' : '/';
 	const hasBackgroundRoute = routeState?.backgroundPath === '/' || routeState?.backgroundPath === '/collection';
 	const featureArtwork = featureArtworkSlug
@@ -129,7 +129,7 @@ export function GalleryPage() {
 			const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 			setTransitionPhase(reducedMotion ? 'title' : 'focus');
 			requestAnimationFrame(() => requestAnimationFrame(() => setGalleryCamera(isolate)));
-			if (reducedMotion) transitionTimers.current.push(window.setTimeout(() => setTransitionPhase('ready'), 320));
+			if (reducedMotion) transitionTimers.current.push(window.setTimeout(() => setTransitionPhase('ready'), 160));
 		} else {
 			setTransitionArtworkId(null);
 			setTransitionPhase('ready');
@@ -146,7 +146,7 @@ export function GalleryPage() {
 		if (transitionPhase !== 'focus') return;
 		setTransitionPhase('title');
 		const wordCount = Math.max(1, featureArtwork?.title.trim().split(/\s+/).length ?? 1);
-		const titleDuration = 1220 + (wordCount - 1) * 100;
+		const titleDuration = 610 + (wordCount - 1) * 50;
 		transitionTimers.current.push(window.setTimeout(() => setTransitionPhase('ready'), titleDuration));
 	}, [transitionPhase, featureArtwork, routerNavigate, backgroundPath]);
 	const closeArtworkToGallery = useCallback((destination = backgroundPath) => {
@@ -154,7 +154,7 @@ export function GalleryPage() {
 		closeDestinationRef.current = destination;
 		if (backgroundPath !== '/' || destination !== '/' || !transitionArtworkId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			setIsPurchaseOpen(false);
-			routerNavigate(destination);
+			routerNavigate(destination, destination === '/cart' ? { state: { animateCartEntry: true } } : undefined);
 			window.scrollTo({ top: 0, behavior: 'auto' });
 			return;
 		}
@@ -175,7 +175,7 @@ export function GalleryPage() {
 			replace: true,
 			state: hasBackgroundRoute ? { backgroundPath } : undefined,
 		});
-		transitionTimers.current.push(window.setTimeout(() => setIsBrowseTransitioning(false), 1050));
+		transitionTimers.current.push(window.setTimeout(() => setIsBrowseTransitioning(false), 525));
 	};
 	useEffect(() => {
 		if (!data || !featureArtwork) return;
@@ -234,6 +234,15 @@ export function GalleryPage() {
 		setCartArtworkIds((currentIds) => currentIds.includes(artworkId) ? currentIds : [...currentIds, artworkId]);
 		navigate('/cart');
 	};
+	const previewCartArtwork = (artworkId: string) => {
+		const artwork = data.artworks.find((item) => item.id === artworkId);
+		if (!artwork) return;
+		clearTransitionTimers();
+		setTransitionArtworkId(null);
+		setTransitionPhase('ready');
+		setBrowseDirection(null);
+		routerNavigate(`/artworks/${artworkSlug(artwork.title)}`, { state: { returnPath: '/cart', staticPreview: true } });
+	};
 
 	return (
 		<>
@@ -259,7 +268,7 @@ export function GalleryPage() {
 				<Route path="/contact" element={<ContactPage />} />
 				<Route path="/shipping" element={<PolicyPage variant="shipping" onBack={() => navigate('/cart')} onContact={() => navigate('/contact')} />} />
 				<Route path="/returns" element={<PolicyPage variant="returns" onBack={() => navigate('/cart')} onContact={() => navigate('/contact')} />} />
-				<Route path="/cart" element={<CartPage artworks={cartArtworks} onGallery={() => navigate('/')} onShipping={() => navigate('/shipping')} onReturns={() => navigate('/returns')} onContact={() => navigate('/contact')} onRemove={(artworkId) => setCartArtworkIds((currentIds) => currentIds.filter((id) => id !== artworkId))} onCheckout={() => setIsPurchaseOpen(true)} />} />
+				<Route path="/cart" element={<CartPage artworks={cartArtworks} onGallery={() => navigate('/')} onShipping={() => navigate('/shipping')} onReturns={() => navigate('/returns')} onContact={() => navigate('/contact')} onPreview={previewCartArtwork} onRemove={(artworkId) => setCartArtworkIds((currentIds) => currentIds.filter((id) => id !== artworkId))} onCheckout={() => setIsPurchaseOpen(true)} animateOnEntry={Boolean(routeState?.animateCartEntry)} />} />
 				<Route path="*" element={<Navigate to="/" replace />} />
 			</Routes>
 			{featureArtwork && (
@@ -270,8 +279,9 @@ export function GalleryPage() {
 					transitionPhase={transitionPhase}
 					usesSharedArtwork={Boolean(transitionArtworkId)}
 					browseDirection={browseDirection}
-					onBack={() => navigate(backgroundPath)}
-					onScrollBack={() => closeArtworkToGallery(backgroundPath)}
+					isStaticPreview={Boolean(routeState?.staticPreview)}
+					onBack={() => routeState?.returnPath === '/cart' ? closeArtworkToGallery('/cart') : navigate(backgroundPath)}
+					onScrollBack={() => closeArtworkToGallery(routeState?.returnPath || backgroundPath)}
 					onPrevious={() =>
 					browseArtwork(
 						getAdjacentId(data.artworks, featureArtwork.id, "previous"), "previous",

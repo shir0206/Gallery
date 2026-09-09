@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  animation: gallery-loader-breathe 2.4s ease-in-out infinite;
+  animation: gallery-loader-breathe 1.2s ease-in-out infinite;
 }
 
 .gallery-loader-frame {
@@ -29,7 +29,7 @@
     transparent 65%
   );
   background-size: 240% 240%;
-  animation: gallery-loader-sweep 2.4s ease-in-out infinite;
+  animation: gallery-loader-sweep 1.2s ease-in-out infinite;
 }
 
 /* A thin bar standing in for the not-yet-loaded title/label text

@@ -14,24 +14,26 @@ interface CartPageProps {
   onShipping: () => void;
   onReturns: () => void;
   onContact: () => void;
+  onPreview: (artworkId: string) => void;
   onRemove: (artworkId: string) => void;
   onCheckout: () => void;
+  animateOnEntry?: boolean;
 }
 
-export function CartPage({ artworks, onGallery, onShipping, onReturns, onContact, onRemove, onCheckout }: CartPageProps) {
+export function CartPage({ artworks, onGallery, onShipping, onReturns, onContact, onPreview, onRemove, onCheckout, animateOnEntry=false }: CartPageProps) {
   const pricedArtworks = artworks.map((artwork) => ({ artwork, price: getEffectivePrice(artwork) }));
   const currency = artworks[0] ? getArtworkCurrency(artworks[0]) : null;
   const canShowTotal = Boolean(currency) && pricedArtworks.every(({ artwork, price }) => price !== null && getArtworkCurrency(artwork) === currency);
   const total = canShowTotal ? pricedArtworks.reduce((sum, { price }) => sum + (price ?? 0), 0) : null;
   const totalLabel = total !== null && currency ? formatPrice(total, currency) : 'Price on request';
 
-  if (!artworks.length) return <div className="cart-page cart-page-empty"><main className="cart-empty" aria-label="Empty collection bag"><div className="cart-empty-icon"><BagIcon /></div><p className="cart-eyebrow">Your private selection</p><h1>Your bag is empty</h1><p>Discover an original artwork and begin a collection of your own.</p><button type="button" className="cart-primary-button" onClick={onGallery}>Explore the gallery <span aria-hidden="true">→</span></button></main></div>;
+  if (!artworks.length) return <div className="cart-page cart-page-empty" data-returning-from-preview={animateOnEntry||undefined}><main className="cart-empty" aria-label="Empty collection bag"><div className="cart-empty-icon"><BagIcon /></div><p className="cart-eyebrow">Your private selection</p><h1>Your bag is empty</h1><p>Discover an original artwork and begin a collection of your own.</p><button type="button" className="cart-primary-button" onClick={onGallery}>Explore the gallery <span aria-hidden="true">→</span></button></main></div>;
 
-  return <div className="cart-page">
+  return <div className="cart-page" data-returning-from-preview={animateOnEntry||undefined}>
     <header className="cart-hero"><div className="cart-hero-copy"><p className="cart-eyebrow">Your private selection</p><h1>Your collection</h1><p className="cart-intro">Selected works for your collection</p></div><div className="cart-hero-art" role="img" aria-label="A serene gallery interior" /></header>
     <main className="cart-layout" aria-label="Collection bag">
       <section className="cart-items-panel" aria-labelledby="cart-items-heading"><div className="cart-items-header"><h2 id="cart-items-heading">Your items ({artworks.length})</h2><button type="button" className="cart-continue" onClick={onGallery}><GalleryWallIcon /> Continue exploring</button></div><div className="cart-items">
-        {pricedArtworks.map(({ artwork, price }) => <article className="cart-item" key={artwork.id}><img src={artwork.imageUrl} alt={`${artwork.title} by ${artwork.artist}`} /><div className="cart-item-details"><h3>{artwork.title}</h3><p>{artwork.artist} · {artwork.year}</p><small>{artwork.medium}<span aria-hidden="true">•</span>{formatArtworkDimensions(artwork.dimensions.width, artwork.dimensions.height, artwork.dimensions.unit)}</small><button type="button" onClick={() => onRemove(artwork.id)} aria-label={`Remove ${artwork.title} from your collection`}>Remove</button></div>{price !== null && <strong>{formatPrice(price, getArtworkCurrency(artwork))}</strong>}</article>)}
+        {pricedArtworks.map(({ artwork, price }) => <article className="cart-item" key={artwork.id}><button type="button" className="cart-item-preview" onClick={() => onPreview(artwork.id)} aria-label={`Preview ${artwork.title} by ${artwork.artist}`}><img src={artwork.imageUrl} alt="" /></button><div className="cart-item-details"><h3>{artwork.title}</h3><p>{artwork.artist} · {artwork.year}</p><small>{artwork.medium}<span aria-hidden="true">•</span>{formatArtworkDimensions(artwork.dimensions.width, artwork.dimensions.height, artwork.dimensions.unit)}</small><button type="button" onClick={() => onRemove(artwork.id)} aria-label={`Remove ${artwork.title} from your collection`}>Remove</button></div>{price !== null && <strong>{formatPrice(price, getArtworkCurrency(artwork))}</strong>}</article>)}
       </div></section>
       <aside className="cart-summary-panel" aria-labelledby="cart-summary-heading"><h2 id="cart-summary-heading">Order summary</h2><p className="cart-count">{artworks.length} {artworks.length === 1 ? 'artwork' : 'artworks'}</p><div className="cart-total"><span>Collection total</span><strong>{totalLabel}</strong><p>Taxes and delivery calculated at checkout.</p></div><button type="button" className="cart-primary-button" onClick={onCheckout}>Secure checkout <span aria-hidden="true">→</span></button><div className="cart-reassurances"><div><LockIcon /><p><strong>Secure payment</strong><span>Your information is protected</span></p></div><div><DeliveryIcon /><p><strong>Insured delivery</strong><span>Works arrive safely worldwide</span></p></div><div><HeartIcon /><p><strong>A more beautiful world</strong><span>Supporting independent art</span></p></div></div><blockquote>“Art turns space into atmosphere.”<cite>— Shir Zabolotny</cite></blockquote></aside>
     </main>
