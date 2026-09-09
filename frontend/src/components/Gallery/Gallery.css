@@ -44,7 +44,20 @@
 }
 
 .gallery-camera { position:absolute;inset:0;z-index:1; }
-.gallery-light-strip{position:absolute;z-index:4;inset:0 0 auto;height:4px;pointer-events:none;background:#fffaf0;box-shadow:0 0 5px rgba(255,251,240,1),0 0 14px rgba(255,228,191,.95),0 9px 28px rgba(255,206,144,.38)}
+.gallery-light-strip{position:absolute;z-index:4;inset:0 0 auto;height:2px;pointer-events:none;background:#fffaf0;box-shadow:0 2px 4px rgba(255,251,240,1),0 7px 15px rgba(255,228,191,.82),0 18px 34px rgba(255,206,144,.34)}
+.gallery[data-transition-phase="focus"] .gallery-light-strip{animation:gallery-light-out .35s ease both}
+.gallery[data-transition-phase="isolate"] .gallery-light-strip,
+.gallery[data-transition-phase="title"] .gallery-light-strip,
+.gallery[data-transition-phase="ready"] .gallery-light-strip{background:none;box-shadow:none}
+.gallery[data-transition-phase="closing"] .gallery-light-strip{animation:gallery-light-in .35s ease both}
+@keyframes gallery-light-out{
+  from{opacity:1;background:#fffaf0;box-shadow:0 2px 4px rgba(255,251,240,1),0 7px 15px rgba(255,228,191,.82),0 18px 34px rgba(255,206,144,.34)}
+  to{opacity:0;background:#fffaf0;box-shadow:0 2px 4px rgba(255,251,240,1),0 7px 15px rgba(255,228,191,.82),0 18px 34px rgba(255,206,144,.34)}
+}
+@keyframes gallery-light-in{
+  from{opacity:0;background:#fffaf0;box-shadow:0 2px 4px rgba(255,251,240,1),0 7px 15px rgba(255,228,191,.82),0 18px 34px rgba(255,206,144,.34)}
+  to{opacity:1;background:#fffaf0;box-shadow:0 2px 4px rgba(255,251,240,1),0 7px 15px rgba(255,228,191,.82),0 18px 34px rgba(255,206,144,.34)}
+}
 .gallery-camera-surface{position:absolute;inset:-100vmax;z-index:0;background:var(--editorial-paper-bg-raised);opacity:0;pointer-events:none}
 
 /* One wrapper owns the room and complete artwork wall. A single matrix

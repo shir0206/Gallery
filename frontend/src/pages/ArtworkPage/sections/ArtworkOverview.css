@@ -1,6 +1,6 @@
 .artwork-presentation-track{--p:0;--opening:1;--surface-in:0;--title-in:1;--title-part:0;--art-in:.58;--art-settle:0;--detail-1:0;--detail-2:0;--detail-3:0;--detail-4:0;--rail-in:0;--copy-in:0;--facts-in:0;position:relative;width:100%;height:254svh;background:transparent}
 .artwork-overview{position:sticky;top:0;width:100%;height:calc(100vh - var(--editorial-header-height,72px));min-height:520px;overflow:hidden;color:var(--editorial-ink);background:transparent}
-.artwork-overview::before{content:"";position:absolute;z-index:0;inset:0;background:var(--editorial-paper-bg-raised);opacity:var(--surface-in);pointer-events:none}
+.artwork-overview::before{content:"";position:absolute;z-index:0;inset:0;background:var(--editorial-paper-bg);opacity:var(--surface-in);pointer-events:none}
 .artwork-presentation-track:not([data-shared-artwork]){--surface-in:1}
 .artwork-presentation-track[data-shared-artwork] .artwork-overview::before{display:none}
 .overview-atmosphere{display:none}
