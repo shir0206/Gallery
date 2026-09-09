@@ -58,6 +58,8 @@ const WALL_VISIBLE_THRESHOLD = 0.5;
 // still-moving position and visibly snaps it back — this instead
 // tracks the scroll's own real end.
 const SCROLL_SETTLE_IDLE_MS = 120;
+const CLICK_CENTER_TOLERANCE_PX = 2;
+const CLICK_CENTER_TIMEOUT_MS = 1400;
 
 /**
  * Renders the entire collection as one continuous, horizontally
@@ -101,6 +103,7 @@ export function ArtworkViewer({
   const programmaticScrollTimeoutRef = useRef<ReturnType<
     typeof setTimeout
   > | null>(null);
+  const openingArtworkIdRef = useRef<string | null>(null);
 
   // Reads the DOM directly (scrollLeft + each item's bounding rect)
   // rather than IntersectionObserver ratios — artworks vary widely in
@@ -305,6 +308,71 @@ export function ArtworkViewer({
 
   useEffect(() => cancelSettleCheck, [cancelSettleCheck]);
 
+  const centerAndOpenArtwork = useCallback(async (
+    artwork: Artwork,
+    button: HTMLButtonElement,
+  ) => {
+    const track = trackRef.current;
+    const frame = itemRefs.current.get(artwork.id);
+    const image = button.querySelector<HTMLImageElement>(".artwork-viewer-image");
+    if (!track || !frame || !image || !onOpenFeature || openingArtworkIdRef.current) return;
+
+    openingArtworkIdRef.current = artwork.id;
+    const trackRect = track.getBoundingClientRect();
+    const frameRect = frame.getBoundingClientRect();
+    const centerDelta = frameRect.left + frameRect.width / 2 - (trackRect.left + trackRect.width / 2);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (Math.abs(centerDelta) > CLICK_CENTER_TOLERANCE_PX) {
+      isProgrammaticScrollRef.current = true;
+      setActiveId(artwork.id);
+      onSelectArtwork(artwork.id);
+
+      await new Promise<void>((resolve) => {
+        let idleTimer: ReturnType<typeof setTimeout> | null = null;
+        let fallbackTimer: ReturnType<typeof setTimeout> | null = null;
+
+        const finish = () => {
+          if (idleTimer !== null) clearTimeout(idleTimer);
+          if (fallbackTimer !== null) clearTimeout(fallbackTimer);
+          track.removeEventListener("scroll", handleScroll);
+          track.removeEventListener("scrollend", finish);
+          isProgrammaticScrollRef.current = false;
+          resolve();
+        };
+        const handleScroll = () => {
+          if (idleTimer !== null) clearTimeout(idleTimer);
+          idleTimer = setTimeout(finish, SCROLL_SETTLE_IDLE_MS);
+        };
+
+        track.addEventListener("scroll", handleScroll, { passive: true });
+        track.addEventListener("scrollend", finish, { once: true });
+        fallbackTimer = setTimeout(finish, reducedMotion ? 50 : CLICK_CENTER_TIMEOUT_MS);
+        track.scrollTo({
+          left: Math.max(0, Math.min(track.scrollWidth - track.clientWidth, track.scrollLeft + centerDelta)),
+          behavior: reducedMotion ? "auto" : "smooth",
+        });
+      });
+    }
+
+    // Measure only after the wall has settled, so the existing camera
+    // transition grows from the painting's new centered position.
+    const gallery = button.closest<HTMLElement>(".gallery");
+    if (gallery) {
+      const galleryRect = gallery.getBoundingClientRect();
+      const artworkRect = button.getBoundingClientRect();
+      const focusX = ((artworkRect.left + artworkRect.width / 2 - galleryRect.left) / galleryRect.width) * 100;
+      const focusY = ((artworkRect.top + artworkRect.height / 2 - galleryRect.top) / galleryRect.height) * 100;
+      gallery.style.setProperty("--gallery-focus-x", `${focusX}%`);
+      gallery.style.setProperty("--gallery-focus-y", `${focusY}%`);
+      document.documentElement.style.setProperty("--gallery-focus-x", `${focusX}%`);
+      document.documentElement.style.setProperty("--gallery-focus-y", `${focusY}%`);
+    }
+
+    onOpenFeature(artwork.id, image);
+    openingArtworkIdRef.current = null;
+  }, [onOpenFeature, onSelectArtwork]);
+
   if (artworks.length === 0) {
     return (
       <div className="artwork-viewer">
@@ -338,21 +406,7 @@ export function ArtworkViewer({
                   <button
                     type="button"
                     className="artwork-viewer-image-button"
-                    onClick={(event) => {
-                      const gallery = event.currentTarget.closest<HTMLElement>(".gallery");
-                      if (gallery) {
-                        const galleryRect = gallery.getBoundingClientRect();
-                        const artworkRect = event.currentTarget.getBoundingClientRect();
-                        const focusX = ((artworkRect.left + artworkRect.width / 2 - galleryRect.left) / galleryRect.width) * 100;
-                        const focusY = ((artworkRect.top + artworkRect.height / 2 - galleryRect.top) / galleryRect.height) * 100;
-                        gallery.style.setProperty("--gallery-focus-x", `${focusX}%`);
-                        gallery.style.setProperty("--gallery-focus-y", `${focusY}%`);
-                        document.documentElement.style.setProperty("--gallery-focus-x", `${focusX}%`);
-                        document.documentElement.style.setProperty("--gallery-focus-y", `${focusY}%`);
-                      }
-                      const image = event.currentTarget.querySelector<HTMLImageElement>(".artwork-viewer-image");
-                      if (image) onOpenFeature(artwork.id, image);
-                    }}
+                    onClick={(event) => void centerAndOpenArtwork(artwork, event.currentTarget)}
                     aria-label={`Open ${artwork.title} by ${artwork.artist}`}
                   >
                     <img
