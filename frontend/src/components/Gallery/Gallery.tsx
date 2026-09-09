@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { ArtworkCollectionResponse } from '@/types/artwork';
 import { GalleryBackground } from './GalleryBackground/GalleryBackground';
 import { GalleryNavigation } from './GalleryNavigation/GalleryNavigation';
@@ -18,8 +18,9 @@ interface GalleryProps {
    * it from the accessibility tree/tab order while it's covered. */
   isCovered?: boolean;
   transitionArtworkId?: string | null;
-  transitionPhase?: "idle" | "focus" | "isolate" | "title" | "ready";
+  transitionPhase?: "idle" | "focus" | "isolate" | "title" | "ready" | "closing";
   onCameraSettled?: () => void;
+  suppressReveal?: boolean;
 }
 
 /**
@@ -38,8 +39,11 @@ interface GalleryProps {
  * signal (0–100% along the wall) that isn't part of the selection
  * "context" itself but rides alongside it for a live position readout.
  */
-export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, transitionArtworkId = null, transitionPhase = "idle", onCameraSettled }: GalleryProps) {
+export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, transitionArtworkId = null, transitionPhase = "idle", onCameraSettled, suppressReveal = false }: GalleryProps) {
   const { environment, artworks } = data;
+  const galleryRef = useRef<HTMLDivElement>(null);
+  const previousTransitionPhaseRef = useRef(transitionPhase);
+  const frozenWallOffsetRef = useRef<number | null>(null);
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     artworks[0]?.id ?? null,
   );
@@ -70,6 +74,24 @@ export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, tr
   const handleVisibleArtworksChange = useCallback((ids: Set<string>) => {
     setVisibleArtworkIds(ids);
   }, []);
+
+  // During the camera animation, translateX replaces the native horizontal
+  // scroll position. Put that value back before the first idle frame paints.
+  useLayoutEffect(() => {
+    const previousPhase = previousTransitionPhaseRef.current;
+    previousTransitionPhaseRef.current = transitionPhase;
+    if (transitionPhase === 'closing') {
+      const offset = Number.parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue('--wall-scroll-offset'),
+      );
+      if (Number.isFinite(offset)) frozenWallOffsetRef.current = offset;
+      return;
+    }
+    if (previousPhase !== 'closing' || transitionPhase !== 'idle') return;
+    const track = galleryRef.current?.querySelector<HTMLElement>('.artwork-viewer-track');
+    if (!track) return;
+    if (frozenWallOffsetRef.current !== null) track.scrollLeft = -frozenWallOffsetRef.current;
+  }, [transitionPhase]);
 
   // Wrap around at either end, so "next" from the last piece returns to
   // the first and vice versa — the collection reads as a loop rather
@@ -123,7 +145,8 @@ export function Gallery({ data, onOpenFeature, onExitWall, isCovered = false, tr
 
   return (
     <div
-      className={`gallery${isCovered ? ' gallery-covered' : ''}`}
+      ref={galleryRef}
+      className={`gallery${isCovered ? ' gallery-covered' : ''}${suppressReveal ? ' gallery-suppress-reveal' : ''}`}
       data-transition-phase={transitionPhase}
       data-scroll-progress={Math.round(scrollProgress)}
       aria-hidden={isCovered || undefined}

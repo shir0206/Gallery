@@ -24,7 +24,7 @@ function artworkSlug(title: string): string {
 		.replace(/^-|-$/g, '');
 }
 
-type ArtworkTransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready';
+type ArtworkTransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready' | 'closing';
 type BrowseDirection = 'previous' | 'next';
 
 function setGalleryCamera(camera: { x: number; y: number; scale: number }) {
@@ -64,6 +64,7 @@ export function GalleryPage() {
 	const [transitionArtworkId, setTransitionArtworkId] = useState<string | null>(null);
 	const [browseDirection, setBrowseDirection] = useState<BrowseDirection | null>(null);
 	const [isBrowseTransitioning, setIsBrowseTransitioning] = useState(false);
+	const [hasReturnedToGallery, setHasReturnedToGallery] = useState(false);
 	const transitionTimers = useRef<number[]>([]);
 	const artworkMatch = matchPath('/artworks/:artworkSlug', location.pathname);
 	const featureArtworkSlug = artworkMatch?.params.artworkSlug ?? null;
@@ -135,12 +136,30 @@ export function GalleryPage() {
 		routerNavigate(`/artworks/${artworkSlug(artwork.title)}`, { state: { backgroundPath: currentBackground } });
 	};
 	const handleCameraSettled = useCallback(() => {
+		if (transitionPhase === 'closing') {
+			setHasReturnedToGallery(true);
+			routerNavigate(backgroundPath);
+			window.scrollTo({ top: 0, behavior: 'auto' });
+			return;
+		}
 		if (transitionPhase !== 'focus') return;
 		setTransitionPhase('title');
 		const wordCount = Math.max(1, featureArtwork?.title.trim().split(/\s+/).length ?? 1);
 		const titleDuration = 1220 + (wordCount - 1) * 100;
 		transitionTimers.current.push(window.setTimeout(() => setTransitionPhase('ready'), titleDuration));
-	}, [transitionPhase, featureArtwork]);
+	}, [transitionPhase, featureArtwork, routerNavigate, backgroundPath]);
+	const closeArtworkToGallery = useCallback(() => {
+		if (transitionPhase !== 'ready') return;
+		if (backgroundPath !== '/' || !transitionArtworkId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			setIsPurchaseOpen(false);
+			routerNavigate(backgroundPath);
+			window.scrollTo({ top: 0, behavior: 'auto' });
+			return;
+		}
+		clearTransitionTimers();
+		setTransitionPhase('closing');
+		requestAnimationFrame(() => requestAnimationFrame(() => setGalleryCamera({ x: 0, y: 0, scale: 1 })));
+	}, [backgroundPath, transitionArtworkId, transitionPhase, clearTransitionTimers, routerNavigate]);
 	const browseArtwork = (artworkId: string | null, direction: BrowseDirection) => {
 		if (!artworkId || isBrowseTransitioning) return;
 		const artwork = data?.artworks.find((item) => item.id === artworkId);
@@ -227,12 +246,12 @@ export function GalleryPage() {
 				onPrevious={featureArtwork ? () => browseArtwork(getAdjacentId(data.artworks, featureArtwork.id, 'previous'), 'previous') : undefined}
 				onNext={featureArtwork ? () => browseArtwork(getAdjacentId(data.artworks, featureArtwork.id, 'next'), 'next') : undefined}
 				isArtworkNavigationDisabled={isBrowseTransitioning}
-				isGalleryWall={location.pathname === '/'}
+				isGalleryWall={location.pathname === '/' || transitionPhase === 'closing'}
 			/>
 			<Routes>
-				<Route path="/" element={<Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered={Boolean(featureArtwork || isPurchaseOpen || isSearchOpen)} transitionArtworkId={transitionArtworkId} transitionPhase={transitionPhase} onCameraSettled={handleCameraSettled} />} />
+				<Route path="/" element={<Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered={Boolean(featureArtwork || isPurchaseOpen || isSearchOpen)} transitionArtworkId={transitionArtworkId} transitionPhase={transitionPhase} onCameraSettled={handleCameraSettled} suppressReveal={hasReturnedToGallery} />} />
 				<Route path="/collection" element={<HomePage artworks={data.artworks} onSelectArtwork={openArtwork} onViewWall={() => navigate('/')} />} />
-				<Route path="/artworks/:artworkSlug" element={!hasBackgroundRoute ? <div className="direct-artwork-background" aria-hidden="true" /> : backgroundPath === '/collection' ? <HomePage artworks={data.artworks} onSelectArtwork={openArtwork} onViewWall={() => navigate('/')} /> : <Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered transitionArtworkId={transitionArtworkId} transitionPhase={transitionPhase} onCameraSettled={handleCameraSettled} />} />
+				<Route path="/artworks/:artworkSlug" element={!hasBackgroundRoute ? <div className="direct-artwork-background" aria-hidden="true" /> : backgroundPath === '/collection' ? <HomePage artworks={data.artworks} onSelectArtwork={openArtwork} onViewWall={() => navigate('/')} /> : <Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered transitionArtworkId={transitionArtworkId} transitionPhase={transitionPhase} onCameraSettled={handleCameraSettled} suppressReveal={hasReturnedToGallery} />} />
 				<Route path="/search" element={backgroundPath === '/collection' ? <HomePage artworks={data.artworks} onSelectArtwork={openArtwork} onViewWall={() => navigate('/')} /> : <Gallery data={data} onOpenFeature={openArtwork} onExitWall={() => navigate('/collection')} isCovered />} />
 				<Route path="/about" element={<AboutPage onGallery={() => navigate('/')} />} />
 				<Route path="/contact" element={<ContactPage />} />
@@ -250,6 +269,7 @@ export function GalleryPage() {
 					usesSharedArtwork={Boolean(transitionArtworkId)}
 					browseDirection={browseDirection}
 					onBack={() => navigate(backgroundPath)}
+					onScrollBack={closeArtworkToGallery}
 					onPrevious={() =>
 					browseArtwork(
 						getAdjacentId(data.artworks, featureArtwork.id, "previous"), "previous",

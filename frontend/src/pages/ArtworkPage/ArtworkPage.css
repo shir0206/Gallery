@@ -15,6 +15,7 @@
 .artwork-page[data-transition-phase="title"] .artwork-page-scroller,
 .artwork-page[data-intro-locked] .artwork-page-scroller { overflow-y:hidden; }
 .artwork-page[data-transition-phase="focus"],.artwork-page[data-transition-phase="isolate"] { pointer-events:none; }
+.artwork-page[data-transition-phase="closing"] { pointer-events:none; opacity:0; transition:opacity .42s ease; }
 
 .artwork-page-scroller {
   --editorial-header-height: 72px;

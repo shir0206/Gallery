@@ -30,6 +30,14 @@
 .gallery-covered .gallery-exit-button {
   display: none;
 }
+.gallery-covered[data-transition-phase="closing"] .gallery-navigation {
+  display:flex;
+  animation:gallery-navigation-return 1.8s cubic-bezier(.65,0,.35,1) both;
+}
+@keyframes gallery-navigation-return {
+  0%,45% { opacity:0; transform:translateY(12px); }
+  100% { opacity:1; transform:translateY(0); }
+}
 
 .gallery-camera { position:absolute;inset:0;z-index:1; }
 .gallery-light-strip{position:absolute;z-index:4;inset:0 0 auto;height:4px;pointer-events:none;background:#fffaf0;box-shadow:0 0 5px rgba(255,251,240,1),0 0 14px rgba(255,228,191,.95),0 9px 28px rgba(255,206,144,.38)}
@@ -63,6 +71,10 @@
 .gallery[data-transition-phase="ready"] > .gallery-background {
   transform:translateX(var(--gallery-camera-x,0)) scale(var(--gallery-camera-scale,1));
   transition:none;
+}
+.gallery[data-transition-phase="closing"] .gallery-camera,
+.gallery[data-transition-phase="closing"] > .gallery-background {
+  transition-duration:1.8s;
 }
 .gallery[data-transition-phase="ready"] .gallery-camera-surface { opacity:var(--shared-surface-in,0); }
 .gallery[data-transition-phase]:not([data-transition-phase="idle"]) .artwork-title-label{opacity:0!important}
@@ -99,6 +111,10 @@
 .gallery[data-transition-phase="ready"] .artwork-viewer-frame:not(.artwork-viewer-frame-transition-target) {
   opacity:0;
   transition:none;
+}
+.gallery[data-transition-phase="closing"] .artwork-viewer-frame:not(.artwork-viewer-frame-transition-target) {
+  opacity:1;
+  transition:opacity .42s ease .72s;
 }
 
 @media (prefers-reduced-motion: reduce) {

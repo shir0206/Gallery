@@ -27,7 +27,7 @@
 }
 
 .artwork-viewer-frame:hover .artwork-title-label,
-.artwork-viewer-frame:focus-within .artwork-title-label {
+.artwork-viewer-image-button:focus-visible + .artwork-title-label {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }

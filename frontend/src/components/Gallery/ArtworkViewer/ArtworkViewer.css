@@ -11,6 +11,10 @@
   animation: artwork-viewer-reveal 0.35s ease both;
 }
 
+.gallery-suppress-reveal .artwork-viewer {
+  animation: none;
+}
+
 /* Live readout: overall scroll progress (0-100%, left to right) plus
    the title/index of whichever artwork is currently centered. Sits
    above the wall itself so it never overlaps the art or the fixed
@@ -155,6 +159,7 @@
      reads as if it's actually hung on the plaster wall behind it. No
      border-radius: real framed artwork has square corners. */
   box-shadow: 0 8px 16px rgba(35, 26, 16, 0.32);
+  transition: box-shadow .5s ease;
   -webkit-user-drag: none;
   user-select: none;
 }
@@ -165,6 +170,11 @@
 .gallery-covered[data-transition-phase="title"] .artwork-viewer-frame-transition-target .artwork-viewer-image,
 .gallery-covered[data-transition-phase="ready"] .artwork-viewer-frame-transition-target .artwork-viewer-image {
   box-shadow: none;
+}
+
+.gallery-covered[data-transition-phase="closing"] .artwork-viewer-image {
+  box-shadow: 0 8px 16px rgba(35, 26, 16, 0.32);
+  transition: box-shadow .5s ease .9s;
 }
 
 @media (max-width: 768px) {

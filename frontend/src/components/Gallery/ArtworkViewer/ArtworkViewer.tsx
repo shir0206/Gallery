@@ -40,7 +40,7 @@ interface ArtworkViewerProps {
   /** Opens the editorial feature-spread view (ArtworkPage) for the current artwork. Omit to hide the affordance. */
   onOpenFeature?: (artworkId: string, image: HTMLImageElement) => void;
   transitionArtworkId?: string | null;
-  transitionPhase?: "idle" | "focus" | "isolate" | "title" | "ready";
+  transitionPhase?: "idle" | "focus" | "isolate" | "title" | "ready" | "closing";
 }
 
 // An artwork counts as "on the wall" once at least this fraction of it

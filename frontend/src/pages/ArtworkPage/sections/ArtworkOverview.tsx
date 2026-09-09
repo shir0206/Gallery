@@ -4,7 +4,7 @@ import { formatArtworkDimensions } from "@/utils";
 import { useScrollPresentation } from "./useScrollPresentation";
 import "./ArtworkOverview.css";
 
-type TransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready';
+type TransitionPhase = 'idle' | 'focus' | 'isolate' | 'title' | 'ready' | 'closing';
 interface ArtworkOverviewProps { artwork: Artwork; transitionPhase?: TransitionPhase; usesSharedArtwork?: boolean; browseDirection?: 'previous' | 'next' | null; onIntroReady?: () => void }
 
 function orientationFromImage(artwork: Artwork): Artwork['orientation'] {
