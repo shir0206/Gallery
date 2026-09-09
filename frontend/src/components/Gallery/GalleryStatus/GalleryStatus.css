@@ -16,7 +16,7 @@
   height: 100%;
   padding: 24px;
   text-align: center;
-  animation: gallery-status-reveal 0.4s ease both;
+  animation: gallery-status-reveal .2s ease both;
 }
 
 @keyframes gallery-status-reveal {
@@ -71,7 +71,7 @@
   background: var(--gallery-accent);
   transform: scaleX(0.4);
   transform-origin: left;
-  transition: transform 0.25s ease;
+  transition: transform .125s ease;
 }
 
 .gallery-status-retry:hover::after,

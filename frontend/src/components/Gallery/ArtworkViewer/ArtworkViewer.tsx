@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Artwork } from "../../../types/artwork";
 import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
-import { ArtworkPurchaseCta } from "./ArtworkPurchaseCta/ArtworkPurchaseCta";
+import { ArtworkTitleLabel } from "./ArtworkTitleLabel/ArtworkTitleLabel";
 import "./ArtworkViewer.css";
 
 /** Reported on every scroll tick so the parent can drive a progress
@@ -38,7 +38,9 @@ interface ArtworkViewerProps {
    * viewport, 1-2 on a narrow one), not only the active one. */
   onVisibleArtworksChange?: (artworkIds: Set<string>) => void;
   /** Opens the editorial feature-spread view (ArtworkPage) for the current artwork. Omit to hide the affordance. */
-  onOpenFeature?: (artworkId: string) => void;
+  onOpenFeature?: (artworkId: string, image: HTMLImageElement) => void;
+  transitionArtworkId?: string | null;
+  transitionPhase?: "idle" | "focus" | "isolate" | "title" | "ready" | "closing";
 }
 
 // An artwork counts as "on the wall" once at least this fraction of it
@@ -55,7 +57,9 @@ const WALL_VISIBLE_THRESHOLD = 0.5;
 // that happens to take longer, which re-derives selection from a
 // still-moving position and visibly snaps it back — this instead
 // tracks the scroll's own real end.
-const SCROLL_SETTLE_IDLE_MS = 120;
+const SCROLL_SETTLE_IDLE_MS = 60;
+const CLICK_CENTER_TOLERANCE_PX = 2;
+const CLICK_CENTER_TIMEOUT_MS = 700;
 
 /**
  * Renders the entire collection as one continuous, horizontally
@@ -80,6 +84,8 @@ export function ArtworkViewer({
   onScrollProgress,
   onVisibleArtworksChange,
   onOpenFeature,
+  transitionArtworkId = null,
+  transitionPhase = "idle",
 }: ArtworkViewerProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef(new Map<string, HTMLDivElement>());
@@ -97,6 +103,8 @@ export function ArtworkViewer({
   const programmaticScrollTimeoutRef = useRef<ReturnType<
     typeof setTimeout
   > | null>(null);
+  const openingArtworkIdRef = useRef<string | null>(null);
+  const deferredSelectionIdRef = useRef<string | null>(null);
 
   // Reads the DOM directly (scrollLeft + each item's bounding rect)
   // rather than IntersectionObserver ratios — artworks vary widely in
@@ -278,17 +286,38 @@ export function ArtworkViewer({
   // previous/next controls, arrow keys), scroll that artwork to the
   // center of the wall. Guarded against re-triggering the scroll
   // handler above so this doesn't fight the visitor's own scrolling.
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!selectedArtworkId || selectedArtworkId === activeId) return;
+    // During the feature transition CSS deliberately makes the track's
+    // overflow visible and freezes its row with a transform. scrollIntoView
+    // cannot move the native scroller in that state, so remember the route's
+    // selection and apply it on the first idle layout before the wall paints.
+    if (transitionPhase !== "idle") {
+      deferredSelectionIdRef.current = selectedArtworkId;
+      return;
+    }
+    const track = trackRef.current;
     const el = itemRefs.current.get(selectedArtworkId);
-    if (!el) return;
+    if (!track || !el) return;
 
+    const wasDeferred = deferredSelectionIdRef.current === selectedArtworkId;
+    deferredSelectionIdRef.current = null;
     isProgrammaticScrollRef.current = true;
     setActiveId(selectedArtworkId);
-    el.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
+    // Use the scroller's intrinsic layout coordinates, not viewport rects.
+    // The latter can still include the gallery camera/row transforms while
+    // returning from ArtworkPage and produce a visibly off-center target.
+    const targetLeft =
+      el.offsetLeft + el.offsetWidth / 2 - track.clientWidth / 2;
+    track.scrollTo({
+      left: Math.max(
+        0,
+        Math.min(
+          track.scrollWidth - track.clientWidth,
+          targetLeft,
+        ),
+      ),
+      behavior: wasDeferred ? "auto" : "smooth",
     });
     // Scroll events (below) keep pushing this back out for as long as
     // the browser is still animating; this covers the case where the
@@ -297,9 +326,74 @@ export function ArtworkViewer({
 
     return cancelSettleCheck;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedArtworkId]);
+  }, [selectedArtworkId, transitionPhase]);
 
   useEffect(() => cancelSettleCheck, [cancelSettleCheck]);
+
+  const centerAndOpenArtwork = useCallback(async (
+    artwork: Artwork,
+    button: HTMLButtonElement,
+  ) => {
+    const track = trackRef.current;
+    const frame = itemRefs.current.get(artwork.id);
+    const image = button.querySelector<HTMLImageElement>(".artwork-viewer-image");
+    if (!track || !frame || !image || !onOpenFeature || openingArtworkIdRef.current) return;
+
+    openingArtworkIdRef.current = artwork.id;
+    const trackRect = track.getBoundingClientRect();
+    const frameRect = frame.getBoundingClientRect();
+    const centerDelta = frameRect.left + frameRect.width / 2 - (trackRect.left + trackRect.width / 2);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (Math.abs(centerDelta) > CLICK_CENTER_TOLERANCE_PX) {
+      isProgrammaticScrollRef.current = true;
+      setActiveId(artwork.id);
+      onSelectArtwork(artwork.id);
+
+      await new Promise<void>((resolve) => {
+        let idleTimer: ReturnType<typeof setTimeout> | null = null;
+        let fallbackTimer: ReturnType<typeof setTimeout> | null = null;
+
+        const finish = () => {
+          if (idleTimer !== null) clearTimeout(idleTimer);
+          if (fallbackTimer !== null) clearTimeout(fallbackTimer);
+          track.removeEventListener("scroll", handleScroll);
+          track.removeEventListener("scrollend", finish);
+          isProgrammaticScrollRef.current = false;
+          resolve();
+        };
+        const handleScroll = () => {
+          if (idleTimer !== null) clearTimeout(idleTimer);
+          idleTimer = setTimeout(finish, SCROLL_SETTLE_IDLE_MS);
+        };
+
+        track.addEventListener("scroll", handleScroll, { passive: true });
+        track.addEventListener("scrollend", finish, { once: true });
+        fallbackTimer = setTimeout(finish, reducedMotion ? 25 : CLICK_CENTER_TIMEOUT_MS);
+        track.scrollTo({
+          left: Math.max(0, Math.min(track.scrollWidth - track.clientWidth, track.scrollLeft + centerDelta)),
+          behavior: reducedMotion ? "auto" : "smooth",
+        });
+      });
+    }
+
+    // Measure only after the wall has settled, so the existing camera
+    // transition grows from the painting's new centered position.
+    const gallery = button.closest<HTMLElement>(".gallery");
+    if (gallery) {
+      const galleryRect = gallery.getBoundingClientRect();
+      const artworkRect = button.getBoundingClientRect();
+      const focusX = ((artworkRect.left + artworkRect.width / 2 - galleryRect.left) / galleryRect.width) * 100;
+      const focusY = ((artworkRect.top + artworkRect.height / 2 - galleryRect.top) / galleryRect.height) * 100;
+      gallery.style.setProperty("--gallery-focus-x", `${focusX}%`);
+      gallery.style.setProperty("--gallery-focus-y", `${focusY}%`);
+      document.documentElement.style.setProperty("--gallery-focus-x", `${focusX}%`);
+      document.documentElement.style.setProperty("--gallery-focus-y", `${focusY}%`);
+    }
+
+    onOpenFeature(artwork.id, image);
+    openingArtworkIdRef.current = null;
+  }, [onOpenFeature, onSelectArtwork]);
 
   if (artworks.length === 0) {
     return (
@@ -325,7 +419,7 @@ export function ArtworkViewer({
                 if (el) itemRefs.current.set(artwork.id, el);
                 else itemRefs.current.delete(artwork.id);
               }}
-              className="artwork-viewer-frame"
+              className={`artwork-viewer-frame${transitionArtworkId === artwork.id ? " artwork-viewer-frame-transition-target" : ""}`}
               data-orientation={artwork.orientation}
               data-artwork-id={artwork.id}
             >
@@ -334,7 +428,7 @@ export function ArtworkViewer({
                   <button
                     type="button"
                     className="artwork-viewer-image-button"
-                    onClick={() => onOpenFeature(artwork.id)}
+                    onClick={(event) => void centerAndOpenArtwork(artwork, event.currentTarget)}
                     aria-label={`Open ${artwork.title} by ${artwork.artist}`}
                   >
                     <img
@@ -342,6 +436,7 @@ export function ArtworkViewer({
                       alt={`${artwork.title} by ${artwork.artist}`}
                       className="artwork-viewer-image"
                       loading="lazy"
+                      data-transition-phase={transitionArtworkId === artwork.id ? transitionPhase : undefined}
                     />
                   </button>
                 ) : (
@@ -352,7 +447,7 @@ export function ArtworkViewer({
                     loading="lazy"
                   />
                 )}
-                <ArtworkPurchaseCta artwork={artwork} />
+                <ArtworkTitleLabel artwork={artwork} />
               </div>
             </div>
           );

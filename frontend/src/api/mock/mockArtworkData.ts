@@ -240,7 +240,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
         "Standing alone beneath an enormous evening makes solitude feel less like emptiness and more like possibility.",
     },
     imageUrl: "https://i.imgur.com/op3kZVC.jpg",
-    orientation: "portrait",
+    orientation: "landscape",
     palette: {
       id: "P4",
       name: "Garden & Sky",

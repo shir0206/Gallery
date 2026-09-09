@@ -15,12 +15,14 @@ interface EditorialHeaderProps {
   onSearch: () => void;
   onPrevious?: () => void;
   onNext?: () => void;
+  isArtworkNavigationDisabled?: boolean;
+  isGalleryWall?: boolean;
 }
 
-export function EditorialHeader({ artwork, onGallery, onAbout, onContact, onCart, cartCount, onSearch, onPrevious, onNext }: EditorialHeaderProps) {
+export function EditorialHeader({ artwork, onGallery, onAbout, onContact, onCart, cartCount, onSearch, onPrevious, onNext, isArtworkNavigationDisabled=false, isGalleryWall=false }: EditorialHeaderProps) {
   let isSaved = false;
   try { isSaved = artwork ? window.localStorage.getItem(`shir-gallery:favorites:${artwork.id}`) === 'true' : false; } catch { /* optional storage */ }
-  return <header className="editorial-header">
+  return <header className={`editorial-header${isGalleryWall ? ' editorial-header-gallery-wall' : ''}`}>
     <button type="button" className="editorial-brand" aria-label="Go to gallery" onClick={onGallery}><span>SZ</span><small>Shir Zabolotny<br/>Artworks</small></button>
     <nav className="editorial-primary-nav" aria-label="Primary navigation">
       <button type="button" onClick={onGallery}>Gallery</button>
@@ -28,7 +30,7 @@ export function EditorialHeader({ artwork, onGallery, onAbout, onContact, onCart
       <button type="button" onClick={onContact}>Contact</button>
     </nav>
     <div className="editorial-header-actions">
-      {onPrevious&&onNext&&<nav className="editorial-artwork-navigation" aria-label="Browse artworks"><button type="button" onClick={onPrevious} aria-label="Previous artwork">‹</button><button type="button" onClick={onNext} aria-label="Next artwork">›</button></nav>}
+      {onPrevious&&onNext&&<nav className="editorial-artwork-navigation" aria-label="Browse artworks"><button type="button" onClick={onPrevious} aria-label="Previous artwork" disabled={isArtworkNavigationDisabled}>‹</button><button type="button" onClick={onNext} aria-label="Next artwork" disabled={isArtworkNavigationDisabled}>›</button></nav>}
       <div className="editorial-tools" aria-label="Collection tools"><button type="button" title="Search" aria-label="Search artworks" onClick={onSearch}><SearchIcon/></button><span title="Saved artworks"><HeartIcon/></span><small>({isSaved ? 1 : 0})</small><button type="button" title="Collection bag" aria-label={`Open collection bag, ${cartCount} ${cartCount === 1 ? 'item' : 'items'}`} onClick={onCart}><BagIcon/></button><small className="editorial-bag-count">({cartCount})</small></div>
     </div>
   </header>;

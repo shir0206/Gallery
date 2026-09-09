@@ -1,0 +1,46 @@
+.artwork-title-label {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  z-index: 2;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 50%);
+  transform: translateX(-50%) translateY(6px);
+  color: #fff;
+  font-family: var(--gallery-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 55%);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .1s ease, transform .1s ease;
+}
+
+.artwork-viewer-frame:hover .artwork-title-label,
+.artwork-viewer-image-button:focus-visible + .artwork-title-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 639px) {
+  .artwork-title-label {
+    bottom: 12px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artwork-title-label {
+    transition: none;
+  }
+}
