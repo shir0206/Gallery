@@ -2,13 +2,12 @@ import './CartPage.css';
 import type { Artwork } from '@/types/artwork';
 import { formatArtworkDimensions, formatPrice } from '@/utils';
 import { getArtworkCurrency, getEffectivePrice } from '@/utils/commerce';
+import { GalleryWallIcon } from '@/components/Gallery/GalleryWallIcon';
 
 const BagIcon = () => <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l1 13H4L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>;
 const LockIcon = () => <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="1"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>;
 const DeliveryIcon = () => <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h12v13H3zM15 10h4l2 3v5h-6z"/><circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>;
 const HeartIcon = () => <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/></svg>;
-const GalleryWallIcon = () => <svg className="gallery-wall-icon" viewBox="0 0 30 22" aria-hidden="true"><rect x="2.5" y="3.5" width="8" height="11" rx=".5"/><path d="m4 12 2.5-3.5L9 12"/><rect x="13" y="1.5" width="7" height="8" rx=".5"/><path d="M14.5 5.5c1-.7 1.8.7 2.8 0s1.3.2 1.3.2M14.5 7.5c1-.7 1.8.7 2.8 0s1.3.2 1.3.2"/><rect x="22.5" y="6" width="5" height="8.5" rx=".5"/><path d="M23.7 8.2h2.6M24.4 8.3v3.3M25.6 8.3v3.3M23.8 12.8c.8-.5 1.6.5 2.4 0"/><rect x="12" y="12" width="8.5" height="7.5" rx=".5"/><path d="M14 15.2c.3-1 1.6-1 2-.2.5-.7 1.8-.4 1.9.5M14.5 16.7l-.4.8M16.3 16.7l-.4.8M18.1 16.7l-.4.8"/></svg>;
-
 interface CartPageProps {
   artworks: Artwork[];
   onGallery: () => void;

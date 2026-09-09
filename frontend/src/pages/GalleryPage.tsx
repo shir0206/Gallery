@@ -66,6 +66,7 @@ export function GalleryPage() {
 	const [isBrowseTransitioning, setIsBrowseTransitioning] = useState(false);
 	const [hasReturnedToGallery, setHasReturnedToGallery] = useState(false);
 	const transitionTimers = useRef<number[]>([]);
+	const closeDestinationRef = useRef('/');
 	const artworkMatch = matchPath('/artworks/:artworkSlug', location.pathname);
 	const featureArtworkSlug = artworkMatch?.params.artworkSlug ?? null;
 	const isSearchOpen = location.pathname === '/search';
@@ -138,7 +139,7 @@ export function GalleryPage() {
 	const handleCameraSettled = useCallback(() => {
 		if (transitionPhase === 'closing') {
 			setHasReturnedToGallery(true);
-			routerNavigate(backgroundPath);
+			routerNavigate(closeDestinationRef.current);
 			window.scrollTo({ top: 0, behavior: 'auto' });
 			return;
 		}
@@ -148,11 +149,12 @@ export function GalleryPage() {
 		const titleDuration = 1220 + (wordCount - 1) * 100;
 		transitionTimers.current.push(window.setTimeout(() => setTransitionPhase('ready'), titleDuration));
 	}, [transitionPhase, featureArtwork, routerNavigate, backgroundPath]);
-	const closeArtworkToGallery = useCallback(() => {
+	const closeArtworkToGallery = useCallback((destination = backgroundPath) => {
 		if (transitionPhase !== 'ready') return;
-		if (backgroundPath !== '/' || !transitionArtworkId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		closeDestinationRef.current = destination;
+		if (backgroundPath !== '/' || destination !== '/' || !transitionArtworkId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			setIsPurchaseOpen(false);
-			routerNavigate(backgroundPath);
+			routerNavigate(destination);
 			window.scrollTo({ top: 0, behavior: 'auto' });
 			return;
 		}
@@ -237,7 +239,7 @@ export function GalleryPage() {
 		<>
 			<EditorialHeader
 				artwork={featureArtwork}
-				onGallery={() => navigate('/')}
+				onGallery={() => featureArtwork ? closeArtworkToGallery('/') : navigate('/')}
 				onAbout={() => navigate('/about')}
 				onContact={() => navigate('/contact')}
 				onCart={() => navigate('/cart')}
@@ -269,7 +271,7 @@ export function GalleryPage() {
 					usesSharedArtwork={Boolean(transitionArtworkId)}
 					browseDirection={browseDirection}
 					onBack={() => navigate(backgroundPath)}
-					onScrollBack={closeArtworkToGallery}
+					onScrollBack={() => closeArtworkToGallery(backgroundPath)}
 					onPrevious={() =>
 					browseArtwork(
 						getAdjacentId(data.artworks, featureArtwork.id, "previous"), "previous",
