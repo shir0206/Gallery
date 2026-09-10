@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from "react";
 
 const DRAG_THRESHOLD_PX = 4;
 
@@ -18,7 +18,12 @@ const DRAG_THRESHOLD_PX = 4;
  */
 export function useHorizontalScroll(ref: RefObject<HTMLElement | null>) {
   const [isDragging, setIsDragging] = useState(false);
-  const dragState = useRef({ active: false, startX: 0, startScrollLeft: 0, moved: false });
+  const dragState = useRef({
+    active: false,
+    startX: 0,
+    startScrollLeft: 0,
+    moved: false,
+  });
 
   useEffect(() => {
     const el = ref.current;
@@ -36,7 +41,7 @@ export function useHorizontalScroll(ref: RefObject<HTMLElement | null>) {
     };
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      if (event.pointerType !== "mouse" || event.button !== 0) return;
       dragState.current = {
         active: true,
         startX: event.clientX,
@@ -66,25 +71,28 @@ export function useHorizontalScroll(ref: RefObject<HTMLElement | null>) {
           event.stopPropagation();
           event.preventDefault();
         };
-        el.addEventListener('click', suppressClick, { capture: true, once: true });
+        el.addEventListener("click", suppressClick, {
+          capture: true,
+          once: true,
+        });
       }
       dragState.current.active = false;
       dragState.current.moved = false;
       setIsDragging(false);
     };
 
-    el.addEventListener('wheel', handleWheel, { passive: false });
-    el.addEventListener('pointerdown', handlePointerDown);
-    window.addEventListener('pointermove', handlePointerMove);
-    window.addEventListener('pointerup', endDrag);
-    window.addEventListener('pointercancel', endDrag);
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    el.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", endDrag);
+    window.addEventListener("pointercancel", endDrag);
 
     return () => {
-      el.removeEventListener('wheel', handleWheel);
-      el.removeEventListener('pointerdown', handlePointerDown);
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('pointerup', endDrag);
-      window.removeEventListener('pointercancel', endDrag);
+      el.removeEventListener("wheel", handleWheel);
+      el.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", endDrag);
+      window.removeEventListener("pointercancel", endDrag);
     };
   }, [ref]);
 

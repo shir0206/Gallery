@@ -8,7 +8,7 @@
   gap: 20px;
   height: 100%;
   padding: 60px 0 180px;
-  animation: artwork-viewer-reveal .175s ease both;
+  animation: artwork-viewer-reveal 0.175s ease both;
 }
 
 .gallery-suppress-reveal .artwork-viewer {
@@ -45,7 +45,7 @@
   border-radius: inherit;
   /* Smooths out the per-frame scroll updates into a fluid sweep rather
      than a jittery snap on every animation frame. */
-  transition: width .04s linear;
+  transition: width 0.04s linear;
 }
 
 .artwork-viewer-progress-label {
@@ -117,7 +117,7 @@
   align-items: center;
   justify-content: center;
   height: 62vh;
-  transition: opacity .125s ease;
+  transition: opacity 0.125s ease;
 }
 
 .artwork-viewer-frame[data-orientation="landscape"] {
@@ -139,16 +139,24 @@
   display: block;
   cursor: pointer;
 }
-.artwork-viewer-frame-transition-target .artwork-viewer-image-button[data-scroll-settling] {
-  position:relative;
-  z-index:6;
-  transform:translate(var(--shared-image-x,0),var(--shared-image-y,0)) scale(var(--shared-image-scale,1));
-  transform-origin:top left;
-  will-change:transform;
+.artwork-viewer-frame-transition-target
+  .artwork-viewer-image-button[data-scroll-settling] {
+  position: relative;
+  z-index: 6;
+  transform: translate(var(--shared-image-x, 0), var(--shared-image-y, 0))
+    scale(var(--shared-image-scale, 1));
+  transform-origin: top left;
+  will-change: transform;
 }
 
-.gallery[data-transition-phase="title"] .artwork-viewer-frame-transition-target .artwork-viewer-image,
-.gallery[data-transition-phase="ready"] .artwork-viewer-frame-transition-target .artwork-viewer-image { box-shadow:0 16px 38px rgb(35 26 16/.25); }
+.gallery[data-transition-phase="title"]
+  .artwork-viewer-frame-transition-target
+  .artwork-viewer-image,
+.gallery[data-transition-phase="ready"]
+  .artwork-viewer-frame-transition-target
+  .artwork-viewer-image {
+  box-shadow: 0 16px 38px rgb(35 26 16/0.25);
+}
 
 .artwork-viewer-image {
   display: block;
@@ -159,7 +167,7 @@
      reads as if it's actually hung on the plaster wall behind it. No
      border-radius: real framed artwork has square corners. */
   box-shadow: 0 8px 16px rgba(35, 26, 16, 0.32);
-  transition: box-shadow .25s ease;
+  transition: box-shadow 0.25s ease;
   -webkit-user-drag: none;
   user-select: none;
 }
@@ -167,14 +175,18 @@
 /* The wall keeps its natural hanging shadow, but the same image becomes a
    clean editorial plate once the artwork page covers the gallery. */
 .gallery-covered .artwork-viewer-image,
-.gallery-covered[data-transition-phase="title"] .artwork-viewer-frame-transition-target .artwork-viewer-image,
-.gallery-covered[data-transition-phase="ready"] .artwork-viewer-frame-transition-target .artwork-viewer-image {
+.gallery-covered[data-transition-phase="title"]
+  .artwork-viewer-frame-transition-target
+  .artwork-viewer-image,
+.gallery-covered[data-transition-phase="ready"]
+  .artwork-viewer-frame-transition-target
+  .artwork-viewer-image {
   box-shadow: none;
 }
 
 .gallery-covered[data-transition-phase="closing"] .artwork-viewer-image {
   box-shadow: 0 8px 16px rgba(35, 26, 16, 0.32);
-  transition: box-shadow .25s ease .45s;
+  transition: box-shadow 0.25s ease 0.45s;
 }
 
 @media (max-width: 768px) {

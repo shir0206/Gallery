@@ -1,6 +1,6 @@
-import type { Artwork } from '@/types/artwork';
-import { formatArtworkDate, formatArtworkDimensions } from '@/utils';
-import './ArtworkDetails.css';
+import type { Artwork } from "@/types/artwork";
+import { formatArtworkDate, formatArtworkDimensions } from "@/utils";
+import "./ArtworkDetails.css";
 
 interface ArtworkDetailsProps {
   artwork: Artwork;
@@ -9,10 +9,13 @@ interface ArtworkDetailsProps {
 }
 
 /** Ordered (label, value) pairs for the structured description block. */
-const DESCRIPTION_SECTIONS: Array<{ key: keyof Artwork['description']; label: string }> = [
-  { key: 'materials', label: 'Materials' },
-  { key: 'visual', label: 'Visual' },
-  { key: 'inspiration', label: 'Inspiration' },
+const DESCRIPTION_SECTIONS: Array<{
+  key: keyof Artwork["description"];
+  label: string;
+}> = [
+  { key: "materials", label: "Materials" },
+  { key: "visual", label: "Visual" },
+  { key: "inspiration", label: "Inspiration" },
 ];
 
 /**
@@ -20,7 +23,10 @@ const DESCRIPTION_SECTIONS: Array<{ key: keyof Artwork['description']; label: st
  * artist, date, medium, dimensions, categories, and the structured
  * (materials / visual / inspiration) description.
  */
-export function ArtworkDetails({ artwork, onOpenFeature }: ArtworkDetailsProps) {
+export function ArtworkDetails({
+  artwork,
+  onOpenFeature,
+}: ArtworkDetailsProps) {
   const { day, month, year, dimensions } = artwork;
 
   return (
@@ -39,7 +45,13 @@ export function ArtworkDetails({ artwork, onOpenFeature }: ArtworkDetailsProps) 
         </div>
         <div className="artwork-details-fact">
           <dt>Dimensions</dt>
-          <dd>{formatArtworkDimensions(dimensions.width, dimensions.height, dimensions.unit)}</dd>
+          <dd>
+            {formatArtworkDimensions(
+              dimensions.width,
+              dimensions.height,
+              dimensions.unit
+            )}
+          </dd>
         </div>
       </dl>
 
@@ -67,7 +79,11 @@ export function ArtworkDetails({ artwork, onOpenFeature }: ArtworkDetailsProps) 
       </dl>
 
       {onOpenFeature && (
-        <button type="button" className="artwork-details-feature-link" onClick={onOpenFeature}>
+        <button
+          type="button"
+          className="artwork-details-feature-link"
+          onClick={onOpenFeature}
+        >
           Read the feature spread →
         </button>
       )}

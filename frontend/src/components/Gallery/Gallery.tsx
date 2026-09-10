@@ -1,9 +1,19 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { ArtworkCollectionResponse } from '@/types/artwork';
-import { GalleryBackground } from './GalleryBackground/GalleryBackground';
-import { GalleryNavigation } from './GalleryNavigation/GalleryNavigation';
-import { ArtworkViewer, type ArtworkScrollProgress } from './ArtworkViewer/ArtworkViewer';
-import './Gallery.css';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import type { ArtworkCollectionResponse } from "@/types/artwork";
+import { GalleryBackground } from "./GalleryBackground/GalleryBackground";
+import { GalleryNavigation } from "./GalleryNavigation/GalleryNavigation";
+import {
+  ArtworkViewer,
+  type ArtworkScrollProgress,
+} from "./ArtworkViewer/ArtworkViewer";
+import "./Gallery.css";
 
 interface GalleryProps {
   data: ArtworkCollectionResponse;
@@ -22,7 +32,13 @@ interface GalleryProps {
    * it from the accessibility tree/tab order while it's covered. */
   isCovered?: boolean;
   transitionArtworkId?: string | null;
-  transitionPhase?: "idle" | "focus" | "isolate" | "title" | "ready" | "closing";
+  transitionPhase?:
+    | "idle"
+    | "focus"
+    | "isolate"
+    | "title"
+    | "ready"
+    | "closing";
   onCameraSettled?: () => void;
   suppressReveal?: boolean;
 }
@@ -43,15 +59,27 @@ interface GalleryProps {
  * signal (0–100% along the wall) that isn't part of the selection
  * "context" itself but rides alongside it for a live position readout.
  */
-export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWall, isCovered = false, transitionArtworkId = null, transitionPhase = "idle", onCameraSettled, suppressReveal = false }: GalleryProps) {
+export function Gallery({
+  data,
+  focusedArtworkId = null,
+  onOpenFeature,
+  onExitWall,
+  isCovered = false,
+  transitionArtworkId = null,
+  transitionPhase = "idle",
+  onCameraSettled,
+  suppressReveal = false,
+}: GalleryProps) {
   const { environment, artworks } = data;
   const galleryRef = useRef<HTMLDivElement>(null);
   const previousTransitionPhaseRef = useRef(transitionPhase);
   const frozenWallOffsetRef = useRef<number | null>(null);
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
-    artworks[0]?.id ?? null,
+    artworks[0]?.id ?? null
   );
-  const [pendingThumbnailArtworkId, setPendingThumbnailArtworkId] = useState<string | null>(null);
+  const [pendingThumbnailArtworkId, setPendingThumbnailArtworkId] = useState<
+    string | null
+  >(null);
   // Live scroll readout from ArtworkViewer — how far along the wall
   // the visitor currently is (0-100%, left to right). Kept separate
   // from `selectedArtworkId` because it updates on every scroll frame,
@@ -63,7 +91,7 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
   // which is just the single centered one. Drives which thumbnails in
   // GalleryNavigation read as "shown right now" vs dimmed.
   const [visibleArtworkIds, setVisibleArtworkIds] = useState<Set<string>>(
-    new Set(),
+    new Set()
   );
 
   // ArtworkPage is layered over this still-mounted gallery. Route-based
@@ -78,7 +106,7 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
 
   const selectedIndex = useMemo(
     () => artworks.findIndex((artwork) => artwork.id === selectedArtworkId),
-    [artworks, selectedArtworkId],
+    [artworks, selectedArtworkId]
   );
   const selectedArtwork = selectedIndex >= 0 ? artworks[selectedIndex] : null;
 
@@ -90,14 +118,19 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
     setVisibleArtworkIds(ids);
   }, []);
 
-  const handleNavigationSelect = useCallback((artworkId: string) => {
-    if (artworkId === selectedArtworkId) return;
-    setPendingThumbnailArtworkId(artworkId);
-    setSelectedArtworkId(artworkId);
-  }, [selectedArtworkId]);
+  const handleNavigationSelect = useCallback(
+    (artworkId: string) => {
+      if (artworkId === selectedArtworkId) return;
+      setPendingThumbnailArtworkId(artworkId);
+      setSelectedArtworkId(artworkId);
+    },
+    [selectedArtworkId]
+  );
 
   const handleProgrammaticScrollSettled = useCallback((artworkId: string) => {
-    setPendingThumbnailArtworkId((pendingId) => pendingId === artworkId ? null : pendingId);
+    setPendingThumbnailArtworkId((pendingId) =>
+      pendingId === artworkId ? null : pendingId
+    );
   }, []);
 
   // During the camera animation, translateX replaces the native horizontal
@@ -105,17 +138,22 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
   useLayoutEffect(() => {
     const previousPhase = previousTransitionPhaseRef.current;
     previousTransitionPhaseRef.current = transitionPhase;
-    if (transitionPhase === 'closing') {
+    if (transitionPhase === "closing") {
       const offset = Number.parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue('--wall-scroll-offset'),
+        getComputedStyle(document.documentElement).getPropertyValue(
+          "--wall-scroll-offset"
+        )
       );
       if (Number.isFinite(offset)) frozenWallOffsetRef.current = offset;
       return;
     }
-    if (previousPhase !== 'closing' || transitionPhase !== 'idle') return;
-    const track = galleryRef.current?.querySelector<HTMLElement>('.artwork-viewer-track');
+    if (previousPhase !== "closing" || transitionPhase !== "idle") return;
+    const track = galleryRef.current?.querySelector<HTMLElement>(
+      ".artwork-viewer-track"
+    );
     if (!track) return;
-    if (frozenWallOffsetRef.current !== null) track.scrollLeft = -frozenWallOffsetRef.current;
+    if (frozenWallOffsetRef.current !== null)
+      track.scrollLeft = -frozenWallOffsetRef.current;
   }, [transitionPhase]);
 
   // Wrap around at either end, so "next" from the last piece returns to
@@ -124,8 +162,11 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
   const goToPrevious = useCallback(() => {
     if (artworks.length === 0) return;
     setSelectedArtworkId((currentId) => {
-      const currentIndex = artworks.findIndex((artwork) => artwork.id === currentId);
-      const previousIndex = currentIndex <= 0 ? artworks.length - 1 : currentIndex - 1;
+      const currentIndex = artworks.findIndex(
+        (artwork) => artwork.id === currentId
+      );
+      const previousIndex =
+        currentIndex <= 0 ? artworks.length - 1 : currentIndex - 1;
       return artworks[previousIndex].id;
     });
   }, [artworks]);
@@ -133,8 +174,11 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
   const goToNext = useCallback(() => {
     if (artworks.length === 0) return;
     setSelectedArtworkId((currentId) => {
-      const currentIndex = artworks.findIndex((artwork) => artwork.id === currentId);
-      const nextIndex = currentIndex >= artworks.length - 1 ? 0 : currentIndex + 1;
+      const currentIndex = artworks.findIndex(
+        (artwork) => artwork.id === currentId
+      );
+      const nextIndex =
+        currentIndex >= artworks.length - 1 ? 0 : currentIndex + 1;
       return artworks[nextIndex].id;
     });
   }, [artworks]);
@@ -150,28 +194,30 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
       const target = event.target;
       const isTypingTarget =
         target instanceof HTMLElement &&
-        (target.tagName === 'INPUT' ||
-          target.tagName === 'TEXTAREA' ||
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
           target.isContentEditable);
       if (isTypingTarget) return;
 
-      if (event.key === 'ArrowLeft') {
+      if (event.key === "ArrowLeft") {
         event.preventDefault();
         goToPrevious();
-      } else if (event.key === 'ArrowRight') {
+      } else if (event.key === "ArrowRight") {
         event.preventDefault();
         goToNext();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [goToPrevious, goToNext, isCovered]);
 
   return (
     <div
       ref={galleryRef}
-      className={`gallery${isCovered ? ' gallery-covered' : ''}${suppressReveal ? ' gallery-suppress-reveal' : ''}`}
+      className={`gallery${isCovered ? " gallery-covered" : ""}${
+        suppressReveal ? " gallery-suppress-reveal" : ""
+      }`}
       data-transition-phase={transitionPhase}
       data-scroll-progress={Math.round(scrollProgress)}
       aria-hidden={isCovered || undefined}
@@ -179,9 +225,16 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
       {/* The room zooms with the camera horizontally, but remains outside
           its vertical movement so its top stays attached to the light. */}
       <GalleryBackground environment={environment} />
-      <div className="gallery-camera" onTransitionEnd={(event) => {
-        if (event.target === event.currentTarget && event.propertyName === 'transform') onCameraSettled?.();
-      }}>
+      <div
+        className="gallery-camera"
+        onTransitionEnd={(event) => {
+          if (
+            event.target === event.currentTarget &&
+            event.propertyName === "transform"
+          )
+            onCameraSettled?.();
+        }}
+      >
         <div className="gallery-camera-surface" aria-hidden="true" />
         <ArtworkViewer
           artworks={artworks}
@@ -197,9 +250,17 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
       </div>
       {/* Kept outside `.gallery-camera` so the architectural light stays
           attached to the header while the room zooms into an artwork. */}
-      <div className="gallery-light-strip" role="presentation" aria-hidden="true" />
+      <div
+        className="gallery-light-strip"
+        role="presentation"
+        aria-hidden="true"
+      />
       {onExitWall && (
-        <button type="button" className="gallery-exit-button" onClick={onExitWall}>
+        <button
+          type="button"
+          className="gallery-exit-button"
+          onClick={onExitWall}
+        >
           ← Grid view
         </button>
       )}
@@ -218,7 +279,11 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
           advanced. Kept out of the visible layout entirely. */}
       <div aria-live="polite" className="visually-hidden">
         {selectedArtwork &&
-          `Now viewing ${selectedArtwork.title} by ${selectedArtwork.artist}, ${selectedIndex + 1} of ${artworks.length}, ${Math.round(scrollProgress)}% along the wall`}
+          `Now viewing ${selectedArtwork.title} by ${selectedArtwork.artist}, ${
+            selectedIndex + 1
+          } of ${artworks.length}, ${Math.round(
+            scrollProgress
+          )}% along the wall`}
       </div>
     </div>
   );

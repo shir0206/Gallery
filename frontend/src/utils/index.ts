@@ -9,26 +9,30 @@ export function clamp(value: number, min: number, max: number): number {
 }
 
 const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 /**
  * Combines an artwork's separate day/month/year fields into a single
  * display string, e.g. (22, 1, 2011) -> "22 January 2011".
  */
-export function formatArtworkDate(day: number, month: number, year: number): string {
-  const monthName = MONTH_NAMES[month - 1] ?? '';
+export function formatArtworkDate(
+  day: number,
+  month: number,
+  year: number
+): string {
+  const monthName = MONTH_NAMES[month - 1] ?? "";
   return `${day} ${monthName} ${year}`.trim();
 }
 
@@ -39,7 +43,7 @@ export function formatArtworkDate(day: number, month: number, year: number): str
 export function formatArtworkDimensions(
   width: number,
   height: number,
-  unit: string,
+  unit: string
 ): string {
   return `${width} × ${height} ${unit}`;
 }
@@ -54,19 +58,19 @@ export function formatArtworkDimensions(
  * ArtworkPage view without duplicating the wraparound math.
  */
 const ROMAN_VALUES: Array<[number, string]> = [
-  [1000, 'M'],
-  [900, 'CM'],
-  [500, 'D'],
-  [400, 'CD'],
-  [100, 'C'],
-  [90, 'XC'],
-  [50, 'L'],
-  [40, 'XL'],
-  [10, 'X'],
-  [9, 'IX'],
-  [5, 'V'],
-  [4, 'IV'],
-  [1, 'I'],
+  [1000, "M"],
+  [900, "CM"],
+  [500, "D"],
+  [400, "CD"],
+  [100, "C"],
+  [90, "XC"],
+  [50, "L"],
+  [40, "XL"],
+  [10, "X"],
+  [9, "IX"],
+  [5, "V"],
+  [4, "IV"],
+  [1, "I"],
 ];
 
 /**
@@ -76,7 +80,7 @@ const ROMAN_VALUES: Array<[number, string]> = [
  */
 export function toRoman(num: number): string {
   let remaining = num;
-  let result = '';
+  let result = "";
   for (const [value, symbol] of ROMAN_VALUES) {
     while (remaining >= value) {
       result += symbol;
@@ -89,13 +93,14 @@ export function toRoman(num: number): string {
 export function getAdjacentId(
   items: Array<{ id: string }>,
   currentId: string | null,
-  direction: 'previous' | 'next',
+  direction: "previous" | "next"
 ): string | null {
   if (items.length === 0) return null;
   const currentIndex = items.findIndex((item) => item.id === currentId);
 
-  if (direction === 'previous') {
-    const previousIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+  if (direction === "previous") {
+    const previousIndex =
+      currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
     return items[previousIndex].id;
   }
 
@@ -108,9 +113,9 @@ export function getAdjacentId(
  * prices are always whole dollars, so this skips locale-aware
  * currency formatting in favor of a plain, consistent "$" prefix.
  */
-export function formatPrice(amount: number, currency = 'USD'): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
+export function formatPrice(amount: number, currency = "USD"): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
     currency,
     maximumFractionDigits: 0,
   }).format(amount);

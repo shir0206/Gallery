@@ -1,10 +1,10 @@
-import { GALLERY_ENVIRONMENT } from '@/api/artworkApi';
-import { GalleryBackground } from '../GalleryBackground/GalleryBackground';
-import { GalleryLoader } from './GalleryLoader/GalleryLoader';
-import './GalleryStatus.css';
+import { GALLERY_ENVIRONMENT } from "@/api/artworkApi";
+import { GalleryBackground } from "../GalleryBackground/GalleryBackground";
+import { GalleryLoader } from "./GalleryLoader/GalleryLoader";
+import "./GalleryStatus.css";
 
 interface GalleryStatusProps {
-  variant: 'loading' | 'error' | 'empty';
+  variant: "loading" | "error" | "empty";
   message: string;
   onRetry?: () => void;
 }
@@ -16,19 +16,27 @@ interface GalleryStatusProps {
  * ever feel like a different, cheaper app bolted onto the front of
  * the real one.
  */
-export function GalleryStatus({ variant, message, onRetry }: GalleryStatusProps) {
+export function GalleryStatus({
+  variant,
+  message,
+  onRetry,
+}: GalleryStatusProps) {
   return (
     <div className="gallery-status">
       <GalleryBackground environment={GALLERY_ENVIRONMENT} />
       <div
         className="gallery-status-content"
-        role={variant === 'error' ? 'alert' : 'status'}
-        aria-live={variant === 'error' ? 'assertive' : 'polite'}
+        role={variant === "error" ? "alert" : "status"}
+        aria-live={variant === "error" ? "assertive" : "polite"}
       >
-        {variant === 'loading' && <GalleryLoader />}
+        {variant === "loading" && <GalleryLoader />}
         <p className="gallery-status-message">{message}</p>
-        {variant === 'error' && onRetry && (
-          <button type="button" className="gallery-status-retry" onClick={onRetry}>
+        {variant === "error" && onRetry && (
+          <button
+            type="button"
+            className="gallery-status-retry"
+            onClick={onRetry}
+          >
             Try again
           </button>
         )}

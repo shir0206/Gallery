@@ -1,3 +1,105 @@
-.about-page{height:calc(100svh - 72px);overflow:hidden;background:var(--editorial-paper-bg);color:var(--editorial-ink)}.about-layout{width:100%;max-width:1280px;height:100%;margin:0 auto;padding:clamp(24px,4vh,48px) clamp(24px,5vw,72px);display:grid;grid-template-columns:minmax(280px,.9fr) minmax(320px,1fr);gap:clamp(48px,9vw,128px);align-items:center}.about-portrait{min-height:0}.about-portrait img{display:block;width:auto;max-width:100%;max-height:calc(100svh - 72px - clamp(48px,8vh,96px) - 27px);margin:0 auto;aspect-ratio:4/5;object-fit:cover;object-position:center;box-shadow:0 24px 60px rgba(35,26,16,.14)}.about-portrait p{margin:12px 0 0;font:italic 12px var(--gallery-serif);color:var(--editorial-ink-muted)}.page-eyebrow{margin:0 0 18px;font:500 10px var(--gallery-sans);text-transform:uppercase;letter-spacing:.2em;color:var(--editorial-accent)}.about-copy h1{margin:0 0 34px;font:400 clamp(44px,6vw,82px)/.98 var(--gallery-serif);letter-spacing:-.025em}.about-lede{margin:0 0 34px;font:400 clamp(21px,2.3vw,30px)/1.35 var(--gallery-serif);color:var(--editorial-ink-soft)}.about-body{max-width:590px;columns:2;column-gap:32px;font:400 14px/1.75 var(--gallery-sans);color:var(--editorial-ink-muted)}.about-body p{margin:0 0 20px;break-inside:avoid}.text-link{margin-top:24px;border:0;border-bottom:1px solid var(--editorial-ink);background:transparent;padding:0 0 5px;font:500 10px var(--gallery-sans);text-transform:uppercase;letter-spacing:.16em;cursor:pointer}
-@media(max-width:800px){.about-page{height:calc(100svh - 64px)}}
-@media(max-width:760px){.about-page{height:auto;min-height:calc(100svh - 64px);overflow:visible}.about-layout{height:auto;grid-template-columns:1fr;padding-top:42px}.about-portrait{max-width:520px}.about-portrait img{width:100%;max-height:none}.about-copy h1{margin-bottom:24px}.about-body{columns:1}}
+.about-page {
+  height: calc(100svh - 72px);
+  overflow: hidden;
+  background: var(--editorial-paper-bg);
+  color: var(--editorial-ink);
+}
+.about-layout {
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  padding: clamp(24px, 4vh, 48px) clamp(24px, 5vw, 72px);
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1fr);
+  gap: clamp(48px, 9vw, 128px);
+  align-items: center;
+}
+.about-portrait {
+  min-height: 0;
+}
+.about-portrait img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100svh - 72px - clamp(48px, 8vh, 96px) - 27px);
+  margin: 0 auto;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: 0 24px 60px rgba(35, 26, 16, 0.14);
+}
+.about-portrait p {
+  margin: 12px 0 0;
+  font: italic 12px var(--gallery-serif);
+  color: var(--editorial-ink-muted);
+}
+.page-eyebrow {
+  margin: 0 0 18px;
+  font: 500 10px var(--gallery-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--editorial-accent);
+}
+.about-copy h1 {
+  margin: 0 0 34px;
+  font: 400 clamp(44px, 6vw, 82px) / 0.98 var(--gallery-serif);
+  letter-spacing: -0.025em;
+}
+.about-lede {
+  margin: 0 0 34px;
+  font: 400 clamp(21px, 2.3vw, 30px) / 1.35 var(--gallery-serif);
+  color: var(--editorial-ink-soft);
+}
+.about-body {
+  max-width: 590px;
+  columns: 2;
+  column-gap: 32px;
+  font: 400 14px/1.75 var(--gallery-sans);
+  color: var(--editorial-ink-muted);
+}
+.about-body p {
+  margin: 0 0 20px;
+  break-inside: avoid;
+}
+.text-link {
+  margin-top: 24px;
+  border: 0;
+  border-bottom: 1px solid var(--editorial-ink);
+  background: transparent;
+  padding: 0 0 5px;
+  font: 500 10px var(--gallery-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+}
+@media (max-width: 800px) {
+  .about-page {
+    height: calc(100svh - 64px);
+  }
+}
+@media (max-width: 760px) {
+  .about-page {
+    height: auto;
+    min-height: calc(100svh - 64px);
+    overflow: visible;
+  }
+  .about-layout {
+    height: auto;
+    grid-template-columns: 1fr;
+    padding-top: 42px;
+  }
+  .about-portrait {
+    max-width: 520px;
+  }
+  .about-portrait img {
+    width: 100%;
+    max-height: none;
+  }
+  .about-copy h1 {
+    margin-bottom: 24px;
+  }
+  .about-body {
+    columns: 1;
+  }
+}

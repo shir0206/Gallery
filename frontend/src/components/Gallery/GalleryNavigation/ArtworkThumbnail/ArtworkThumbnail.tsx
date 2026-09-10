@@ -1,6 +1,6 @@
-import { forwardRef } from 'react';
-import type { Artwork } from '@/types/artwork';
-import './ArtworkThumbnail.css';
+import { forwardRef } from "react";
+import type { Artwork } from "@/types/artwork";
+import "./ArtworkThumbnail.css";
 
 interface ArtworkThumbnailProps {
   artwork: Artwork;
@@ -21,30 +21,36 @@ interface ArtworkThumbnailProps {
  * thumbnail into view when selection changes from elsewhere (e.g. the
  * previous/next controls).
  */
-export const ArtworkThumbnail = forwardRef<HTMLButtonElement, ArtworkThumbnailProps>(
-  function ArtworkThumbnail({ artwork, isActive, isVisible, disabled = false, onSelect }, ref) {
-    return (
-      <button
-        ref={ref}
-        type="button"
-        data-artwork-id={artwork.id}
-        className={`artwork-thumbnail ${isActive ? 'artwork-thumbnail-active' : ''} ${
-          isVisible ? 'artwork-thumbnail-visible' : 'artwork-thumbnail-overflow'
-        }`}
-        disabled={disabled}
-        onClick={() => onSelect(artwork.id)}
-        // This is a "which one of the set is currently showing" state,
-        // not a toggle — aria-current models that more accurately than
-        // aria-pressed and is what most screen readers announce as
-        // "current" rather than "pressed".
-        aria-current={isActive ? 'true' : undefined}
-        aria-label={`View ${artwork.title} by ${artwork.artist}`}
-      >
-        {/* Decorative: the button's aria-label already gives the
+export const ArtworkThumbnail = forwardRef<
+  HTMLButtonElement,
+  ArtworkThumbnailProps
+>(function ArtworkThumbnail(
+  { artwork, isActive, isVisible, disabled = false, onSelect },
+  ref
+) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      data-artwork-id={artwork.id}
+      className={`artwork-thumbnail ${
+        isActive ? "artwork-thumbnail-active" : ""
+      } ${
+        isVisible ? "artwork-thumbnail-visible" : "artwork-thumbnail-overflow"
+      }`}
+      disabled={disabled}
+      onClick={() => onSelect(artwork.id)}
+      // This is a "which one of the set is currently showing" state,
+      // not a toggle — aria-current models that more accurately than
+      // aria-pressed and is what most screen readers announce as
+      // "current" rather than "pressed".
+      aria-current={isActive ? "true" : undefined}
+      aria-label={`View ${artwork.title} by ${artwork.artist}`}
+    >
+      {/* Decorative: the button's aria-label already gives the
             accessible name, so the image doesn't need its own alt
             text (avoids the title being announced twice). */}
-        <img src={artwork.imageUrl} alt="" className="artwork-thumbnail-image" />
-      </button>
-    );
-  },
-);
+      <img src={artwork.imageUrl} alt="" className="artwork-thumbnail-image" />
+    </button>
+  );
+});

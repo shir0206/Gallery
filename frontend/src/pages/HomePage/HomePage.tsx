@@ -1,6 +1,6 @@
-import { ArtworkSearchGrid } from '@/components/ArtworkSearchGrid/ArtworkSearchGrid';
-import type { Artwork } from '@/types/artwork';
-import './HomePage.css';
+import { ArtworkSearchGrid } from "@/components/ArtworkSearchGrid/ArtworkSearchGrid";
+import type { Artwork } from "@/types/artwork";
+import "./HomePage.css";
 
 interface HomePageProps {
   artworks: Artwork[];
@@ -22,7 +22,11 @@ interface HomePageProps {
  * Cards delegate navigation to GalleryPage, which opens the selected
  * artwork's URL while preserving this grid as its background view.
  */
-export function HomePage({ artworks, onSelectArtwork, onViewWall }: HomePageProps) {
+export function HomePage({
+  artworks,
+  onSelectArtwork,
+  onViewWall,
+}: HomePageProps) {
   return (
     <div className="home-page">
       <header className="home-page-header">
@@ -30,12 +34,19 @@ export function HomePage({ artworks, onSelectArtwork, onViewWall }: HomePageProp
           <p className="home-page-eyebrow">Collection</p>
           <h1 className="home-page-title">The Gallery</h1>
         </div>
-        <button type="button" className="home-page-wall-link" onClick={onViewWall}>
+        <button
+          type="button"
+          className="home-page-wall-link"
+          onClick={onViewWall}
+        >
           View as gallery wall →
         </button>
       </header>
 
-      <ArtworkSearchGrid artworks={artworks} onSelectArtwork={onSelectArtwork} />
+      <ArtworkSearchGrid
+        artworks={artworks}
+        onSelectArtwork={onSelectArtwork}
+      />
     </div>
   );
 }

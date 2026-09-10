@@ -5,17 +5,17 @@ import { NavWindow } from "./NavWindow/NavWindow";
 import "./GalleryNavigation.css";
 
 interface GalleryNavigationProps {
-	artworks: Artwork[];
-	selectedArtworkId: string | null;
-	/** Which artworks are currently hanging on the wall (reported by
-	 * ArtworkViewer's own IntersectionObserver), as opposed to just the
-	 * single active `selectedArtworkId`. Drives thumbnail opacity — a
-	 * thumbnail is "lit" when its artwork is in this set, regardless of
-	 * whether the thumbnail itself is scrolled into view within the
-	 * strip. */
-	visibleArtworkIds: Set<string>;
-	onSelectArtwork: (artworkId: string) => void;
-	navigationLocked?: boolean;
+  artworks: Artwork[];
+  selectedArtworkId: string | null;
+  /** Which artworks are currently hanging on the wall (reported by
+   * ArtworkViewer's own IntersectionObserver), as opposed to just the
+   * single active `selectedArtworkId`. Drives thumbnail opacity — a
+   * thumbnail is "lit" when its artwork is in this set, regardless of
+   * whether the thumbnail itself is scrolled into view within the
+   * strip. */
+  visibleArtworkIds: Set<string>;
+  onSelectArtwork: (artworkId: string) => void;
+  navigationLocked?: boolean;
 }
 
 /**
@@ -35,40 +35,44 @@ interface GalleryNavigationProps {
  * browse the full collection never changes which thumbnails are lit.
  */
 export function GalleryNavigation({
-	artworks,
-	selectedArtworkId,
-	visibleArtworkIds,
-	onSelectArtwork,
-	navigationLocked = false,
+  artworks,
+  selectedArtworkId,
+  visibleArtworkIds,
+  onSelectArtwork,
+  navigationLocked = false,
 }: GalleryNavigationProps) {
-	const stripRef = useRef<HTMLDivElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
 
-	return (
-		<nav className='gallery-navigation' aria-label='Artwork collection' aria-busy={navigationLocked || undefined}>
-			<div className='gallery-navigation-card'>
-				<div ref={stripRef} className='gallery-navigation-strip'>
-					{artworks.map((artwork) => {
-						const isActive = artwork.id === selectedArtworkId;
-						return (
-							<ArtworkThumbnail
-								key={artwork.id}
-								artwork={artwork}
-								isActive={isActive}
-								isVisible={visibleArtworkIds.has(artwork.id)}
-								disabled={navigationLocked}
-								onSelect={onSelectArtwork}
-							/>
-						);
-					})}
-					<NavWindow
-						trackRef={stripRef}
-						artworks={artworks}
-						selectedArtworkId={selectedArtworkId}
-						onSelectArtwork={onSelectArtwork}
-						interactionLocked={navigationLocked}
-					/>
-				</div>
-			</div>
-		</nav>
-	);
+  return (
+    <nav
+      className="gallery-navigation"
+      aria-label="Artwork collection"
+      aria-busy={navigationLocked || undefined}
+    >
+      <div className="gallery-navigation-card">
+        <div ref={stripRef} className="gallery-navigation-strip">
+          {artworks.map((artwork) => {
+            const isActive = artwork.id === selectedArtworkId;
+            return (
+              <ArtworkThumbnail
+                key={artwork.id}
+                artwork={artwork}
+                isActive={isActive}
+                isVisible={visibleArtworkIds.has(artwork.id)}
+                disabled={navigationLocked}
+                onSelect={onSelectArtwork}
+              />
+            );
+          })}
+          <NavWindow
+            trackRef={stripRef}
+            artworks={artworks}
+            selectedArtworkId={selectedArtworkId}
+            onSelectArtwork={onSelectArtwork}
+            interactionLocked={navigationLocked}
+          />
+        </div>
+      </div>
+    </nav>
+  );
 }

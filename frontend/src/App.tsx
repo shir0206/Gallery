@@ -1,5 +1,5 @@
-import { GalleryPage } from '@/pages/GalleryPage';
-import { ArtworkCollectionProvider } from '@/state/ArtworkCollectionProvider';
+import { GalleryPage } from "@/pages/GalleryPage";
+import { ArtworkCollectionProvider } from "@/state/ArtworkCollectionProvider";
 
 function App() {
   return (

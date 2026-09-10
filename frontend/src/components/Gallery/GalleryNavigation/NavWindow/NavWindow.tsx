@@ -7,10 +7,10 @@ import {
   type PointerEvent as ReactPointerEvent,
   type RefObject,
   type WheelEvent as ReactWheelEvent,
-} from 'react';
-import type { Artwork } from '@/types/artwork';
-import { clamp } from '@/utils';
-import './NavWindow.css';
+} from "react";
+import type { Artwork } from "@/types/artwork";
+import { clamp } from "@/utils";
+import "./NavWindow.css";
 
 interface ItemRect {
   left: number;
@@ -78,13 +78,15 @@ export function NavWindow({
     if (!track) return;
     const trackRect = track.getBoundingClientRect();
     setTrackWidth(trackRect.width);
-    const els = Array.from(track.querySelectorAll<HTMLElement>('.artwork-thumbnail'));
+    const els = Array.from(
+      track.querySelectorAll<HTMLElement>(".artwork-thumbnail")
+    );
     itemElsRef.current = els;
     setItemRects(
       els.map((el) => {
         const rect = el.getBoundingClientRect();
         return { left: rect.left - trackRect.left, width: rect.width };
-      }),
+      })
     );
   }, [trackRef]);
 
@@ -99,7 +101,9 @@ export function NavWindow({
 
   const itemWidth = itemRects[0]?.width ?? 0;
   const windowWidth =
-    itemRects.length > 0 ? Math.min(itemWidth * WINDOW_ITEM_SPAN, trackWidth) : 0;
+    itemRects.length > 0
+      ? Math.min(itemWidth * WINDOW_ITEM_SPAN, trackWidth)
+      : 0;
   const maxLeft = Math.max(0, trackWidth - windowWidth);
 
   // Nearest item to a given window-left position's center — drives
@@ -119,7 +123,7 @@ export function NavWindow({
       });
       return closestIndex;
     },
-    [itemRects, windowWidth],
+    [itemRects, windowWidth]
   );
 
   const centerFor = useCallback(
@@ -128,7 +132,7 @@ export function NavWindow({
       if (!rect) return 0;
       return clamp(rect.left + rect.width / 2 - windowWidth / 2, 0, maxLeft);
     },
-    [itemRects, windowWidth, maxLeft],
+    [itemRects, windowWidth, maxLeft]
   );
 
   // Live "what's centered" readout, plus — on a genuine change — tells
@@ -144,7 +148,7 @@ export function NavWindow({
       activeIdRef.current = artwork.id;
       onSelectArtwork(artwork.id);
     },
-    [artworks, nearestIndexAt, onCenteredIndexChange, onSelectArtwork],
+    [artworks, nearestIndexAt, onCenteredIndexChange, onSelectArtwork]
   );
 
   // Initial placement, once the strip has actually been measured —
@@ -152,7 +156,10 @@ export function NavWindow({
   useLayoutEffect(() => {
     if (didInitialCenterRef.current || itemRects.length === 0) return;
     didInitialCenterRef.current = true;
-    const index = Math.max(0, artworks.findIndex((artwork) => artwork.id === selectedArtworkId));
+    const index = Math.max(
+      0,
+      artworks.findIndex((artwork) => artwork.id === selectedArtworkId)
+    );
     setWindowLeft(centerFor(index));
     onCenteredIndexChange?.(index);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -165,7 +172,9 @@ export function NavWindow({
   // locked there until ArtworkViewer reports that the wall has settled.
   useEffect(() => {
     if (!selectedArtworkId || selectedArtworkId === activeIdRef.current) return;
-    const index = artworks.findIndex((artwork) => artwork.id === selectedArtworkId);
+    const index = artworks.findIndex(
+      (artwork) => artwork.id === selectedArtworkId
+    );
     // A covered gallery can measure at zero width. Do not consume the
     // external selection until the strip has real geometry; centerFor would
     // otherwise clamp it to zero and the active-id guard would prevent a
@@ -175,7 +184,13 @@ export function NavWindow({
     setSettling(true);
     setWindowLeft(centerFor(index));
     onCenteredIndexChange?.(index);
-  }, [selectedArtworkId, artworks, windowWidth, centerFor, onCenteredIndexChange]);
+  }, [
+    selectedArtworkId,
+    artworks,
+    windowWidth,
+    centerFor,
+    onCenteredIndexChange,
+  ]);
 
   // Re-clamp (never animated) if the strip's own layout changes the
   // available range, e.g. a viewport resize.
@@ -193,20 +208,26 @@ export function NavWindow({
     itemRects.forEach((rect, index) => {
       const el = itemElsRef.current[index];
       if (!el) return;
-      const overlap = Math.min(rect.left + rect.width, windowRight) - Math.max(rect.left, windowLeft);
-      el.classList.toggle('artwork-thumbnail-framed', overlap > rect.width / 2);
+      const overlap =
+        Math.min(rect.left + rect.width, windowRight) -
+        Math.max(rect.left, windowLeft);
+      el.classList.toggle("artwork-thumbnail-framed", overlap > rect.width / 2);
     });
   }, [windowLeft, windowWidth, itemRects]);
 
   const onPointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
       if (interactionLocked || event.button !== 0) return;
-      dragRef.current = { active: true, startX: event.clientX, startLeft: windowLeft };
+      dragRef.current = {
+        active: true,
+        startX: event.clientX,
+        startLeft: windowLeft,
+      };
       setDragging(true);
       setSettling(false);
       event.currentTarget.setPointerCapture?.(event.pointerId);
     },
-    [interactionLocked, windowLeft],
+    [interactionLocked, windowLeft]
   );
 
   const onPointerMove = useCallback(
@@ -217,7 +238,7 @@ export function NavWindow({
       setWindowLeft(next);
       reportCentered(next);
     },
-    [maxLeft, reportCentered],
+    [maxLeft, reportCentered]
   );
 
   const onPointerUp = useCallback(() => {
@@ -229,13 +250,16 @@ export function NavWindow({
     (event: ReactWheelEvent<HTMLDivElement>) => {
       event.preventDefault();
       if (interactionLocked) return;
-      const delta = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+      const delta =
+        Math.abs(event.deltaY) > Math.abs(event.deltaX)
+          ? event.deltaY
+          : event.deltaX;
       const next = clamp(windowLeft + delta * WHEEL_SPEED, 0, maxLeft);
       setSettling(false);
       setWindowLeft(next);
       reportCentered(next);
     },
-    [interactionLocked, windowLeft, maxLeft, reportCentered],
+    [interactionLocked, windowLeft, maxLeft, reportCentered]
   );
 
   if (artworks.length === 0 || itemRects.length === 0) return null;
@@ -253,8 +277,8 @@ export function NavWindow({
       style={{
         left: windowLeft,
         width: windowWidth,
-        cursor: interactionLocked ? 'wait' : dragging ? 'grabbing' : 'grab',
-        transition: settling ? 'left 0.2s cubic-bezier(.2, .8, .2, 1)' : 'none',
+        cursor: interactionLocked ? "wait" : dragging ? "grabbing" : "grab",
+        transition: settling ? "left 0.2s cubic-bezier(.2, .8, .2, 1)" : "none",
       }}
     >
       <span className="nav-window-grip nav-window-grip-left" />

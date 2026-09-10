@@ -8,8 +8,7 @@
   bottom: 0;
   border-radius: 3px;
   border: 1.5px solid #e8c876;
-  box-shadow:
-    0 0 0 2000px rgba(15, 11, 7, 0.62),
+  box-shadow: 0 0 0 2000px rgba(15, 11, 7, 0.62),
     0 0 16px 2px rgba(201, 162, 74, 0.45),
     inset 0 0 0 1px rgba(255, 244, 214, 0.35);
   touch-action: none;

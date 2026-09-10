@@ -20,9 +20,9 @@ export interface ArtworkPalette {
   name: string;
 }
 
-export type ArtworkOrientation = 'portrait' | 'landscape';
+export type ArtworkOrientation = "portrait" | "landscape";
 
-export type ArtworkCurrency = 'USD' | 'EUR' | 'GBP';
+export type ArtworkCurrency = "USD" | "EUR" | "GBP";
 
 export interface ArtworkCommerce {
   currency?: ArtworkCurrency;
@@ -70,7 +70,7 @@ export interface Artwork {
    * publishing/content status, not commerce. `'available'` renders no
    * badge (silence is the default-good signal); `'reserved'`/`'sold'`
    * render a badge, and `'sold'` also disables the purchase button. */
-  availability: 'available' | 'reserved' | 'sold';
+  availability: "available" | "reserved" | "sold";
   commerce: ArtworkCommerce;
   detailImages: ArtworkDetailImage[];
   /** Optional artwork-specific room photograph. Palette room is the fallback. */

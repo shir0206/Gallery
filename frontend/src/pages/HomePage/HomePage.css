@@ -47,7 +47,7 @@
   font-size: 13px;
   color: var(--editorial-ink-muted);
   cursor: pointer;
-  transition: color .1s ease;
+  transition: color 0.1s ease;
   white-space: nowrap;
 }
 
@@ -75,5 +75,4 @@
   .home-page-title {
     font-size: 26px;
   }
-
 }

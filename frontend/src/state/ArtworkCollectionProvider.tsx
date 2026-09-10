@@ -1,14 +1,20 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
-import { getArtworkCollection } from '@/api/artworkApi';
-import type { ArtworkCollectionResponse } from '@/types/artwork';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import type { ReactNode } from "react";
+import { getArtworkCollection } from "@/api/artworkApi";
+import type { ArtworkCollectionResponse } from "@/types/artwork";
 import {
   clearArtworkCollectionCache,
   readArtworkCollectionCache,
   writeArtworkCollectionCache,
-} from './artworkCollectionCache';
+} from "./artworkCollectionCache";
 
-const ERROR_MESSAGE = 'Unable to load the gallery.';
+const ERROR_MESSAGE = "Unable to load the gallery.";
 
 interface ArtworkCollectionState {
   data: ArtworkCollectionResponse | null;
@@ -17,7 +23,9 @@ interface ArtworkCollectionState {
   refetch: () => void;
 }
 
-const ArtworkCollectionContext = createContext<ArtworkCollectionState | null>(null);
+const ArtworkCollectionContext = createContext<ArtworkCollectionState | null>(
+  null
+);
 
 /**
  * Owns the artwork collection: hydrates instantly from the 48h
@@ -25,9 +33,13 @@ const ArtworkCollectionContext = createContext<ArtworkCollectionState | null>(nu
  * it. `refetch` (used by the gallery's retry button) always clears
  * the cache first, so a failed/expired state can't loop on stale data.
  */
-export function ArtworkCollectionProvider({ children }: { children: ReactNode }) {
+export function ArtworkCollectionProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const [data, setData] = useState<ArtworkCollectionResponse | null>(() =>
-    readArtworkCollectionCache(),
+    readArtworkCollectionCache()
   );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(data === null);
@@ -46,7 +58,7 @@ export function ArtworkCollectionProvider({ children }: { children: ReactNode })
       })
       .catch((err: unknown) => {
         if (!isMounted) return;
-        console.error('Failed to load the gallery collection:', err);
+        console.error("Failed to load the gallery collection:", err);
         setError(ERROR_MESSAGE);
         setLoading(false);
       });
@@ -67,7 +79,9 @@ export function ArtworkCollectionProvider({ children }: { children: ReactNode })
   }, []);
 
   return (
-    <ArtworkCollectionContext.Provider value={{ data, error, loading, refetch }}>
+    <ArtworkCollectionContext.Provider
+      value={{ data, error, loading, refetch }}
+    >
       {children}
     </ArtworkCollectionContext.Provider>
   );
@@ -76,7 +90,9 @@ export function ArtworkCollectionProvider({ children }: { children: ReactNode })
 export function useArtworkCollection(): ArtworkCollectionState {
   const context = useContext(ArtworkCollectionContext);
   if (!context) {
-    throw new Error('useArtworkCollection must be used within an ArtworkCollectionProvider');
+    throw new Error(
+      "useArtworkCollection must be used within an ArtworkCollectionProvider"
+    );
   }
   return context;
 }

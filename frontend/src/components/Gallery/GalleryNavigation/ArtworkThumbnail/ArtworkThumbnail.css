@@ -24,7 +24,7 @@
   /* Default before ArtworkViewer's IntersectionObserver reports in on
      mount; immediately superseded by -visible or -overflow below. */
   opacity: 0.5;
-  transition: opacity .125s ease;
+  transition: opacity 0.125s ease;
 }
 
 /* This artwork is currently hanging on the wall above right now. */

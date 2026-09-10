@@ -1,5 +1,5 @@
-import type { Artwork } from '@/types/artwork';
-import './ArtworkTitleLabel.css';
+import type { Artwork } from "@/types/artwork";
+import "./ArtworkTitleLabel.css";
 
 interface ArtworkTitleLabelProps {
   artwork: Artwork;

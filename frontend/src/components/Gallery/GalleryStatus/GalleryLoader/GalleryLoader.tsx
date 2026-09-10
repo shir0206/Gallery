@@ -1,4 +1,4 @@
-import './GalleryLoader.css';
+import "./GalleryLoader.css";
 
 /**
  * A gallery-appropriate stand-in for a spinner: an empty picture
