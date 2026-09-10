@@ -26,6 +26,7 @@ interface ArtworkViewerProps {
    * how the wall updates the shared selection ("context") as the
    * visitor scrolls past pieces, not just on explicit clicks. */
   onSelectArtwork: (artworkId: string) => void;
+  onProgrammaticScrollSettled?: (artworkId: string) => void;
   /** Fires on every scroll frame with the live scroll percentage
    * (left → right) and whichever artwork is currently centered. Use
    * this for a live "XX%" readout; use onSelectArtwork if you only
@@ -81,6 +82,7 @@ export function ArtworkViewer({
   artworks,
   selectedArtworkId,
   onSelectArtwork,
+  onProgrammaticScrollSettled,
   onScrollProgress,
   onVisibleArtworksChange,
   onOpenFeature,
@@ -103,6 +105,7 @@ export function ArtworkViewer({
   const programmaticScrollTimeoutRef = useRef<ReturnType<
     typeof setTimeout
   > | null>(null);
+  const programmaticTargetIdRef = useRef<string | null>(null);
   const openingArtworkIdRef = useRef<string | null>(null);
   const deferredSelectionIdRef = useRef<string | null>(null);
 
@@ -177,8 +180,11 @@ export function ArtworkViewer({
       isProgrammaticScrollRef.current = false;
       programmaticScrollTimeoutRef.current = null;
       readScrollState(false);
+      const settledId = programmaticTargetIdRef.current;
+      programmaticTargetIdRef.current = null;
+      if (settledId) onProgrammaticScrollSettled?.(settledId);
     }, SCROLL_SETTLE_IDLE_MS);
-  }, [readScrollState]);
+  }, [readScrollState, onProgrammaticScrollSettled]);
 
   const cancelSettleCheck = useCallback(() => {
     if (programmaticScrollTimeoutRef.current !== null) {
@@ -303,6 +309,7 @@ export function ArtworkViewer({
     const wasDeferred = deferredSelectionIdRef.current === selectedArtworkId;
     deferredSelectionIdRef.current = null;
     isProgrammaticScrollRef.current = true;
+    programmaticTargetIdRef.current = selectedArtworkId;
     setActiveId(selectedArtworkId);
     // Use the scroller's intrinsic layout coordinates, not viewport rects.
     // The latter can still include the gallery camera/row transforms while

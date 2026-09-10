@@ -15,6 +15,7 @@ interface GalleryNavigationProps {
 	 * strip. */
 	visibleArtworkIds: Set<string>;
 	onSelectArtwork: (artworkId: string) => void;
+	navigationLocked?: boolean;
 }
 
 /**
@@ -38,11 +39,12 @@ export function GalleryNavigation({
 	selectedArtworkId,
 	visibleArtworkIds,
 	onSelectArtwork,
+	navigationLocked = false,
 }: GalleryNavigationProps) {
 	const stripRef = useRef<HTMLDivElement>(null);
 
 	return (
-		<nav className='gallery-navigation' aria-label='Artwork collection'>
+		<nav className='gallery-navigation' aria-label='Artwork collection' aria-busy={navigationLocked || undefined}>
 			<div className='gallery-navigation-card'>
 				<div ref={stripRef} className='gallery-navigation-strip'>
 					{artworks.map((artwork) => {
@@ -53,6 +55,7 @@ export function GalleryNavigation({
 								artwork={artwork}
 								isActive={isActive}
 								isVisible={visibleArtworkIds.has(artwork.id)}
+								disabled={navigationLocked}
 								onSelect={onSelectArtwork}
 							/>
 						);
@@ -62,6 +65,7 @@ export function GalleryNavigation({
 						artworks={artworks}
 						selectedArtworkId={selectedArtworkId}
 						onSelectArtwork={onSelectArtwork}
+						interactionLocked={navigationLocked}
 					/>
 				</div>
 			</div>

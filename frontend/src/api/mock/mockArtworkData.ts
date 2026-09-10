@@ -50,7 +50,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Glowing colors silhouette the central figure.",
       inspiration:
-        "A person steps into the night carrying private hope that darkness cannot quite swallow.",
+        "Private hope glows against the surrounding darkness.",
     },
     imageUrl: "https://i.imgur.com/c2PPnGg.jpg",
     orientation: "landscape",
@@ -92,7 +92,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "A quiet face emerges with intimacy.",
       inspiration:
-        "The figure feels caught between being observed and observing, about closeness, silence, and fragile distance.",
+        "A quiet gaze balances intimacy with fragile distance.",
     },
     imageUrl: "https://i.imgur.com/QL4Qi5k.jpg",
     orientation: "portrait",
@@ -129,7 +129,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Pastel colors flow through windswept hair.",
       inspiration:
-        "A woman lets the wind rearrange her thoughts, turning movement into a quiet form of freedom.",
+        "The wind transforms restless thoughts into quiet freedom.",
     },
     imageUrl: "https://i.imgur.com/gaVudbq.jpg",
     orientation: "landscape",
@@ -166,7 +166,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Muted coral and charcoal evoke theater.",
       inspiration:
-        "A dancer waits alone before a performance, holding her breath with the promise of movement.",
+        "A dancer holds her breath before movement begins.",
     },
     imageUrl: "https://i.imgur.com/urdO7iP.jpg",
     orientation: "landscape",
@@ -200,7 +200,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Warm earth tones shape quiet stillness.",
       inspiration:
-        "Two people raise a simple toast, celebrating the small pleasure of being together.",
+        "A simple toast celebrates the pleasure of togetherness.",
     },
     imageUrl: "https://i.imgur.com/xOLQxNe.jpg",
     orientation: "landscape",
@@ -237,7 +237,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Luminous color bands dwarf one figure.",
       inspiration:
-        "Standing alone beneath an enormous evening makes solitude feel less like emptiness and more like possibility.",
+        "An immense evening sky turns solitude into possibility.",
     },
     imageUrl: "https://i.imgur.com/op3kZVC.jpg",
     orientation: "landscape",
@@ -274,7 +274,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Darkness surrounds a softly glowing figure.",
       inspiration:
-        "A figure walks into the last minutes of day, carrying uncertainty between hope and loss.",
+        "Twilight holds a figure between hope and loss.",
     },
     imageUrl: "https://i.imgur.com/JYb0ry6.jpg",
     orientation: "portrait",
@@ -311,7 +311,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Dancers twist beneath falling musical sparks.",
       inspiration:
-        "Music becomes physical as a couple finds a shared rhythm for one brief moment.",
+        "A couple finds fleeting unity through shared rhythm.",
     },
     imageUrl: "https://i.imgur.com/ofTHpUw.jpg",
     orientation: "landscape",
@@ -352,7 +352,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Earth tones suggest forgotten notebook fragments.",
       inspiration:
-        "Love is something we cultivate rather than possess, carefully passed from one pair of hands.",
+        "Love grows through care, passed gently between hands.",
     },
     imageUrl: "https://i.imgur.com/t59EX6E.jpg",
     orientation: "portrait",
@@ -389,7 +389,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Smoky shadows make home feel distant.",
       inspiration:
-        "The piece searches for home in memory, where a familiar place survives after we change.",
+        "Memory preserves home even after we change.",
     },
     imageUrl: "https://i.imgur.com/dLJMtMO.jpg",
     orientation: "portrait",
@@ -426,7 +426,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Vivid red dominates with expressive edges.",
       inspiration:
-        "Red becomes an emotional current moving through the figure, expressing passion that refuses to stay contained.",
+        "Crimson energy reveals passion that refuses containment.",
     },
     imageUrl: "https://i.imgur.com/QwqEp5T.jpg",
     orientation: "portrait",
@@ -466,7 +466,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Pale textures contrast darker pencil marks.",
       inspiration:
-        "Burying one's head becomes a small story about avoiding an uncomfortable world.",
+        "Avoidance offers temporary shelter from an uncomfortable world.",
     },
     imageUrl: "https://i.imgur.com/KHkZ05H.jpg",
     orientation: "portrait",
@@ -503,7 +503,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Monochrome shadows evoke a midnight song.",
       inspiration:
-        "Music becomes visible in her posture as she disappears into the rhythm she is making.",
+        "Her posture reveals complete surrender to the music.",
     },
     imageUrl: "https://i.imgur.com/MgjqLrQ.jpg",
     orientation: "portrait",
@@ -540,7 +540,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Red lips punctuate warm facial tones.",
       inspiration:
-        "The piece feels like a confession held behind closed lips, with a voice present before words.",
+        "A silent confession waits behind closed lips.",
     },
     imageUrl: "https://i.imgur.com/qJjjWwZ.jpg",
     orientation: "portrait",
@@ -577,7 +577,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Warm colors gather around meeting hands.",
       inspiration:
-        "A quiet promise passes between friends: nothing grand, just reassurance that someone is still there.",
+        "Friendship offers the quiet reassurance of someone staying.",
     },
     imageUrl: "https://i.imgur.com/zLgY5fT.jpg",
     orientation: "portrait",
@@ -614,7 +614,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Smoky monochrome frames a glamorous expression.",
       inspiration:
-        "The portrait shows the person behind the familiar image, revealing a fleeting human moment.",
+        "A fleeting human moment emerges behind the familiar icon.",
     },
     imageUrl: "https://i.imgur.com/wmnY0YQ.jpg",
     orientation: "portrait",
@@ -651,7 +651,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Coral panels carry delicate floral details.",
       inspiration:
-        "Beauty is something to hold, open, admire, and then gently fold away.",
+        "Beauty unfolds briefly before being gently hidden again.",
     },
     imageUrl: "https://i.imgur.com/DcB3fUR.jpg",
     orientation: "portrait",
@@ -697,7 +697,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Sunset tones mingle with nostalgic shadows.",
       inspiration:
-        "Music remains as daylight fades, carrying the landscape into night like a final song.",
+        "Music carries the fading landscape gently into night.",
     },
     imageUrl: "https://i.imgur.com/oKakklF.jpg",
     orientation: "portrait",
@@ -734,7 +734,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Golden sunset meets a dark foreground.",
       inspiration:
-        "The sun goes down, birds leave, and freedom becomes a direction rather than a destination.",
+        "Departing birds turn freedom into a direction, not a destination.",
     },
     imageUrl: "https://i.imgur.com/yZuGKjS.jpg",
     orientation: "portrait",
@@ -774,7 +774,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Bronze and cream create restrained stillness.",
       inspiration:
-        "The ring is at the beginning of its life, waiting for someone to give it meaning.",
+        "A new ring waits for someone to give it meaning.",
     },
     imageUrl: "https://i.imgur.com/P90lhor.jpg",
     orientation: "portrait",
@@ -811,7 +811,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Mauve shadows suspend a weightless fairy.",
       inspiration:
-        "Imagination turns forgotten books into a kingdom, with a resting fairy guarding its stories.",
+        "Imagination transforms forgotten books into a fairy-guarded kingdom.",
     },
     imageUrl: "https://i.imgur.com/KRfV9Sf.jpg",
     orientation: "portrait",
@@ -848,7 +848,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Vivid colors transform everyday footwear playfully.",
       inspiration:
-        "The shoes suggest that identity can grow from ordinary things, one personal mark at a time.",
+        "Personal marks transform ordinary objects into expressions of identity.",
     },
     imageUrl: "https://i.imgur.com/xUxMxTT.jpg",
     orientation: "portrait",
@@ -885,7 +885,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Monochrome isolates the child's vulnerable expression.",
       inspiration:
-        "The piece shows the helpless honesty of a child whose feelings are too large to hide.",
+        "A child reveals feelings too overwhelming to hide.",
     },
     imageUrl: "https://i.imgur.com/livCoeh.jpg",
     orientation: "portrait",
@@ -922,7 +922,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Crimson folds command the delicate sketch.",
       inspiration:
-        "A woman moves through silence like a sudden flare of emotion, carrying confidence, danger, and beauty.",
+        "She carries confidence, danger, and beauty through silence.",
     },
     imageUrl: "https://i.imgur.com/DHNwDKy.jpg",
     orientation: "portrait",
@@ -959,7 +959,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Earthy tones create a dry tactility.",
       inspiration:
-        "A hand tries to hold something impossible, reflecting on love, impermanence, and traces left behind.",
+        "A hand grasps at love, impermanence, and lingering traces.",
     },
     imageUrl: "https://i.imgur.com/pYTlSx0.jpg",
     orientation: "portrait",
@@ -996,7 +996,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Monochrome wolves inhabit quiet winter stillness.",
       inspiration:
-        "The wolves feel protective rather than threatening, sharing warmth in a world that seems cold.",
+        "Protective wolves share warmth against a cold world.",
     },
     imageUrl: "https://i.imgur.com/DMaWcNS.jpg",
     orientation: "portrait",
@@ -1033,7 +1033,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Gentle colors suggest a botanical spring.",
       inspiration:
-        "The piece shows a beginning too small to announce itself, holding a quiet promise before opening.",
+        "A tiny beginning holds quiet promise before unfolding.",
     },
     imageUrl: "https://i.imgur.com/LQmaVzC.jpg",
     orientation: "portrait",
@@ -1070,7 +1070,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Overlapping lines blend emotion with anatomy.",
       inspiration:
-        "Breathing, loving, and surviving become physical acts carried by the same fragile organ.",
+        "One fragile organ carries breath, love, and survival.",
     },
     imageUrl: "https://i.imgur.com/YpuQ2ey.jpg",
     orientation: "portrait",
@@ -1107,7 +1107,7 @@ const MOCK_ARTWORK_DATA: ArtworkMockInput[] = [
       visual:
         "Muted figures advance through cinematic space.",
       inspiration:
-        "The journey has no fixed destination, only a quiet decision to keep moving when the road is unclear.",
+        "An uncertain road demands the quiet courage to continue.",
     },
     imageUrl: "https://i.imgur.com/Q4VEHmZ.jpg",
     orientation: "portrait",

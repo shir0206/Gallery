@@ -42,6 +42,10 @@
   opacity: 0.78;
 }
 
+.artwork-thumbnail:disabled {
+  cursor: wait;
+}
+
 .artwork-thumbnail:focus-visible {
   outline: 1px solid var(--gallery-accent-soft);
   outline-offset: 3px;

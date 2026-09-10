@@ -51,6 +51,7 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     artworks[0]?.id ?? null,
   );
+  const [pendingThumbnailArtworkId, setPendingThumbnailArtworkId] = useState<string | null>(null);
   // Live scroll readout from ArtworkViewer — how far along the wall
   // the visitor currently is (0-100%, left to right). Kept separate
   // from `selectedArtworkId` because it updates on every scroll frame,
@@ -87,6 +88,16 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
 
   const handleVisibleArtworksChange = useCallback((ids: Set<string>) => {
     setVisibleArtworkIds(ids);
+  }, []);
+
+  const handleNavigationSelect = useCallback((artworkId: string) => {
+    if (artworkId === selectedArtworkId) return;
+    setPendingThumbnailArtworkId(artworkId);
+    setSelectedArtworkId(artworkId);
+  }, [selectedArtworkId]);
+
+  const handleProgrammaticScrollSettled = useCallback((artworkId: string) => {
+    setPendingThumbnailArtworkId((pendingId) => pendingId === artworkId ? null : pendingId);
   }, []);
 
   // During the camera animation, translateX replaces the native horizontal
@@ -176,6 +187,7 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
           artworks={artworks}
           selectedArtworkId={selectedArtworkId}
           onSelectArtwork={setSelectedArtworkId}
+          onProgrammaticScrollSettled={handleProgrammaticScrollSettled}
           onScrollProgress={handleScrollProgress}
           onVisibleArtworksChange={handleVisibleArtworksChange}
           onOpenFeature={onOpenFeature}
@@ -195,7 +207,8 @@ export function Gallery({ data, focusedArtworkId = null, onOpenFeature, onExitWa
         artworks={artworks}
         selectedArtworkId={selectedArtworkId}
         visibleArtworkIds={visibleArtworkIds}
-        onSelectArtwork={setSelectedArtworkId}
+        onSelectArtwork={handleNavigationSelect}
+        navigationLocked={pendingThumbnailArtworkId !== null}
       />
       {/* Announces the current artwork on every selection change —
           click, previous/next controls, or the Left/Right arrow-key

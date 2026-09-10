@@ -31,7 +31,17 @@
 }
 
 .artwork-page-content { min-height: 100%; }
-.direct-artwork-background { position:fixed; inset:72px 0 0; background:var(--editorial-paper-bg); }
+.direct-artwork-background {
+  position:fixed;
+  inset:72px 0 0;
+  background:
+    radial-gradient(ellipse 17% 110% at 7% 5%,rgba(255,247,228,.48) 0%,rgba(255,234,203,.24) 30%,rgba(255,222,186,.08) 56%,transparent 78%),
+    radial-gradient(ellipse 19% 112% at 30% 5%,rgba(255,247,228,.48) 0%,rgba(255,235,205,.22) 32%,transparent 76%),
+    radial-gradient(ellipse 20% 114% at 52% 5%,rgba(255,248,231,.49) 0%,rgba(255,237,212,.22) 34%,transparent 77%),
+    radial-gradient(ellipse 21% 114% at 75% 5%,rgba(255,249,233,.52) 0%,rgba(255,239,216,.22) 34%,transparent 77%),
+    radial-gradient(ellipse 19% 110% at 97% 5%,rgba(255,248,232,.45) 0%,rgba(255,236,210,.19) 34%,transparent 77%),
+    linear-gradient(90deg,#c7aa8e 0%,#ceb297 17%,#d7c0a7 47%,#d8c3ad 76%,#cfb49a 100%);
+}
 .artwork-page-content > section { scroll-snap-stop: normal; }
 .artwork-page-content > .artwork-presentation-track:first-child {
   scroll-snap-align: end;

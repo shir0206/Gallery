@@ -24,6 +24,7 @@ interface NavWindowProps {
   artworks: Artwork[];
   selectedArtworkId: string | null;
   onSelectArtwork: (artworkId: string) => void;
+  interactionLocked?: boolean;
   /** Live "what's centered in the window right now" readout, for the
    * strip's plaque caption. Not itself a selection signal. */
   onCenteredIndexChange?: (index: number) => void;
@@ -49,6 +50,7 @@ export function NavWindow({
   artworks,
   selectedArtworkId,
   onSelectArtwork,
+  interactionLocked = false,
   onCenteredIndexChange,
 }: NavWindowProps) {
   const [trackWidth, setTrackWidth] = useState(0);
@@ -158,8 +160,9 @@ export function NavWindow({
 
   // Selection changed from elsewhere — a thumbnail click, the
   // previous/next controls, an arrow key, or the visitor scrolling the
-  // main wall — so glide to re-center on it. Skipped for changes this
-  // window echoed itself (see reportCentered above).
+  // main wall. The selected id is applied immediately so a thumbnail click
+  // sends the window straight to its destination. Interaction can remain
+  // locked there until ArtworkViewer reports that the wall has settled.
   useEffect(() => {
     if (!selectedArtworkId || selectedArtworkId === activeIdRef.current) return;
     const index = artworks.findIndex((artwork) => artwork.id === selectedArtworkId);
@@ -197,13 +200,13 @@ export function NavWindow({
 
   const onPointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
-      if (event.button !== 0) return;
+      if (interactionLocked || event.button !== 0) return;
       dragRef.current = { active: true, startX: event.clientX, startLeft: windowLeft };
       setDragging(true);
       setSettling(false);
       event.currentTarget.setPointerCapture?.(event.pointerId);
     },
-    [windowLeft],
+    [interactionLocked, windowLeft],
   );
 
   const onPointerMove = useCallback(
@@ -225,13 +228,14 @@ export function NavWindow({
   const onWheel = useCallback(
     (event: ReactWheelEvent<HTMLDivElement>) => {
       event.preventDefault();
+      if (interactionLocked) return;
       const delta = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
       const next = clamp(windowLeft + delta * WHEEL_SPEED, 0, maxLeft);
       setSettling(false);
       setWindowLeft(next);
       reportCentered(next);
     },
-    [windowLeft, maxLeft, reportCentered],
+    [interactionLocked, windowLeft, maxLeft, reportCentered],
   );
 
   if (artworks.length === 0 || itemRects.length === 0) return null;
@@ -249,7 +253,7 @@ export function NavWindow({
       style={{
         left: windowLeft,
         width: windowWidth,
-        cursor: dragging ? 'grabbing' : 'grab',
+        cursor: interactionLocked ? 'wait' : dragging ? 'grabbing' : 'grab',
         transition: settling ? 'left 0.2s cubic-bezier(.2, .8, .2, 1)' : 'none',
       }}
     >

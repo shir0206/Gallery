@@ -150,7 +150,7 @@ export function GalleryPage() {
 		transitionTimers.current.push(window.setTimeout(() => setTransitionPhase('ready'), titleDuration));
 	}, [transitionPhase, featureArtwork, routerNavigate, backgroundPath]);
 	const closeArtworkToGallery = useCallback((destination = backgroundPath) => {
-		if (transitionPhase !== 'ready') return;
+		if (hasBackgroundRoute && transitionPhase !== 'ready') return;
 		closeDestinationRef.current = destination;
 		if (backgroundPath !== '/' || destination !== '/' || !transitionArtworkId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			setIsPurchaseOpen(false);
@@ -161,7 +161,7 @@ export function GalleryPage() {
 		clearTransitionTimers();
 		setTransitionPhase('closing');
 		requestAnimationFrame(() => requestAnimationFrame(() => setGalleryCamera({ x: 0, y: 0, scale: 1 })));
-	}, [backgroundPath, transitionArtworkId, transitionPhase, clearTransitionTimers, routerNavigate]);
+	}, [backgroundPath, hasBackgroundRoute, transitionArtworkId, transitionPhase, clearTransitionTimers, routerNavigate]);
 	const browseArtwork = (artworkId: string | null, direction: BrowseDirection) => {
 		if (!artworkId || isBrowseTransitioning) return;
 		const artwork = data?.artworks.find((item) => item.id === artworkId);
@@ -276,10 +276,11 @@ export function GalleryPage() {
 					artwork={featureArtwork}
 					onAddToCart={addToCart}
 					isCovered={Boolean(isPurchaseOpen || isSearchOpen)}
-					transitionPhase={transitionPhase}
+					transitionPhase={!hasBackgroundRoute && !routeState?.staticPreview ? 'ready' : transitionPhase}
 					usesSharedArtwork={Boolean(transitionArtworkId)}
 					browseDirection={browseDirection}
 					isStaticPreview={Boolean(routeState?.staticPreview)}
+					isDirectEntry={!hasBackgroundRoute && !routeState?.staticPreview}
 					onBack={() => routeState?.returnPath === '/cart' ? closeArtworkToGallery('/cart') : navigate(backgroundPath)}
 					onScrollBack={() => closeArtworkToGallery(routeState?.returnPath || backgroundPath)}
 					onPrevious={() =>
