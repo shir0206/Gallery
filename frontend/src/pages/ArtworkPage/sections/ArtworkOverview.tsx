@@ -143,6 +143,15 @@ export function ArtworkOverview({
       data-image-ready={imageStatus !== "loading" || undefined}
       data-image-error={imageStatus === "error" || undefined}
       data-browse-direction={browseDirection || undefined}
+      style={
+        {
+          "--artwork-mobile-height": `${
+            (artwork.dimensions.height /
+              Math.max(1, artwork.dimensions.width)) *
+            100
+          }vw`,
+        } as CSSProperties
+      }
       aria-labelledby="artwork-title"
     >
       <div className="artwork-overview">

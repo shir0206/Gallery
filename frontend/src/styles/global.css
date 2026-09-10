@@ -1,6 +1,7 @@
 :root {
   color-scheme: light;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    Arial, sans-serif;
 
   /* Shared design tokens for the gallery's editorial/museum palette,
      tuned to the reference room: warm plaster wall, oak floor, a soft
@@ -11,8 +12,9 @@
      paper-toned wall, not a light-on-dark text color. One muted bronze
      accent, used only for focus rings and small active-state marks —
      never as a fill or a bright UI color. */
-  --gallery-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --gallery-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --gallery-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --gallery-sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    Arial, sans-serif;
   --gallery-paper: #2b241d;
   --gallery-paper-soft: rgba(43, 36, 29, 0.82);
   --gallery-paper-muted: rgba(43, 36, 29, 0.6);
