@@ -96,12 +96,18 @@ export function Gallery({
 
   // ArtworkPage is layered over this still-mounted gallery. Route-based
   // previous/next navigation therefore has to feed its current artwork back
-  // into the gallery's canonical selection so ArtworkViewer and NavWindow
-  // are already on the same piece when the overlay closes.
+  // into the gallery's canonical selection so it persists when the overlay
+  // closes. Defer the update so the effect only schedules external sync work.
   useEffect(() => {
     if (!focusedArtworkId) return;
     if (!artworks.some((artwork) => artwork.id === focusedArtworkId)) return;
-    setSelectedArtworkId(focusedArtworkId);
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) setSelectedArtworkId(focusedArtworkId);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [artworks, focusedArtworkId]);
 
   const selectedIndex = useMemo(

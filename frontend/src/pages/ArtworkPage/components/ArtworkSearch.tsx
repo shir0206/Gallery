@@ -39,7 +39,10 @@ export function ArtworkSearch({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const terms = useMemo(
+    () => query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean),
+    [query]
+  );
   const results = useMemo(
     () =>
       artworks
@@ -55,7 +58,7 @@ export function ArtworkSearch({
         .filter(({ matches }) => matches)
         .sort((a, b) => b.titleMatches - a.titleMatches || a.index - b.index)
         .map(({ artwork }) => artwork),
-    [artworks, query]
+    [artworks, terms]
   );
 
   const trimmedQuery = query.trim();

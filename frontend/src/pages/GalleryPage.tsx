@@ -7,7 +7,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import { useArtworkCollection } from "@/state/ArtworkCollectionProvider";
+import { useArtworkCollection } from "@/state/ArtworkCollectionContext";
 import { Gallery } from "@/components/Gallery/Gallery";
 import { GalleryStatus } from "@/components/Gallery/GalleryStatus/GalleryStatus";
 import { ArtworkPage } from "@/pages/ArtworkPage/ArtworkPage";
@@ -214,7 +214,7 @@ export function GalleryPage() {
     transitionTimers.current.push(
       window.setTimeout(() => setTransitionPhase("ready"), titleDuration)
     );
-  }, [transitionPhase, featureArtwork, routerNavigate, backgroundPath]);
+  }, [transitionPhase, featureArtwork, routerNavigate]);
   const closeArtworkToGallery = useCallback(
     (destination = backgroundPath) => {
       if (hasBackgroundRoute && transitionPhase !== "ready") return;
@@ -292,14 +292,21 @@ export function GalleryPage() {
   useEffect(() => {
     if (featureArtwork) return;
     clearTransitionTimers();
-    setTransitionArtworkId(null);
-    setTransitionPhase("idle");
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setTransitionArtworkId(null);
+      setTransitionPhase("idle");
+    });
     document.documentElement.style.removeProperty("--shared-surface-in");
     document.documentElement.style.removeProperty("--shared-scroll");
     document.documentElement.style.removeProperty("--gallery-camera-x");
     document.documentElement.style.removeProperty("--gallery-camera-y");
     document.documentElement.style.removeProperty("--gallery-camera-scale");
     document.documentElement.style.removeProperty("--wall-scroll-offset");
+    return () => {
+      cancelled = true;
+    };
   }, [featureArtwork, clearTransitionTimers]);
 
   const retry = () => {

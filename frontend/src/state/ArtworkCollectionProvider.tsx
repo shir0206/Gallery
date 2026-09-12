@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { getArtworkCollection } from "@/api/artworkApi";
 import type { ArtworkCollectionResponse } from "@/types/artwork";
@@ -13,19 +7,9 @@ import {
   readArtworkCollectionCache,
   writeArtworkCollectionCache,
 } from "./artworkCollectionCache";
+import { ArtworkCollectionContext } from "./ArtworkCollectionContext";
 
 const ERROR_MESSAGE = "Unable to load the gallery.";
-
-interface ArtworkCollectionState {
-  data: ArtworkCollectionResponse | null;
-  error: string | null;
-  loading: boolean;
-  refetch: () => void;
-}
-
-const ArtworkCollectionContext = createContext<ArtworkCollectionState | null>(
-  null
-);
 
 /**
  * Owns the artwork collection: hydrates instantly from the 48h
@@ -44,10 +28,9 @@ export function ArtworkCollectionProvider({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(data === null);
 
-  const fetchAndCache = useCallback(() => {
+  useEffect(() => {
+    if (data !== null) return;
     let isMounted = true;
-    setLoading(true);
-    setError(null);
 
     getArtworkCollection()
       .then((response) => {
@@ -66,15 +49,12 @@ export function ArtworkCollectionProvider({
     return () => {
       isMounted = false;
     };
-  }, []);
-
-  useEffect(() => {
-    if (data !== null) return;
-    return fetchAndCache();
-  }, [data, fetchAndCache]);
+  }, [data]);
 
   const refetch = useCallback(() => {
     clearArtworkCollectionCache();
+    setLoading(true);
+    setError(null);
     setData(null);
   }, []);
 
@@ -85,14 +65,4 @@ export function ArtworkCollectionProvider({
       {children}
     </ArtworkCollectionContext.Provider>
   );
-}
-
-export function useArtworkCollection(): ArtworkCollectionState {
-  const context = useContext(ArtworkCollectionContext);
-  if (!context) {
-    throw new Error(
-      "useArtworkCollection must be used within an ArtworkCollectionProvider"
-    );
-  }
-  return context;
 }

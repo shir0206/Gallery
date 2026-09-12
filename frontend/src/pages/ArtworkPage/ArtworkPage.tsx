@@ -51,8 +51,12 @@ export function ArtworkPage({
     scrollerRef.current?.scrollTo({ top: 0, behavior: "auto" });
   }, [artwork.id]);
   useEffect(() => {
-    setIsIntroLocked(!usesSharedArtwork && !isStaticPreview);
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) setIsIntroLocked(!usesSharedArtwork && !isStaticPreview);
+    });
     return () => {
+      cancelled = true;
       if (introTimerRef.current !== null)
         window.clearTimeout(introTimerRef.current);
     };

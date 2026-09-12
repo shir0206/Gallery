@@ -97,7 +97,7 @@ export function NavWindow({
     const observer = new ResizeObserver(measure);
     observer.observe(track);
     return () => observer.disconnect();
-  }, [measure, artworks.length]);
+  }, [measure, artworks.length, trackRef]);
 
   const itemWidth = itemRects[0]?.width ?? 0;
   const windowWidth =
@@ -105,6 +105,7 @@ export function NavWindow({
       ? Math.min(itemWidth * WINDOW_ITEM_SPAN, trackWidth)
       : 0;
   const maxLeft = Math.max(0, trackWidth - windowWidth);
+  const renderedWindowLeft = clamp(windowLeft, 0, maxLeft);
 
   // Nearest item to a given window-left position's center — drives
   // both the live selection scrub and the plaque readout.
@@ -180,10 +181,17 @@ export function NavWindow({
     // otherwise clamp it to zero and the active-id guard would prevent a
     // retry when the gallery becomes visible again.
     if (index < 0 || windowWidth <= 0) return;
-    activeIdRef.current = selectedArtworkId;
-    setSettling(true);
-    setWindowLeft(centerFor(index));
-    onCenteredIndexChange?.(index);
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      activeIdRef.current = selectedArtworkId;
+      setSettling(true);
+      setWindowLeft(centerFor(index));
+      onCenteredIndexChange?.(index);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [
     selectedArtworkId,
     artworks,
@@ -192,28 +200,22 @@ export function NavWindow({
     onCenteredIndexChange,
   ]);
 
-  // Re-clamp (never animated) if the strip's own layout changes the
-  // available range, e.g. a viewport resize.
-  useEffect(() => {
-    setWindowLeft((current) => clamp(current, 0, maxLeft));
-  }, [maxLeft]);
-
   // Thumbnails the window is currently covering ("under the golden
   // frame") stay fully lit and ignore hover — see
   // .artwork-thumbnail-framed in ArtworkThumbnail.css. A thumbnail
   // counts as covered once the window overlaps more than half its
   // width, so the partial slivers at the window's edges don't count.
   useEffect(() => {
-    const windowRight = windowLeft + windowWidth;
+    const windowRight = renderedWindowLeft + windowWidth;
     itemRects.forEach((rect, index) => {
       const el = itemElsRef.current[index];
       if (!el) return;
       const overlap =
         Math.min(rect.left + rect.width, windowRight) -
-        Math.max(rect.left, windowLeft);
+        Math.max(rect.left, renderedWindowLeft);
       el.classList.toggle("artwork-thumbnail-framed", overlap > rect.width / 2);
     });
-  }, [windowLeft, windowWidth, itemRects]);
+  }, [renderedWindowLeft, windowWidth, itemRects]);
 
   const onPointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -221,13 +223,13 @@ export function NavWindow({
       dragRef.current = {
         active: true,
         startX: event.clientX,
-        startLeft: windowLeft,
+        startLeft: renderedWindowLeft,
       };
       setDragging(true);
       setSettling(false);
       event.currentTarget.setPointerCapture?.(event.pointerId);
     },
-    [interactionLocked, windowLeft]
+    [interactionLocked, renderedWindowLeft]
   );
 
   const onPointerMove = useCallback(
@@ -254,12 +256,12 @@ export function NavWindow({
         Math.abs(event.deltaY) > Math.abs(event.deltaX)
           ? event.deltaY
           : event.deltaX;
-      const next = clamp(windowLeft + delta * WHEEL_SPEED, 0, maxLeft);
+      const next = clamp(renderedWindowLeft + delta * WHEEL_SPEED, 0, maxLeft);
       setSettling(false);
       setWindowLeft(next);
       reportCentered(next);
     },
-    [interactionLocked, windowLeft, maxLeft, reportCentered]
+    [interactionLocked, renderedWindowLeft, maxLeft, reportCentered]
   );
 
   if (artworks.length === 0 || itemRects.length === 0) return null;
@@ -275,7 +277,7 @@ export function NavWindow({
       onWheel={onWheel}
       onTransitionEnd={() => setSettling(false)}
       style={{
-        left: windowLeft,
+        left: renderedWindowLeft,
         width: windowWidth,
         cursor: interactionLocked ? "wait" : dragging ? "grabbing" : "grab",
         transition: settling ? "left 0.2s cubic-bezier(.2, .8, .2, 1)" : "none",
