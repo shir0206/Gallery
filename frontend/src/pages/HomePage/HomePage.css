@@ -3,7 +3,7 @@
    experience now, so it should feel like browsing a catalogue, not
    like being dropped into a lit room before anything has loaded. */
 .home-page {
-  min-height: 100vh;
+  min-height: 100svh;
   width: 100%;
   background: var(--editorial-paper-bg);
   color: var(--editorial-ink);

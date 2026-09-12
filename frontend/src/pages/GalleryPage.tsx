@@ -141,8 +141,11 @@ export function GalleryPage() {
       const ratio =
         artwork.dimensions.width / Math.max(1, artwork.dimensions.height);
       const headerHeight = window.innerWidth <= 800 ? 64 : 72;
+      const galleryHeight =
+        sourceImage.closest<HTMLElement>(".gallery")?.clientHeight ??
+        window.innerHeight - headerHeight;
       const fallbackHeight = Math.min(
-        (window.innerHeight - headerHeight) * 0.6,
+        galleryHeight * 0.6,
         620
       );
       const fallbackWidth = fallbackHeight * ratio;
@@ -153,11 +156,10 @@ export function GalleryPage() {
               left: (window.innerWidth - fallbackWidth) / 2,
               top:
                 headerHeight +
-                (window.innerHeight - headerHeight - fallbackHeight) / 2,
+                (galleryHeight - fallbackHeight) / 2,
               width: fallbackWidth,
               height: fallbackHeight,
             };
-      const galleryHeight = window.innerHeight - headerHeight;
       const sourceCenterX = source.left + source.width / 2;
       const sourceTopY = source.top - headerHeight;
       const isolateScale = Math.max(

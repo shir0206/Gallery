@@ -116,12 +116,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 62vh;
+  height: 62svh;
   transition: opacity 0.125s ease;
 }
 
 .artwork-viewer-frame[data-orientation="landscape"] {
-  max-height: 56vh;
+  max-height: 56svh;
   max-width: min(80vw, 1000px);
 }
 
@@ -160,7 +160,7 @@
 
 .artwork-viewer-image {
   display: block;
-  max-height: 60vh;
+  max-height: 60svh;
   object-fit: contain;
   /* A soft, directional, warm-toned shadow — cast by the room's own
      overhead light rather than a flat UI drop-shadow — so each piece

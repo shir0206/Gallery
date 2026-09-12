@@ -116,7 +116,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: clamp(118px, 20vh, 195px);
+  height: clamp(118px, 20svh, 195px);
   display: block;
   object-fit: cover;
   object-position: center top;
@@ -127,7 +127,7 @@
   position: absolute;
   z-index: 6;
   right: 0;
-  bottom: clamp(118px, 20vh, 195px);
+  bottom: clamp(118px, 20svh, 195px);
   left: 0;
   height: 12px;
   background: linear-gradient(to bottom, #3a332d, #1f1c19);
@@ -158,10 +158,10 @@
     opacity: 0.14;
   }
   .gallery-background-floor {
-    height: clamp(96px, 17vh, 132px);
+    height: clamp(96px, 17svh, 132px);
   }
   .gallery-background-baseboard {
-    bottom: clamp(96px, 17vh, 132px);
+    bottom: clamp(96px, 17svh, 132px);
     height: 9px;
   }
 }

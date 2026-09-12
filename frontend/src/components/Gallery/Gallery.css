@@ -1,7 +1,7 @@
 .gallery {
   position: relative;
   width: 100%;
-  height: calc(100vh - 72px);
+  height: calc(100svh - 72px);
   overflow: hidden;
   /* A stationary continuation of the plaster wall. During the artwork
      camera zoom its transformed top edge can move away from the fixed
@@ -50,7 +50,7 @@
 
 @media (max-width: 800px) {
   .gallery {
-    height: calc(100vh - 64px);
+    height: calc(100svh - 64px);
   }
 }
 

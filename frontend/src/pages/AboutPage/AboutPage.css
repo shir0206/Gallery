@@ -9,7 +9,7 @@
   max-width: 1280px;
   height: 100%;
   margin: 0 auto;
-  padding: clamp(24px, 4vh, 48px) clamp(24px, 5vw, 72px);
+  padding: clamp(24px, 4svh, 48px) clamp(24px, 5vw, 72px);
   display: grid;
   grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1fr);
   gap: clamp(48px, 9vw, 128px);
@@ -22,7 +22,7 @@
   display: block;
   width: auto;
   max-width: 100%;
-  max-height: calc(100svh - 72px - clamp(48px, 8vh, 96px) - 27px);
+  max-height: calc(100svh - 72px - clamp(48px, 8svh, 96px) - 27px);
   margin: 0 auto;
   aspect-ratio: 4/5;
   object-fit: cover;

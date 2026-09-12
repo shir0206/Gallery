@@ -22,7 +22,7 @@
   position: sticky;
   top: 0;
   width: 100%;
-  height: calc(100vh - var(--editorial-header-height, 72px));
+  height: calc(100svh - var(--editorial-header-height, 72px));
   min-height: 520px;
   overflow: hidden;
   color: var(--editorial-ink);
@@ -71,7 +71,7 @@
   z-index: 3;
   inset: 31% 3vw auto;
   margin: 0;
-  transform: translateY(calc(-50% - var(--title-part) * 37vh));
+  transform: translateY(calc(-50% - var(--title-part) * 37svh));
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -156,7 +156,7 @@
   .overview-main-art {
   transform: translate(
       calc(var(--opening) * var(--opening-center-x)),
-      calc(var(--opening) * (64.765vh - 46.63px))
+      calc(var(--opening) * (64.765svh - 46.63px))
     )
     scale(calc(1 + var(--opening) * 0.56));
 }
@@ -166,7 +166,7 @@
   .overview-main-art {
   transform: translate(
       calc(var(--opening) * var(--opening-center-x)),
-      calc(var(--opening) * (75.145vh - 54.1px))
+      calc(var(--opening) * (75.145svh - 54.1px))
     )
     scale(calc(1 + var(--opening) * 0.08));
 }
@@ -174,7 +174,7 @@
   .overview-main-art {
   transform: translate(
       calc(var(--opening) * var(--opening-center-x)),
-      calc(var(--opening) * (73.638vh - 53.02px))
+      calc(var(--opening) * (73.638svh - 53.02px))
     )
     scale(calc(1 + var(--opening) * 0.15));
 }
@@ -183,7 +183,7 @@
   .overview-main-art {
   transform: translate(
       calc(var(--opening) * var(--opening-center-x)),
-      calc(var(--opening) * (51vh - 37px))
+      calc(var(--opening) * (51svh - 37px))
     )
     scale(calc(1 + var(--opening) * 1.25));
 }
@@ -224,7 +224,7 @@
 @keyframes overview-art-intro {
   from {
     opacity: 0;
-    transform: translateY(52vh) scale(0.985);
+    transform: translateY(52svh) scale(0.985);
   }
   to {
     opacity: 1;
@@ -257,7 +257,7 @@
 .overview-intro-meta {
   position: absolute;
   z-index: 34;
-  top: clamp(44px, 8vh, 92px);
+  top: clamp(44px, 8svh, 92px);
   left: 50%;
   display: flex;
   flex-direction: column;
@@ -535,7 +535,7 @@
     .overview-information {
     top: auto;
     right: clamp(18px, 2.5vw, 32px);
-    bottom: clamp(24px, 4vh, 46px);
+    bottom: clamp(24px, 4svh, 46px);
     width: clamp(190px, 24vw, 230px);
   }
 }
@@ -572,10 +572,10 @@
   .overview-cinematic-title {
     inset-inline: 12px;
     font-size: clamp(58px, 19vw, 92px);
-    transform: translateY(calc(-50% - var(--title-part) * 38vh));
+    transform: translateY(calc(-50% - var(--title-part) * 38svh));
   }
   .overview-main-art {
-    inset: 12vh 8vw 23vh;
+    inset: 12svh 8vw 23svh;
   }
   .overview-crops {
     left: 12px;
@@ -728,7 +728,7 @@
     .overview-main-art {
     transform: translate(
         calc(var(--opening) * var(--opening-center-x)),
-        calc(var(--opening) * (65.48vh - 41.91px))
+        calc(var(--opening) * (65.48svh - 41.91px))
       )
       scale(calc(1 + var(--opening) * 0.56));
   }
@@ -738,7 +738,7 @@
     .overview-main-art {
     transform: translate(
         calc(var(--opening) * var(--opening-center-x)),
-        calc(var(--opening) * (73.64vh - 47.13px))
+        calc(var(--opening) * (73.64svh - 47.13px))
       )
       scale(calc(1 + var(--opening) * 0.08));
   }
@@ -746,7 +746,7 @@
     .overview-main-art {
     transform: translate(
         calc(var(--opening) * var(--opening-center-x)),
-        calc(var(--opening) * (72.45vh - 46.37px))
+        calc(var(--opening) * (72.45svh - 46.37px))
       )
       scale(calc(1 + var(--opening) * 0.15));
   }
@@ -776,12 +776,14 @@
   }
   .overview-crops {
     left: 0;
-    top: 47.5%;
+    /* Main artwork ends at 1.5% + 45.5%; keep the next row 4px below. */
+    top: calc(47% + 4px);
     height: 11.5%;
   }
   .overview-detail-label {
-    top: 47.5%;
+    top: calc(47% + 4px);
     height: 11.5%;
+    transform: none;
   }
 }
 @media (max-width: 639px) {
@@ -818,8 +820,6 @@
 }
 @media (max-width: 639px) {
   .overview-detail-label {
-    top: 48.5%;
-    height: 10.5%;
     flex-direction: column;
   }
   .artwork-presentation-track[data-orientation="portrait"]

@@ -96,7 +96,7 @@
 
 .artwork-page-scroller {
   --editorial-header-height: 72px;
-  height: calc(100vh - 72px);
+  height: calc(100svh - 72px);
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-gutter: stable;
@@ -208,7 +208,7 @@
   }
   .artwork-page-scroller {
     --editorial-header-height: 64px;
-    height: calc(100vh - 64px);
+    height: calc(100svh - 64px);
   }
 }
 
