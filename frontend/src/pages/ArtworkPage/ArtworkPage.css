@@ -186,7 +186,6 @@
   --p: 1;
 }
 .artwork-page[data-static-preview] .overview-main-art,
-.artwork-page[data-static-preview] .overview-main-art img,
 .artwork-page[data-static-preview] .overview-title-mask,
 .artwork-page[data-static-preview] .overview-intro-meta,
 .artwork-page[data-static-preview] .overview-scroll-hint {

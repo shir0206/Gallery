@@ -111,11 +111,8 @@
   margin: 0;
   overflow: visible;
   background: transparent;
+  transform: var(--art-layout-transform, translate(0));
   transform-origin: top center;
-}
-.overview-main-art img {
-  width: 100%;
-  height: 100%;
   display: block;
   object-fit: contain;
   object-position: center top;
@@ -123,13 +120,10 @@
   transform-origin: top center;
 }
 .artwork-presentation-track[data-orientation="portrait"]
-  .overview-main-art
-  img {
+  .overview-main-art {
   object-position: calc(var(--opening) * 50%) top;
 }
 .overview-image-fallback {
-  position: absolute;
-  inset: 0;
   display: grid;
   place-items: center;
   border: 1px solid var(--editorial-line);
@@ -139,8 +133,9 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
-.artwork-presentation-track[data-image-error] .overview-main-art img {
-  display: none;
+.artwork-presentation-track[data-image-error] img.overview-main-art,
+.artwork-presentation-track[data-shared-artwork] img.overview-main-art {
+  visibility: hidden;
 }
 .artwork-presentation-track:not([data-shared-artwork]):not([data-image-ready])
   .overview-main-art,
@@ -154,7 +149,7 @@
     [data-shared-artwork]
   )[data-orientation="landscape"]
   .overview-main-art {
-  transform: translate(
+  --art-layout-transform: translate(
       calc(var(--opening) * var(--opening-center-x)),
       calc(var(--opening) * (64.765svh - 46.63px))
     )
@@ -164,7 +159,7 @@
     [data-shared-artwork]
   )[data-orientation="portrait"]
   .overview-main-art {
-  transform: translate(
+  --art-layout-transform: translate(
       calc(var(--opening) * var(--opening-center-x)),
       calc(var(--opening) * (75.145svh - 54.1px))
     )
@@ -172,7 +167,7 @@
 }
 .artwork-presentation-track:not([data-shared-artwork])[data-shape="square"]
   .overview-main-art {
-  transform: translate(
+  --art-layout-transform: translate(
       calc(var(--opening) * var(--opening-center-x)),
       calc(var(--opening) * (73.638svh - 53.02px))
     )
@@ -181,7 +176,7 @@
 .artwork-page[data-direct-entry]
   .artwork-presentation-track:not([data-shared-artwork])
   .overview-main-art {
-  transform: translate(
+  --art-layout-transform: translate(
       calc(var(--opening) * var(--opening-center-x)),
       calc(var(--opening) * (51svh - 37px))
     )
@@ -190,8 +185,7 @@
 .artwork-presentation-track[data-image-ready]:not([data-shared-artwork]):not(
     [data-has-scrolled]
   )
-  .overview-main-art
-  img {
+  .overview-main-art {
   animation: overview-art-intro 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .artwork-presentation-track[data-image-ready]:not([data-shared-artwork]):not(
@@ -224,11 +218,11 @@
 @keyframes overview-art-intro {
   from {
     opacity: 0;
-    transform: translateY(52svh) scale(0.985);
+    transform: var(--art-layout-transform, translate(0)) translateY(52svh) scale(0.985);
   }
   to {
     opacity: 1;
-    transform: none;
+    transform: var(--art-layout-transform, translate(0));
   }
 }
 @keyframes overview-title-intro {
@@ -563,6 +557,17 @@
     height: 226svh;
   }
   .artwork-overview {
+    --overview-art-top: 0px;
+    --overview-art-height: 45.5%;
+    --overview-row-gap: 4px;
+    --overview-details-height: 11.5%;
+    --overview-information-gap: 3%;
+    --overview-details-top: calc(
+      var(--overview-art-top) + var(--overview-art-height) + var(--overview-row-gap)
+    );
+    --overview-information-top: calc(
+      var(--overview-details-top) + var(--overview-details-height) + var(--overview-information-gap)
+    );
     height: calc(100svh - var(--editorial-header-height, 64px));
     min-height: 620px;
   }
@@ -574,16 +579,11 @@
     font-size: clamp(58px, 19vw, 92px);
     transform: translateY(calc(-50% - var(--title-part) * 38svh));
   }
-  .overview-main-art {
-    inset: 12svh 8vw 23svh;
-  }
   .overview-crops {
     left: 12px;
     right: 54px;
-    top: 49%;
     bottom: auto;
     width: auto;
-    height: 8.2%;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1fr;
     gap: 6px;
@@ -610,8 +610,6 @@
   .overview-detail-label {
     left: auto;
     right: 12px;
-    top: 49%;
-    height: 8.2%;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -672,19 +670,19 @@
   .overview-main-art,
   .artwork-presentation-track[data-orientation="portrait"] .overview-main-art {
     --opening-center-x: 0;
-    top: 1.5%;
+    top: var(--overview-art-top);
     right: auto;
     bottom: auto;
     left: 8%;
     width: 84%;
-    height: 45.5%;
+    height: var(--overview-art-height);
   }
   .overview-information,
   .artwork-presentation-track[data-orientation="landscape"]
     .overview-information,
   .artwork-presentation-track[data-orientation="portrait"]
     .overview-information {
-    top: 60%;
+    top: var(--overview-information-top);
     right: 30px;
     bottom: auto;
     width: calc(100% - 60px);
@@ -726,7 +724,7 @@
       [data-shared-artwork]
     )[data-orientation="landscape"]
     .overview-main-art {
-    transform: translate(
+    --art-layout-transform: translate(
         calc(var(--opening) * var(--opening-center-x)),
         calc(var(--opening) * (65.48svh - 41.91px))
       )
@@ -736,7 +734,7 @@
       [data-shared-artwork]
     )[data-orientation="portrait"]
     .overview-main-art {
-    transform: translate(
+    --art-layout-transform: translate(
         calc(var(--opening) * var(--opening-center-x)),
         calc(var(--opening) * (73.64svh - 47.13px))
       )
@@ -744,7 +742,7 @@
   }
   .artwork-presentation-track:not([data-shared-artwork])[data-shape="square"]
     .overview-main-art {
-    transform: translate(
+    --art-layout-transform: translate(
         calc(var(--opening) * var(--opening-center-x)),
         calc(var(--opening) * (72.45svh - 46.37px))
       )
@@ -770,64 +768,40 @@
     left: 0;
     width: 100vw;
   }
-  .overview-main-art img {
+  .overview-main-art {
     width: 100vw;
     object-fit: cover;
   }
   .overview-crops {
     left: 0;
-    /* Main artwork ends at 1.5% + 45.5%; keep the next row 4px below. */
-    top: calc(47% + 4px);
-    height: 11.5%;
+  }
+  .overview-crops,
+  .overview-detail-label {
+    top: var(--overview-details-top);
+    height: var(--overview-details-height);
   }
   .overview-detail-label {
-    top: calc(47% + 4px);
-    height: 11.5%;
     transform: none;
   }
 }
 @media (max-width: 639px) {
   .artwork-presentation-track[data-orientation="portrait"] .artwork-overview {
+    --overview-art-height: var(--artwork-mobile-height);
+    --overview-details-height: clamp(90px, 24vw, 112px);
+    --overview-information-gap: 40px;
     height: max(
       calc(100svh - var(--editorial-header-height, 64px)),
       calc(var(--artwork-mobile-height) + 500px)
     );
   }
-  .artwork-presentation-track[data-orientation="portrait"] .overview-main-art {
-    top: 0;
-    height: auto;
-    aspect-ratio: var(--artwork-ratio);
-  }
   .artwork-presentation-track[data-orientation="portrait"]
-    .overview-main-art
-    img {
-    height: 100%;
+    .overview-main-art {
     object-fit: contain;
-  }
-  .artwork-presentation-track[data-orientation="portrait"] .overview-crops {
-    top: calc(4px + var(--artwork-mobile-height));
-    height: clamp(90px, 24vw, 112px);
-  }
-  .artwork-presentation-track[data-orientation="portrait"]
-    .overview-detail-label {
-    top: calc(4px + var(--artwork-mobile-height));
-    height: clamp(90px, 24vw, 112px);
-  }
-  .artwork-presentation-track[data-orientation="portrait"]
-    .overview-information {
-    top: calc(44px + var(--artwork-mobile-height) + clamp(90px, 24vw, 112px));
   }
 }
 @media (max-width: 639px) {
   .overview-detail-label {
     flex-direction: column;
-  }
-  .artwork-presentation-track[data-orientation="portrait"]
-    .overview-detail-label {
-    top: calc(4px + var(--artwork-mobile-height));
-    height: clamp(90px, 24vw, 112px);
-    flex-direction: column;
-    transform: none;
   }
   .overview-final-title {
     margin: 12px 0;

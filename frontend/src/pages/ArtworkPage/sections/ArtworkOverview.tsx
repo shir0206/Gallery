@@ -20,8 +20,9 @@ interface ArtworkOverviewProps {
   isStaticPreview?: boolean;
 }
 
-function orientationFromImage(artwork: Artwork): Artwork["orientation"] {
-  if (typeof document === "undefined") return artwork.orientation;
+function ratioFromImage(artwork: Artwork): number {
+  const fallback = artwork.dimensions.width / Math.max(1, artwork.dimensions.height);
+  if (typeof document === "undefined") return fallback;
   const image = Array.from(document.images).find(
     (candidate) =>
       (candidate.currentSrc === artwork.imageUrl ||
@@ -29,11 +30,7 @@ function orientationFromImage(artwork: Artwork): Artwork["orientation"] {
       candidate.complete &&
       candidate.naturalWidth > 0
   );
-  return image
-    ? image.naturalWidth >= image.naturalHeight
-      ? "landscape"
-      : "portrait"
-    : artwork.orientation;
+  return image ? image.naturalWidth / image.naturalHeight : fallback;
 }
 
 function DetailCrop({ artwork, index }: { artwork: Artwork; index: number }) {
@@ -94,9 +91,8 @@ export function ArtworkOverview({
   // Read that ratio during the first render so shared-transition geometry does
   // not move after the animation has started. Direct routes fall back to the
   // catalogue value and reconcile when their own image finishes loading.
-  const [layoutOrientation, setLayoutOrientation] = useState(() =>
-    orientationFromImage(artwork)
-  );
+  const [imageRatio, setImageRatio] = useState(() => ratioFromImage(artwork));
+  const layoutOrientation = imageRatio >= 1 ? "landscape" : "portrait";
   const [layoutShape, setLayoutShape] = useState<"square" | "oblong">(() => {
     const ratio =
       artwork.dimensions.width / Math.max(1, artwork.dimensions.height);
@@ -108,7 +104,7 @@ export function ArtworkOverview({
   const syncLayoutOrientation = (image: HTMLImageElement) => {
     if (!image.naturalWidth || !image.naturalHeight) return;
     const ratio = image.naturalWidth / image.naturalHeight;
-    setLayoutOrientation(ratio >= 1 ? "landscape" : "portrait");
+    setImageRatio(ratio);
     setLayoutShape(ratio >= 0.88 && ratio <= 1.12 ? "square" : "oblong");
   };
   useScrollPresentation(
@@ -145,11 +141,7 @@ export function ArtworkOverview({
       data-browse-direction={browseDirection || undefined}
       style={
         {
-          "--artwork-mobile-height": `${
-            (artwork.dimensions.height /
-              Math.max(1, artwork.dimensions.width)) *
-            100
-          }vw`,
+          "--artwork-mobile-height": `${100 / imageRatio}vw`,
         } as CSSProperties
       }
       aria-labelledby="artwork-title"
@@ -174,36 +166,31 @@ export function ArtworkOverview({
           <span>Scroll to explore</span>
           <i aria-hidden="true">↓</i>
         </p>
-        <figure
+        <img
           className="overview-main-art"
-          style={
-            {
-              "--artwork-ratio": `${artwork.dimensions.width} / ${artwork.dimensions.height}`,
-            } as CSSProperties
-          }
-        >
-          {!usesSharedArtwork && (
-            <img
-              src={artwork.imageUrl}
-              alt={`${artwork.title} by ${artwork.artist}`}
-              fetchPriority="high"
-              onLoad={(event) => settleImage(event.currentTarget)}
-              onError={() => {
-                setImageStatus("error");
-                onIntroReady?.();
-              }}
-            />
-          )}{" "}
-          {imageStatus === "error" && (
-            <span
-              className="overview-image-fallback"
-              role="img"
-              aria-label={`Image unavailable for ${artwork.title}`}
-            >
-              Artwork image unavailable
-            </span>
-          )}
-        </figure>
+          style={{ "--artwork-ratio": imageRatio } as CSSProperties}
+          src={artwork.imageUrl}
+          alt={usesSharedArtwork ? "" : `${artwork.title} by ${artwork.artist}`}
+          aria-hidden={usesSharedArtwork || imageStatus === "error" || undefined}
+          fetchPriority="high"
+          onLoad={(event) => {
+            if (!usesSharedArtwork) settleImage(event.currentTarget);
+          }}
+          onError={() => {
+            if (usesSharedArtwork) return;
+            setImageStatus("error");
+            onIntroReady?.();
+          }}
+        />
+        {imageStatus === "error" && (
+          <span
+            className="overview-main-art overview-image-fallback"
+            role="img"
+            aria-label={`Image unavailable for ${artwork.title}`}
+          >
+            Artwork image unavailable
+          </span>
+        )}
         <div className="overview-detail-label" aria-hidden="true">
           <span>Details</span>
           <i />

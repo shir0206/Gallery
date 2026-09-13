@@ -20,7 +20,7 @@ export function useScrollPresentation(
     const sharedImage = document.querySelector<HTMLElement>(
       ".artwork-viewer-frame-transition-target .artwork-viewer-image-button"
     );
-    const destination = track.querySelector<HTMLElement>(".overview-main-art");
+    const destination = track.querySelector<HTMLElement>("img.overview-main-art");
     const camera = document.querySelector<HTMLElement>(".gallery-camera");
     const sharedStart = sharedImage?.getBoundingClientRect();
     let frame = 0;
