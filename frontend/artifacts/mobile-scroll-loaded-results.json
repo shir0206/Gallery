@@ -1,0 +1,1766 @@
+[
+  {
+    "label": "wall open",
+    "before": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 335,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 1",
+    "before": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 532,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 2",
+    "before": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 548,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 3",
+    "before": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 546,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 4",
+    "before": {
+      "title": "Cheers",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Cheers",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 546,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 5",
+    "before": {
+      "title": "Colorful sky",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Colorful sky",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 530,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 6",
+    "before": {
+      "title": "Twilight",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Twilight",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 545,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 7",
+    "before": {
+      "title": "Music of The Night",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Music of The Night",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 543,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 8",
+    "before": {
+      "title": "Tree Lovers",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Tree Lovers",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 550,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 9",
+    "before": {
+      "title": "Home",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Home",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 547,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 10",
+    "before": {
+      "title": "Turbulence",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Turbulence",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 545,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 11",
+    "before": {
+      "title": "Sugar",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sugar",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 536,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 12",
+    "before": {
+      "title": "Guitar Girl",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Guitar Girl",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 542,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 13",
+    "before": {
+      "title": "Voice",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Voice",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 549,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 14",
+    "before": {
+      "title": "Friendship",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Friendship",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 542,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 15",
+    "before": {
+      "title": "Marilyn Monroe",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Marilyn Monroe",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 553,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 16",
+    "before": {
+      "title": "Fan",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Fan",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 532,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 17",
+    "before": {
+      "title": "Lights",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Lights",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 543,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 18",
+    "before": {
+      "title": "Fly",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Fly",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 551,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 19",
+    "before": {
+      "title": "Ring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Ring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 542,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 20",
+    "before": {
+      "title": "Fairy",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Fairy",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 549,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 21",
+    "before": {
+      "title": "End Game",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "End Game",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 533,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 22",
+    "before": {
+      "title": "Crying",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Crying",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 530,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 23",
+    "before": {
+      "title": "Lady in red",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Lady in red",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 554,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 24",
+    "before": {
+      "title": "Salt & Sand",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Salt & Sand",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 544,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 25",
+    "before": {
+      "title": "Wolfs",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Wolfs",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 552,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 26",
+    "before": {
+      "title": "Flower Buds",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Flower Buds",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 547,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 27",
+    "before": {
+      "title": "Breath",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Breath",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 542,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 28",
+    "before": {
+      "title": "Onward",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Onward",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 546,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next cycle 29",
+    "before": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 550,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 1",
+    "before": {
+      "title": "Onward",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Onward",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 537,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 2",
+    "before": {
+      "title": "Breath",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Breath",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 539,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 3",
+    "before": {
+      "title": "Flower Buds",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Flower Buds",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 509,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 4",
+    "before": {
+      "title": "Wolfs",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Wolfs",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 564,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 5",
+    "before": {
+      "title": "Salt & Sand",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Salt & Sand",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 529,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 6",
+    "before": {
+      "title": "Lady in red",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Lady in red",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 547,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 7",
+    "before": {
+      "title": "Crying",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Crying",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 532,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 8",
+    "before": {
+      "title": "End Game",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "End Game",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 549,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 9",
+    "before": {
+      "title": "Fairy",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Fairy",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 542,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 10",
+    "before": {
+      "title": "Ring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Ring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 545,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 11",
+    "before": {
+      "title": "Fly",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Fly",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 545,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 12",
+    "before": {
+      "title": "Lights",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Lights",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 543,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 13",
+    "before": {
+      "title": "Fan",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Fan",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 544,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 14",
+    "before": {
+      "title": "Marilyn Monroe",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Marilyn Monroe",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 555,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 15",
+    "before": {
+      "title": "Friendship",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Friendship",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 551,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 16",
+    "before": {
+      "title": "Voice",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Voice",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 540,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 17",
+    "before": {
+      "title": "Guitar Girl",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Guitar Girl",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 546,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 18",
+    "before": {
+      "title": "Sugar",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sugar",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 543,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 19",
+    "before": {
+      "title": "Turbulence",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Turbulence",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 556,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 20",
+    "before": {
+      "title": "Home",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Home",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 546,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 21",
+    "before": {
+      "title": "Tree Lovers",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Tree Lovers",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 546,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 22",
+    "before": {
+      "title": "Music of The Night",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Music of The Night",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 542,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 23",
+    "before": {
+      "title": "Twilight",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Twilight",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 543,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 24",
+    "before": {
+      "title": "Colorful sky",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Colorful sky",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 543,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 25",
+    "before": {
+      "title": "Cheers",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Cheers",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 549,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 26",
+    "before": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 546,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 27",
+    "before": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 546,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 28",
+    "before": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 547,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous cycle 29",
+    "before": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 541,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "alternate Next",
+    "before": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 545,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "alternate Previous",
+    "before": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 558,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "alternate Next",
+    "before": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 539,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "alternate Previous",
+    "before": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 542,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 0,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  }
+]

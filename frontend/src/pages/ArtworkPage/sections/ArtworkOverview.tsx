@@ -21,7 +21,8 @@ interface ArtworkOverviewProps {
 }
 
 function ratioFromImage(artwork: Artwork): number {
-  const fallback = artwork.dimensions.width / Math.max(1, artwork.dimensions.height);
+  const fallback =
+    artwork.dimensions.width / Math.max(1, artwork.dimensions.height);
   if (typeof document === "undefined") return fallback;
   const image = Array.from(document.images).find(
     (candidate) =>
@@ -166,39 +167,47 @@ export function ArtworkOverview({
           <span>Scroll to explore</span>
           <i aria-hidden="true">↓</i>
         </p>
-        <img
-          className="overview-main-art"
-          style={{ "--artwork-ratio": imageRatio } as CSSProperties}
-          src={artwork.imageUrl}
-          alt={usesSharedArtwork ? "" : `${artwork.title} by ${artwork.artist}`}
-          aria-hidden={usesSharedArtwork || imageStatus === "error" || undefined}
-          fetchPriority="high"
-          onLoad={(event) => {
-            if (!usesSharedArtwork) settleImage(event.currentTarget);
-          }}
-          onError={() => {
-            if (usesSharedArtwork) return;
-            setImageStatus("error");
-            onIntroReady?.();
-          }}
-        />
-        {imageStatus === "error" && (
-          <span
-            className="overview-main-art overview-image-fallback"
-            role="img"
-            aria-label={`Image unavailable for ${artwork.title}`}
-          >
-            Artwork image unavailable
-          </span>
-        )}
-        <div className="overview-detail-label" aria-hidden="true">
-          <span>Details</span>
-          <i />
-        </div>
-        <div className="overview-crops" aria-hidden="true">
-          {[0, 1, 2, 3].map((index) => (
-            <DetailCrop artwork={artwork} index={index} key={index} />
-          ))}
+        <div className="overview-composition">
+          <img
+            className="overview-main-art"
+            style={{ "--artwork-ratio": imageRatio } as CSSProperties}
+            src={artwork.imageUrl}
+            alt={
+              usesSharedArtwork ? "" : `${artwork.title} by ${artwork.artist}`
+            }
+            aria-hidden={
+              usesSharedArtwork || imageStatus === "error" || undefined
+            }
+            fetchPriority="high"
+            onLoad={(event) => {
+              if (!usesSharedArtwork) settleImage(event.currentTarget);
+            }}
+            onError={() => {
+              if (usesSharedArtwork) return;
+              setImageStatus("error");
+              onIntroReady?.();
+            }}
+          />
+          {imageStatus === "error" && (
+            <span
+              className="overview-main-art overview-image-fallback"
+              role="img"
+              aria-label={`Image unavailable for ${artwork.title}`}
+            >
+              Artwork image unavailable
+            </span>
+          )}
+          <div className="overview-details-layout">
+            <div className="overview-detail-label" aria-hidden="true">
+              <span>Details</span>
+              <i />
+            </div>
+            <div className="overview-crops" aria-hidden="true">
+              {[0, 1, 2, 3].map((index) => (
+                <DetailCrop artwork={artwork} index={index} key={index} />
+              ))}
+            </div>
+          </div>
         </div>
         <div className="overview-information">
           <h1 id="artwork-title" className="overview-final-title">

@@ -1,0 +1,450 @@
+[
+  {
+    "label": "wall open",
+    "before": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 720,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 549,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 720,
+      "orientation": "landscape"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next from details",
+    "before": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 519,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 585,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 519,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "previous from details",
+    "before": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 720,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 553,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 720,
+      "orientation": "landscape"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "immediate swipe after next",
+    "before": {
+      "title": "Butterflies",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 559,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 720,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 519,
+      "orientation": "portrait"
+    },
+    "result": "FAIL"
+  },
+  {
+    "label": "same artwork after waiting",
+    "before": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 519,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Girl With Pearl Earring",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 563,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 519,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "rapid next then prev within disabled interval",
+    "before": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 3,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 561,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "next then prev just after disabled interval",
+    "before": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 569,
+      "range": 1907,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "narrow mobile next",
+    "before": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 1284,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 362,
+      "range": 1284,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "narrow mobile previous",
+    "before": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 2,
+      "range": 1284,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 367,
+      "range": 1284,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "reduced motion next",
+    "before": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 383,
+      "range": 568,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 568,
+      "range": 568,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "reduced motion previous",
+    "before": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 568,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 331,
+      "range": 568,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "pending decode after next - 6 seconds",
+    "before": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": true,
+      "overflow": "hidden",
+      "top": 0,
+      "range": 1284,
+      "imageReady": false,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": true,
+      "overflow": "hidden",
+      "top": 0,
+      "range": 1284,
+      "imageReady": false,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "result": "FAIL"
+  },
+  {
+    "label": "pending decode second swipe - 3 more seconds",
+    "before": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": true,
+      "overflow": "hidden",
+      "top": 0,
+      "range": 1284,
+      "imageReady": false,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": true,
+      "overflow": "hidden",
+      "top": 0,
+      "range": 1284,
+      "imageReady": false,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "result": "FAIL"
+  },
+  {
+    "label": "same painting after decode released",
+    "before": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 0,
+      "range": 1284,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "after": {
+      "title": "Sunrise",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 334,
+      "range": 1284,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 2448,
+      "orientation": "portrait"
+    },
+    "result": "PASS"
+  },
+  {
+    "label": "pending decode after previous - 3 seconds",
+    "before": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": true,
+      "overflow": "hidden",
+      "top": 1,
+      "range": 1284,
+      "imageReady": false,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": true,
+      "overflow": "hidden",
+      "top": 1,
+      "range": 1284,
+      "imageReady": false,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "result": "FAIL"
+  },
+  {
+    "label": "previous painting after decode released",
+    "before": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 1,
+      "range": 1284,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "after": {
+      "title": "Wind",
+      "phase": "ready",
+      "locked": false,
+      "overflow": "auto",
+      "top": 362,
+      "range": 1284,
+      "imageReady": true,
+      "imageComplete": true,
+      "naturalWidth": 1110,
+      "orientation": "landscape"
+    },
+    "result": "PASS"
+  }
+]
