@@ -55,10 +55,6 @@
   opacity: var(--opening);
   pointer-events: none;
 }
-.artwork-page[data-direct-entry] .artwork-overview::before,
-.artwork-page[data-direct-entry] .overview-atmosphere {
-  display: none;
-}
 /* Previous/next is still being viewed over the already-zoomed gallery wall.
    It needs its own artwork image, but must not replace that wall with the
    direct-route fallback (whose fixed 37% seam visibly moves the room). */
@@ -119,8 +115,7 @@
   filter: saturate(calc(0.9 + var(--art-in) * 0.1));
   transform-origin: top center;
 }
-.artwork-presentation-track[data-orientation="portrait"]
-  .overview-main-art {
+.artwork-presentation-track[data-orientation="portrait"] .overview-main-art {
   object-position: calc(var(--opening) * 50%) top;
 }
 .overview-image-fallback {
@@ -173,15 +168,6 @@
     )
     scale(calc(1 + var(--opening) * 0.15));
 }
-.artwork-page[data-direct-entry]
-  .artwork-presentation-track:not([data-shared-artwork])
-  .overview-main-art {
-  --art-layout-transform: translate(
-      calc(var(--opening) * var(--opening-center-x)),
-      calc(var(--opening) * (51svh - 37px))
-    )
-    scale(calc(1 + var(--opening) * 1.25));
-}
 .artwork-presentation-track[data-image-ready]:not([data-shared-artwork]):not(
     [data-has-scrolled]
   )
@@ -218,7 +204,8 @@
 @keyframes overview-art-intro {
   from {
     opacity: 0;
-    transform: var(--art-layout-transform, translate(0)) translateY(52svh) scale(0.985);
+    transform: var(--art-layout-transform, translate(0)) translateY(52svh)
+      scale(0.985);
   }
   to {
     opacity: 1;
@@ -371,7 +358,6 @@
   min-height: 0;
   overflow: hidden;
   background: var(--editorial-paper-deep);
-  box-shadow: 0 12px 30px rgb(34 24 16/0.13);
 }
 .overview-crop-image {
   position: absolute;
@@ -563,13 +549,17 @@
     --overview-details-height: 11.5%;
     --overview-information-gap: 3%;
     --overview-details-top: calc(
-      var(--overview-art-top) + var(--overview-art-height) + var(--overview-row-gap)
+      var(--overview-art-top) + var(--overview-art-height) +
+        var(--overview-row-gap)
     );
     --overview-information-top: calc(
-      var(--overview-details-top) + var(--overview-details-height) + var(--overview-information-gap)
+      var(--overview-details-top) + var(--overview-details-height) +
+        var(--overview-information-gap)
     );
     height: calc(100svh - var(--editorial-header-height, 64px));
-    min-height: 620px;
+    /* Keep room for the crop row and every metadata row on short screens.
+       The scroll track lets this taller panel move through the viewport. */
+    min-height: 780px;
   }
   .overview-kicker {
     top: 18px;
@@ -587,9 +577,6 @@
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1fr;
     gap: 6px;
-  }
-  .overview-crop {
-    box-shadow: none;
   }
   .overview-crop-1 {
     transform: translateY(calc((1 - var(--detail-1)) * 45px))
@@ -669,7 +656,7 @@
 @media (max-width: 639px) {
   .overview-main-art,
   .artwork-presentation-track[data-orientation="portrait"] .overview-main-art {
-    --opening-center-x: 0;
+    --opening-center-x: 0px;
     top: var(--overview-art-top);
     right: auto;
     bottom: auto;
@@ -749,11 +736,6 @@
       scale(calc(1 + var(--opening) * 0.15));
   }
 }
-@media (max-width: 639px) and (max-height: 683px) {
-  .artwork-overview {
-    min-height: 520px;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .artwork-presentation-track .overview-intro-meta,
   .artwork-presentation-track .overview-scroll-hint,
@@ -770,7 +752,7 @@
   }
   .overview-main-art {
     width: 100vw;
-    object-fit: cover;
+    object-fit: contain;
   }
   .overview-crops {
     left: 0;
@@ -794,8 +776,7 @@
       calc(var(--artwork-mobile-height) + 500px)
     );
   }
-  .artwork-presentation-track[data-orientation="portrait"]
-    .overview-main-art {
+  .artwork-presentation-track[data-orientation="portrait"] .overview-main-art {
     object-fit: contain;
   }
 }

@@ -23,7 +23,6 @@ interface ArtworkPageProps {
   usesSharedArtwork?: boolean;
   browseDirection?: "previous" | "next" | null;
   isStaticPreview?: boolean;
-  isDirectEntry?: boolean;
 }
 
 export function ArtworkPage({
@@ -38,7 +37,6 @@ export function ArtworkPage({
   usesSharedArtwork = false,
   browseDirection = null,
   isStaticPreview = false,
-  isDirectEntry = false,
 }: ArtworkPageProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const introTimerRef = useRef<number | null>(null);
@@ -160,7 +158,6 @@ export function ArtworkPage({
       data-transition-phase={transitionPhase}
       data-intro-locked={isIntroLocked || undefined}
       data-static-preview={isStaticPreview || undefined}
-      data-direct-entry={isDirectEntry || undefined}
       data-active-section="00"
       aria-hidden={isCovered || undefined}
     >

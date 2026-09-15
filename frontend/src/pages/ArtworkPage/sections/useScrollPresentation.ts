@@ -21,6 +21,7 @@ export function useScrollPresentation(
       ".artwork-viewer-frame-transition-target .artwork-viewer-image-button"
     );
     const destination = track.querySelector<HTMLElement>("img.overview-main-art");
+    const overview = track.querySelector<HTMLElement>(".artwork-overview");
     const camera = document.querySelector<HTMLElement>(".gallery-camera");
     const sharedStart = sharedImage?.getBoundingClientRect();
     let frame = 0;
@@ -28,7 +29,13 @@ export function useScrollPresentation(
     const update = () => {
       frame = 0;
       const max = Math.max(1, track.offsetHeight - scroller.clientHeight);
-      const progress = clamp((scroller.scrollTop - track.offsetTop) / max);
+      // Tall portrait panels must finish revealing while they are still sticky,
+      // leaving the rest of the track available to read their lower content.
+      const revealDistance = Math.max(
+        1,
+        track.offsetHeight - Math.max(scroller.clientHeight, overview?.offsetHeight ?? 0)
+      );
+      const progress = clamp((scroller.scrollTop - track.offsetTop) / revealDistance);
       const timelineProgress = progress * PRESENTATION_TIMELINE_END;
       const detailsProgress = clamp(
         (scroller.scrollTop - track.offsetTop - max) / scroller.clientHeight
@@ -125,7 +132,12 @@ export function useScrollPresentation(
     update();
     scroller.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
+    // Direct-entry images can change orientation and panel height after load.
+    const resizeObserver = new ResizeObserver(requestUpdate);
+    resizeObserver.observe(track);
+    if (overview) resizeObserver.observe(overview);
     return () => {
+      resizeObserver.disconnect();
       if (frame) cancelAnimationFrame(frame);
       scroller.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);

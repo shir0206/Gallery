@@ -118,7 +118,7 @@ export function GalleryPage() {
     transitionTimers.current.forEach(window.clearTimeout);
     transitionTimers.current = [];
   }, []);
-  const openArtwork = (artworkId: string, sourceImage?: HTMLImageElement) => {
+  const openArtwork = useCallback((artworkId: string, sourceImage?: HTMLImageElement) => {
     const artwork = data?.artworks.find((item) => item.id === artworkId);
     if (!artwork) return;
     const currentBackground =
@@ -129,7 +129,7 @@ export function GalleryPage() {
     clearTransitionTimers();
     setBrowseDirection(null);
     setIsBrowseTransitioning(false);
-    if (sourceImage && currentBackground === "/") {
+    if (sourceImage?.naturalWidth && currentBackground === "/") {
       const measured = sourceImage.getBoundingClientRect();
       const wallTrack = sourceImage.closest<HTMLElement>(
         ".artwork-viewer-track"
@@ -196,9 +196,11 @@ export function GalleryPage() {
       setTransitionPhase("ready");
     }
     routerNavigate(`/artworks/${artworkSlug(artwork.title)}`, {
+      // Bootstrapping an existing artwork URL must not add another history entry.
+      replace: Boolean(featureArtworkSlug),
       state: { backgroundPath: currentBackground },
     });
-  };
+  }, [data, location.pathname, backgroundPath, clearTransitionTimers, routerNavigate, featureArtworkSlug]);
   const handleCameraSettled = useCallback(() => {
     if (transitionPhase === "closing") {
       setHasReturnedToGallery(true);
@@ -351,6 +353,12 @@ export function GalleryPage() {
       state: { returnPath: "/cart", staticPreview: true },
     });
   };
+  const isOpeningDirectArtwork = Boolean(
+    featureArtwork &&
+      backgroundPath === "/" &&
+      !routeState?.staticPreview &&
+      transitionPhase === "idle"
+  );
 
   return (
     <>
@@ -418,7 +426,7 @@ export function GalleryPage() {
         <Route
           path="/artworks/:artworkSlug"
           element={
-            !hasBackgroundRoute ? (
+            routeState?.staticPreview ? (
               <div className="direct-artwork-background" aria-hidden="true" />
             ) : backgroundPath === "/collection" ? (
               <HomePage
@@ -430,13 +438,16 @@ export function GalleryPage() {
               <Gallery
                 data={data}
                 focusedArtworkId={featureArtwork?.id}
+                autoOpenArtworkId={
+                  isOpeningDirectArtwork ? featureArtwork?.id : null
+                }
                 onOpenFeature={openArtwork}
                 onExitWall={() => navigate("/collection")}
                 isCovered
                 transitionArtworkId={transitionArtworkId}
                 transitionPhase={transitionPhase}
                 onCameraSettled={handleCameraSettled}
-                suppressReveal={hasReturnedToGallery}
+                suppressReveal={hasReturnedToGallery || isOpeningDirectArtwork}
               />
             )
           }
@@ -507,20 +518,15 @@ export function GalleryPage() {
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      {featureArtwork && (
+      {featureArtwork && !isOpeningDirectArtwork && (
         <ArtworkPage
           artwork={featureArtwork}
           onAddToCart={addToCart}
           isCovered={Boolean(isPurchaseOpen || isSearchOpen)}
-          transitionPhase={
-            !hasBackgroundRoute && !routeState?.staticPreview
-              ? "ready"
-              : transitionPhase
-          }
+          transitionPhase={transitionPhase === "idle" ? "ready" : transitionPhase}
           usesSharedArtwork={Boolean(transitionArtworkId)}
           browseDirection={browseDirection}
           isStaticPreview={Boolean(routeState?.staticPreview)}
-          isDirectEntry={!hasBackgroundRoute && !routeState?.staticPreview}
           onBack={() =>
             routeState?.returnPath === "/cart"
               ? closeArtworkToGallery("/cart")

@@ -46,6 +46,7 @@ interface ArtworkViewerProps {
   onVisibleArtworksChange?: (artworkIds: Set<string>) => void;
   /** Opens the editorial feature-spread view (ArtworkPage) for the current artwork. Omit to hide the affordance. */
   onOpenFeature?: (artworkId: string, image: HTMLImageElement) => void;
+  autoOpenArtworkId?: string | null;
   transitionArtworkId?: string | null;
   transitionPhase?:
     | "idle"
@@ -98,9 +99,11 @@ export function ArtworkViewer({
   onScrollProgress,
   onVisibleArtworksChange,
   onOpenFeature,
+  autoOpenArtworkId = null,
   transitionArtworkId = null,
   transitionPhase = "idle",
 }: ArtworkViewerProps) {
+  const autoOpenIndex = artworks.findIndex((item) => item.id === autoOpenArtworkId);
   const trackRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef(new Map<string, HTMLDivElement>());
   const { isDragging } = useHorizontalScroll(trackRef);
@@ -350,7 +353,7 @@ export function ArtworkViewer({
   useEffect(() => cancelSettleCheck, [cancelSettleCheck]);
 
   const centerAndOpenArtwork = useCallback(
-    async (artwork: Artwork, button: HTMLButtonElement) => {
+    async (artwork: Artwork, button: HTMLButtonElement, signal?: AbortSignal) => {
       const track = trackRef.current;
       const frame = itemRefs.current.get(artwork.id);
       const image = button.querySelector<HTMLImageElement>(
@@ -419,6 +422,10 @@ export function ArtworkViewer({
 
       // Measure only after the wall has settled, so the existing camera
       // transition grows from the painting's new centered position.
+      if (signal?.aborted || !button.isConnected) {
+        openingArtworkIdRef.current = null;
+        return;
+      }
       const gallery = button.closest<HTMLElement>(".gallery");
       if (gallery) {
         const galleryRect = gallery.getBoundingClientRect();
@@ -449,6 +456,28 @@ export function ArtworkViewer({
     [onOpenFeature, onSelectArtwork]
   );
 
+  useEffect(() => {
+    if (!autoOpenArtworkId) return;
+    const artwork = artworks.find((item) => item.id === autoOpenArtworkId);
+    const button = itemRefs.current
+      .get(autoOpenArtworkId)
+      ?.querySelector<HTMLButtonElement>(".artwork-viewer-image-button");
+    if (!artwork || !button) return;
+    const controller = new AbortController();
+    // Earlier images determine this frame's horizontal position. Wait for
+    // their intrinsic sizes as well as the target before measuring the wall.
+    const precedingImages = artworks
+      .slice(0, artworks.indexOf(artwork) + 1)
+      .map((item) => itemRefs.current.get(item.id)?.querySelector("img"))
+      .filter((image): image is HTMLImageElement => Boolean(image));
+    void Promise.allSettled(precedingImages.map((image) => image.decode()))
+      .then(() => {
+        if (!controller.signal.aborted)
+          void centerAndOpenArtwork(artwork, button, controller.signal);
+      });
+    return () => controller.abort();
+  }, [autoOpenArtworkId, artworks, centerAndOpenArtwork]);
+
   if (artworks.length === 0) {
     return (
       <div className="artwork-viewer">
@@ -465,7 +494,7 @@ export function ArtworkViewer({
           isDragging ? "artwork-viewer-dragging" : ""
         }`}
       >
-        {artworks.map((artwork) => {
+        {artworks.map((artwork, index) => {
           return (
             <div
               key={artwork.id}
@@ -495,7 +524,7 @@ export function ArtworkViewer({
                       src={artwork.imageUrl}
                       alt={`${artwork.title} by ${artwork.artist}`}
                       className="artwork-viewer-image"
-                      loading="lazy"
+                      loading={index <= autoOpenIndex ? "eager" : "lazy"}
                       data-transition-phase={
                         transitionArtworkId === artwork.id
                           ? transitionPhase

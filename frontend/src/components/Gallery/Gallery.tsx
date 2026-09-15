@@ -21,6 +21,8 @@ interface GalleryProps {
    * layered over it. This matters when previous/next navigation changes
    * the feature route while the wall remains mounted underneath. */
   focusedArtworkId?: string | null;
+  /** Opens a direct artwork URL through the wall's normal measured transition. */
+  autoOpenArtworkId?: string | null;
   /** Opens the editorial feature-spread view (ArtworkPage) for the given artwork id. Omit to hide the link. */
   onOpenFeature?: (artworkId: string, image: HTMLImageElement) => void;
   /** Returns to the HomePage grid. Omit to hide the exit control (e.g. if the wall is the only view). */
@@ -62,6 +64,7 @@ interface GalleryProps {
 export function Gallery({
   data,
   focusedArtworkId = null,
+  autoOpenArtworkId = null,
   onOpenFeature,
   onExitWall,
   isCovered = false,
@@ -250,6 +253,7 @@ export function Gallery({
           onScrollProgress={handleScrollProgress}
           onVisibleArtworksChange={handleVisibleArtworksChange}
           onOpenFeature={onOpenFeature}
+          autoOpenArtworkId={autoOpenArtworkId}
           transitionArtworkId={transitionArtworkId}
           transitionPhase={transitionPhase}
         />
