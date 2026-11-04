@@ -3057,9 +3057,9 @@ __metadata:
   linkType: hard
 
 "re2js@npm:^2.8.3":
-  version: 2.8.6
-  resolution: "re2js@npm:2.8.6"
-  checksum: 545e82b73149683649412d90078a4dafde0cd410f23a1ea3b2c7f62651d8c5198d099e72c84d6585a1e42efa9d2fb2da9e3a42f5a55a452f13167aeba0df59c4
+  version: 2.9.1
+  resolution: "re2js@npm:2.9.1"
+  checksum: 6435aa62f4647966d9aaa2c9a882b5a8b609d733d61ab273ce7da71abddfa9c01cab864005d9afac88eed9d5b81115cf0d581957b674b88e5d095181033ecaad
   languageName: node
   linkType: hard
 
